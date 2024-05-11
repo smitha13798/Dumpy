@@ -36,11 +36,10 @@ const ws = Blockly.inject(blocklyDiv, {toolbox});
 
     outputDiv.innerHTML = '';
     console.log("COde comes here"+ code)
-    eval(code);
+    //eval(code);
   };
 
 
-  document.getElementById('startButton').addEventListener('click',runCode());
 
 // Load the initial state from storage and run the code.
 load(ws);
@@ -50,6 +49,7 @@ runCode();
 ws.addChangeListener((e) => {
   // UI events are things like scrolling, zooming, etc.
   // No need to save after one of these.
+  console.log("Changed...")
   if (e.isUiEvent) return;
   save(ws);
 });
@@ -62,12 +62,27 @@ ws.addChangeListener((e) => {
   // Don't run the code during drags; we might have invalid state.
   if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING ||
     ws.isDragging()) {
+    console.log("Dragging...")
     return;
   }
-  button.addEventListener('mousedown', function(event) {
-    console.log("Hey")
-    runCode();
-  });
 
   runCode();
 });
+
+const supportedEvents = new Set([
+  Blockly.Events.BLOCK_CHANGE,
+  Blockly.Events.BLOCK_CREATE,
+  Blockly.Events.BLOCK_DELETE,
+  Blockly.Events.BLOCK_MOVE,
+]);
+
+function updateCode(event) {
+  if (ws.isDragging()) return; // Don't update while changes are happening.
+  if (!supportedEvents.has(event.type)) return;
+
+  const code = javascriptGenerator.workspaceToCode(ws);
+  console.log("changed")
+  document.getElementById('textarea').textContent = code;
+}
+
+ws.addChangeListener(updateCode);

@@ -33,7 +33,7 @@ const addText = {
 };
 const DataWrapperG = {
   'type': 'DataWrapper',
-  'message0': 'Add Data source %1', //%1 is referencing to input value, must be named!
+  'message0': 'Add Data source %1 ', //%1 is referencing to input value, must be named!
   'args0': [
     {
       'type': 'input_value',

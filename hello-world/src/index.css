@@ -24,7 +24,10 @@ pre, code {
   margin-top:10x;
 }
 
+#CodeContainer{
+    margin-right:50%;
 
+}
 #generatedCode {
     height: 50%;
     background-color: rgb(247, 240, 228);
@@ -32,4 +35,35 @@ pre, code {
 
 #output {
     height: 50%;
+}
+
+.code-box {
+    border: 2px solid #333;
+    padding: 10px;
+    border-radius: 5px;
+    width: 70%; /* You can adjust the width as needed */
+    margin: 0 auto; /* Centers the box horizontally */
+    overflow: auto; /* Adds scrollbar if content overflows */
+}
+
+/* Style the code inside the box */
+.code-box pre {
+    margin: 0;
+}
+
+/* Style the scrollbar */
+.code-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.code-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.code-box::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.code-box::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
