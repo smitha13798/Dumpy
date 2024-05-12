@@ -321,6 +321,50 @@ export const toolbox = {
     },
     {
       'kind': 'category',
+      'name': 'Flax Operation',
+      'categorystyle': 'procedure_category',
+      'contents': [
+        {
+          'kind': 'block',
+          'type': 'Add_vectors',
+          'inputs': {
+            "Array1": {
+              "type": "Array",
+              "message0": "Array1 %1",
+              "args0": [
+                {
+                  "type": "input_dummy"
+                }
+              ],
+              "inputsInline": true,
+              "previousStatement": null,
+              "nextStatement": null,
+              "colour": 230
+            },
+            "Array2": {
+              "type": "Array",
+              "message0": "Array2 %1",
+              "args0": [
+                {
+                  "type": "input_dummy"
+                }
+              ],
+              "inputsInline": true,
+              "previousStatement": null,
+              "nextStatement": null,
+              "colour": 230
+            }
+
+
+
+          },
+
+        },
+     ],
+    },
+
+    {
+      'kind': 'category',
       'name': 'Text',
       'categorystyle': 'text_category',
       'contents': [
@@ -517,6 +561,7 @@ export const toolbox = {
             },
           },
         },
+
         {
           'kind': 'block',
           'type': 'DataWrapper',
@@ -533,6 +578,7 @@ export const toolbox = {
         },
       ],
     },
+
     {
       'kind': 'category',
       'name': 'Lists',

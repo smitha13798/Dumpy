@@ -36,7 +36,7 @@ const ws = Blockly.inject(blocklyDiv, {toolbox});
 
     outputDiv.innerHTML = '';
     console.log("COde comes here"+ code)
-    //eval(code);
+    //eval(code); Checking for JS code which wont work
   };
 
 
@@ -80,7 +80,7 @@ function updateCode(event) {
   if (ws.isDragging()) return; // Don't update while changes are happening.
   if (!supportedEvents.has(event.type)) return;
 
-  const code = javascriptGenerator.workspaceToCode(ws);
+  const code = pythonGenerator.workspaceToCode(ws);
   console.log("changed")
   document.getElementById('textarea').textContent = code;
 }

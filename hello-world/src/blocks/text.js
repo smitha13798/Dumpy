@@ -48,11 +48,35 @@ const DataWrapperG = {
   'helpUrl': '',
 };
 
+const AddVectors = {
+  "type": "Add_vectors",
+  "message0": "%1 %2",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "Array1",
+      "check": "Array"
+    },
+    {
+      "type": "input_value",
+      "name": "Array2",
+      "check": "Array",
+      "align": "RIGHT"
+    }
+  ],
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
+}
+
+
+
+
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
-    [DataWrapperG,addText]);
+    [DataWrapperG,addText,AddVectors]);
 
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
