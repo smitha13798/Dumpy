@@ -32,6 +32,23 @@ pythonGenerator.forBlock['DataWrapper'] = function (block, generator) {
 
   return code;
 };
+pythonGenerator.forBlock['generate_randomePRNG'] = function (block, generator) {
+
+  const seed = generator.valueToCode(block, 'seed', Order.NONE) || "''";
+
+
+  const addText = generator.provideFunction_(
+      'generate_randomePRNG',
+      `function ${generator.FUNCTION_NAME_PLACEHOLDER_}(seed) {
+       key = jax.random.PRNGKey(seed)
+       return key
+}`
+  );
+  return `${addText}(${seed});\n`;
+
+  // Generate the function call for this block.
+
+};
 
 pythonGenerator.forBlock['Add_vectors'] = function (block, generator) {
 

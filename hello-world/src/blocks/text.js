@@ -50,7 +50,7 @@ const DataWrapperG = {
 
 const AddVectors = {
   "type": "Add_vectors",
-  "message0": "%1 %2",
+  "message0": "Add vector%1 %2",
   "args0": [
     {
       "type": "input_value",
@@ -68,15 +68,26 @@ const AddVectors = {
   "tooltip": "",
   "helpUrl": ""
 }
-
-
-
+const generateRandome = {
+  "type": "generate_randomePRNG",
+  "message0": "Generate Randome PRNGKey %1",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "seed",
+      "check": ""
+    },
+  ],
+  "colour": 230,
+  "tooltip": "",
+  "helpUrl": ""
+}
 
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
-    [DataWrapperG,addText,AddVectors]);
+    [DataWrapperG,addText,AddVectors,generateRandome]);
 
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.

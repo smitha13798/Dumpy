@@ -321,7 +321,7 @@ export const toolbox = {
     },
     {
       'kind': 'category',
-      'name': 'Flax Operation',
+      'name': 'JAX/Flax Operation',
       'categorystyle': 'procedure_category',
       'contents': [
         {
@@ -360,7 +360,29 @@ export const toolbox = {
           },
 
         },
-     ],
+        {
+          'kind': 'block',
+          'type': 'generate_randomePRNG',
+          'inputs': {
+            "seed": {
+              "type": "text",
+              "message0": "Seed %1",
+              "args0": [
+                {
+                  "type": "input_dummy"
+                }
+              ],
+              "inputsInline": true,
+              "previousStatement": null,
+              "nextStatement": null,
+              "colour": 230
+            },
+
+
+          },
+
+        },
+      ],
     },
 
     {
