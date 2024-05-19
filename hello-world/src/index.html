@@ -5,6 +5,8 @@
      <meta charset="utf-8" />
      <title>Blockly Sample App</title>
        <script type = "text/javascript" src="index.js"></script>
+       <script src = "DataLoader.js"></script>
+       <script src ="CodeTransform.js"></script>
        <link rel="stylesheet" href="index.css">
 
    </head>
@@ -22,9 +24,11 @@
         </div>
     </div>
     <div id="buttonWrapper">
-        <button id="startButton"> RunMe </button>
+        <button id="startButton" onclick="CodeTransform()"> RunMe </button>
 
     </div>
+    <div id="dropZone">Drop files here</div>
+    <pre id="fileContent"></pre>
    </body>
 
 
