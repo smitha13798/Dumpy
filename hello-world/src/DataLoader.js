@@ -1,12 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('dropZone');
     const fileContent = document.getElementById('fileContent');
-
+    console.log("Dragging")
     dropZone.addEventListener('dragover', (event) => {
         event.preventDefault();
         dropZone.classList.add('dragover');
+
     });
 
+    dropZone.addEventListener('click', (event) => {
+        console.log("NADSAD")
+    })
     dropZone.addEventListener('dragleave', () => {
         dropZone.classList.remove('dragover');
     });
