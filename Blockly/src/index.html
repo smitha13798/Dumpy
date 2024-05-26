@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockly with Code Editor</title>
+    <link rel="stylesheet" href="css/index.css"> <!-- Ensure your CSS links are correct -->
+</head>
+<body>
+    <div id="header">
+        [ Logo ] [ File ] [ Edit ] [ Settings ] [ Help ]
+    </div>
+    <div id="main">
+        <div id="codeEditor" style="height: 200px; width: 100%;"></div> <!-- Container for Ace Editor -->
+        <div id="toggleButtons">
+            <button id="showBlockly">Blockly</button>
+            <button id="showPreview">Code Preview</button>
+        </div>
+        <div id="blocklyContainer" style="display:none;"></div>
+        <div id="previewContainer" style="display:none;"></div>
+    </div>
+    <div id="controlPanel">
+        [ New Project ] [ Save ] [ Export ] [ Run ]
+    </div>
+
+    <!-- Ace Editor Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script>
+        var editor = ace.edit("codeEditor");
+        editor.setTheme("ace/theme/monokai"); // Set theme
+        editor.session.setMode("ace/mode/python"); // Set syntax highlighting for Python
+    </script>
+    <script src="js/index.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/toggle.js"></script>
+    <script src="js/controlPanel.js"></script>
+</body>
+</html>
