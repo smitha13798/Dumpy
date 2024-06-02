@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Electron Blockly Application</title>
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' https://blockly-demo.appspot.com/static/media/;
+    media-src 'self' https://blockly-demo.appspot.com/static/media/;
+">
+    <style>
+        #blocklyDiv {
+            height: 480px;
+            width: 600px;
+            border: 1px solid #aaa; /* Added a border to make the Blockly area visible */
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello from Electron and Blockly!</h1>
+    <div id="blocklyDiv"></div>
+    <script src="../workspaceInit.js"></script>
+   
+
+
+</body>
+</html>
