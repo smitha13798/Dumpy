@@ -1,0 +1,22 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "blockly": "^11.1.0",
+    "renderer": "^0.1.5",
+    "resize-img": "^1.1.2",
+    "toastify": "^2.0.1"
+  },
+  "devDependencies": {
+    "electron": "^30.0.8"
+  }
+}
