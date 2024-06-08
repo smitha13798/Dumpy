@@ -114,6 +114,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const code = pythonGenerator.pythonGenerator.workspaceToCode(ws);
         console.log("changed")
         document.getElementById('textarea').textContent = code;
+
+        ipcRenderer.send('save-code-to-file', code)
     }
 
     ws.addChangeListener(updateCode);
@@ -125,12 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
     saveButton.addEventListener('click', function() {
         const code = document.getElementById('textarea').textContent;
         ipcRenderer.send('save-code-to-file', code)
-            .then(filePath => {
-                console.log('File saved:', filePath);
-            })
-            .catch(error => {
-                console.error('Error saving file:', error);
-            });
+
     });
 });
 

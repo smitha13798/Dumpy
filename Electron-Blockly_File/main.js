@@ -19,17 +19,13 @@ app.whenReady().then(() => {
     createWindow();
 
     ipcMain.on('save-code-to-file', async (event, code) => {
-        const { filePath } = await dialog.showSaveDialog({
-            buttonLabel: 'Save Code',
+        /*const { filePath } = await dialog.showSaveDialog({
+            buttonLabel: 'Save Codes',
             filters: [{ name: 'Text Files', extensions: ['txt'] },{ name: 'Python Files', extensions: ['py'] }]
-        });
+        });*/
+        fs.writeFileSync('/Users/tobias/Documents/fork/new/Dumpy/Electron-Blockly_File/generatedCode/modelDefinition.py', code);
 
-        if (filePath) {
-            fs.appendFileSync(filePath, code);
-            event.reply('code-save-status', 'File saved successfully to ' + filePath);
-        } else {
-            event.reply('code-save-status', 'Save cancelled');
-        }
+
     });
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

@@ -373,6 +373,52 @@ export const toolbox = {
         },
         {
           'kind': 'block',
+          'type': 'relu',
+          'inputs': {
+            "model": {
+              'shadow': {
+                "type": 'math_number',
+                'fields':{
+                  'NUM': '',
+                }
+
+
+
+              },
+              "inputsInline": true,
+              "previousStatement": null,
+              "nextStatement": null,
+              "colour": 230
+            },
+
+
+          },
+        },
+        {
+          'kind': 'block',
+          'type': 'Conv',
+          'inputs': {
+            'feature': {
+              'shadow': {
+                'type': 'math_number',
+                'fields': {
+                  'NUM': 'feature',
+                },
+              },
+            },
+            'kernel': {
+              'shadow': {
+                'type': 'math_number',
+                'fields': {
+                  'NUM': '',
+                },
+              },
+            },
+          },
+        },
+
+        {
+          'kind': 'block',
           'type': 'generate_randomePRNG',
           'inputs': {
             "seed": {

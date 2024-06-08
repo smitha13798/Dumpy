@@ -168,13 +168,52 @@ const maxPoolLayer = {
 
 
 
+const relu = {
+  "type": "relu",
+  "message0": "Call relu  %1",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "model",
+      "check": ""
+    },
+
+  ],
+  "output": "Linear Layer",
+  "colour": 230,
+  "tooltip": "Give linear layer",
+  "helpUrl": ""
+}
+
+const conv = {
+  "type": "Conv",
+  "message0": "Create conv layer %1 %2",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "feature",
+      "check": ""
+    },
+    {
+      "type": "input_value",
+      "name": "kernel",
+      "check": ""
+    }
+
+  ],
+  "output": "ConvLayer",
+  "colour": 230,
+  "tooltip": "Define a convolutional layer",
+  "helpUrl": ""
+}
+
 
 
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
-  [python_class,DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer]
+  [python_class,DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer,relu,conv]
 );
 
 

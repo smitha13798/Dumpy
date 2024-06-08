@@ -15,7 +15,20 @@ pythonGenerator.forBlock['python_class'] = function(block) {
     const methods = pythonGenerator.statementToCode(block, 'METHODS');
     return `class ${className}:\n${methods}`;
 };
+pythonGenerator.forBlock['relu'] = function(block, generator) {
+    var model = generator.valueToCode(block, 'model', Order.NONE);
+    // TODO: Assemble python into code variable.
+    // TODO: Change ORDER_NONE to the correct strength.
+    return 'nn.relu('+model+')';
+};
 
+pythonGenerator.forBlock['Conv'] = function(block, generator) {
+    var value_feature = generator.valueToCode(block, 'feature', Order.NONE);
+    var value_kernel_size = generator.valueToCode(block, 'kernel', Order.NONE);
+    // TODO: Assemble python into code variable.
+    // TODO: Change ORDER_NONE to the correct strength.
+    return 'nn.Conv('+value_feature+','+value_kernel_size+')';
+};
 pythonGenerator.forBlock['DataWrapper'] = function (block, generator) {
     const text = generator.valueToCode(block, 'TEXT', Order.NONE) || "''";
 
