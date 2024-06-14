@@ -396,6 +396,29 @@ export const toolbox = {
         },
         {
           'kind': 'block',
+          'type': 'self',
+          'inputs': {
+            "func": {
+              'shadow': {
+                "type": 'math_number',
+                'fields':{
+                  'NUM': '',
+                }
+
+
+
+              },
+              "inputsInline": true,
+              "previousStatement": null,
+              "nextStatement": null,
+              "colour": 230
+            },
+
+
+          },
+        },
+        {
+          'kind': 'block',
           'type': 'Conv',
           'inputs': {
             'feature': {

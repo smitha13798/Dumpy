@@ -1,15 +1,61 @@
 import sys
 import time
 import logging
+import argparse
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+
+
+def find_comment_block(file_path, start_comment, end_comment):
+    try:
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        start_line = None
+        end_line = None
+        for line_number, line in enumerate(lines, start=1):
+            if start_comment in line:
+                start_line = line_number
+            elif end_comment in line:
+                end_line = line_number
+                break
+
+        return start_line, end_line
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None, None
+
+
+def insert_string_at_line(target_file_path, insert_string, start_line, end_line):
+    try:
+        with open(target_file_path, 'r') as target_file:
+            target_content = target_file.readlines()
+        insert_string += "#Model-"
+        insert_content = insert_string.splitlines(True)
+
+        if start_line is not None and end_line is not None:
+            updated_content = target_content[:start_line] + insert_content + target_content[end_line:]
+        else:
+            updated_content = target_content + insert_content
+
+        with open(target_file_path, 'w') as target_file:
+            target_file.writelines(updated_content)
+
+        print(f"String inserted into {target_file_path} at line {start_line}.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 def read_file(file_path):
     try:
         with open(file_path, 'r') as file:
-            content = file.read()
-            print(content)
+            code = file.read()
+            start_line, end_line = find_comment_block('../projectsrc/projectsrc.py', '#Model+', '#Model-')
+
+            if start_line is not None and end_line is not None:
+                insert_string_at_line('../projectsrc/projectsrc.py', code, start_line, end_line)
+            else:
+                print("Markers not found.")
     except Exception as e:
         print(f"Error reading file {file_path}: {e}")
 
@@ -30,12 +76,13 @@ class Watcher:
             self.observer.stop()
         self.observer.join()
 
+
 class Handler(FileSystemEventHandler):
     @staticmethod
     def on_modified(event):
         if not event.is_directory:
             logging.info(f"File modified: {event.src_path}")
-            read_file(event.src_path);
+            read_file(event.src_path)
 
     @staticmethod
     def on_created(event):
@@ -46,6 +93,7 @@ class Handler(FileSystemEventHandler):
     def on_deleted(event):
         if not event.is_directory:
             logging.info(f"File deleted: {event.src_path}")
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:

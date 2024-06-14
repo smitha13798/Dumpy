@@ -19,7 +19,14 @@ pythonGenerator.forBlock['relu'] = function(block, generator) {
     var model = generator.valueToCode(block, 'model', Order.NONE);
     // TODO: Assemble python into code variable.
     // TODO: Change ORDER_NONE to the correct strength.
-    return 'nn.relu('+model+')';
+    return 'nn.relu('+model+')\n';
+};
+pythonGenerator.forBlock['self'] = function(block, generator) {
+    var model = generator.valueToCode(block, 'func', Order.NONE);
+    // TODO: Assemble python into code variable.
+    // TODO: Change ORDER_NONE to the correct strength.
+    return '@nn.compact\n' +
+        '    def __call__(self, x):\n';
 };
 
 pythonGenerator.forBlock['Conv'] = function(block, generator) {
@@ -27,8 +34,12 @@ pythonGenerator.forBlock['Conv'] = function(block, generator) {
     var value_kernel_size = generator.valueToCode(block, 'kernel', Order.NONE);
     // TODO: Assemble python into code variable.
     // TODO: Change ORDER_NONE to the correct strength.
-    return 'nn.Conv('+value_feature+','+value_kernel_size+')';
+    return 'nn.Conv('+value_feature+','+value_kernel_size+')(x)\n';
 };
+
+
+
+
 pythonGenerator.forBlock['DataWrapper'] = function (block, generator) {
     const text = generator.valueToCode(block, 'TEXT', Order.NONE) || "''";
 

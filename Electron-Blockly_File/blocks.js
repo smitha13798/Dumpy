@@ -73,6 +73,8 @@ const DataWrapperG = {
 const AddVectors = {
   "type": "Add_vectors",
   "message0": "Add vector%1 %2",
+    'previousStatement': null,
+  'nextStatement': null,
   "args0": [
     {
       "type": "input_value",
@@ -93,6 +95,8 @@ const AddVectors = {
 const generateRandome = {
   "type": "generate_randomePRNG",
   "message0": "Generate Randome PRNGKey %1",
+    'previousStatement': null,
+  'nextStatement': null,
   "args0": [
     {
       "type": "input_value",
@@ -116,6 +120,7 @@ const flattenLayer = {
 const denseLayer = {
   'type': 'dense_layer',
   'message0': 'Dense layer with %1 units',
+
   'args0': [
     {
       'type': 'field_number',
@@ -133,6 +138,7 @@ const denseLayer = {
 const maxPoolLayer = {
   'type': 'max_pool_layer',
   'message0': 'MaxPool with window shape: %1 %2 strides: %3 %4',
+
   'args0': [
     {
       'type': 'field_number',
@@ -171,6 +177,8 @@ const maxPoolLayer = {
 const relu = {
   "type": "relu",
   "message0": "Call relu  %1",
+    'previousStatement': null,
+  'nextStatement': null,
   "args0": [
     {
       "type": "input_value",
@@ -188,6 +196,8 @@ const relu = {
 const conv = {
   "type": "Conv",
   "message0": "Create conv layer %1 %2",
+    'previousStatement': null,
+  'nextStatement': null,
   "args0": [
     {
       "type": "input_value",
@@ -206,14 +216,31 @@ const conv = {
   "tooltip": "Define a convolutional layer",
   "helpUrl": ""
 }
+const self = {
+  "type": "self",
+  "message0": "Init self  %1",
+  'previousStatement': null,
+  'nextStatement': null,
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "func",
+      "check": ""
+    },
 
+  ],
+  "output": "Linear Layer",
+  "colour": 230,
+  "tooltip": "Give linear layer",
+  "helpUrl": ""
+}
 
 
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
-  [python_class,DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer,relu,conv]
+  [python_class,DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer,relu,conv,self]
 );
 
 
