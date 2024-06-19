@@ -371,29 +371,7 @@ export const toolbox = {
           },
 
         },
-        {
-          'kind': 'block',
-          'type': 'relu',
-          'inputs': {
-            "model": {
-              'shadow': {
-                "type": 'math_number',
-                'fields':{
-                  'NUM': '',
-                }
-
-
-
-              },
-              "inputsInline": true,
-              "previousStatement": null,
-              "nextStatement": null,
-              "colour": 230
-            },
-
-
-          },
-        },
+      
         {
           'kind': 'block',
           'type': 'self',
@@ -417,29 +395,7 @@ export const toolbox = {
 
           },
         },
-        {
-          'kind': 'block',
-          'type': 'Conv',
-          'inputs': {
-            'feature': {
-              'shadow': {
-                'type': 'math_number',
-                'fields': {
-                  'NUM': 'feature',
-                },
-              },
-            },
-            'kernel': {
-              'shadow': {
-                'type': 'math_number',
-                'fields': {
-                  'NUM': '',
-                },
-              },
-            },
-          },
-        },
-
+      
         {
           'kind': 'block',
           'type': 'generate_randomePRNG',
@@ -468,10 +424,54 @@ export const toolbox = {
          'type': 'dense_layer'},
         {'kind': 'block',
          'type': 'max_pool_layer'},
+        {'kind': 'block',
+          'type': 'conv_layer'},
+        {'kind': 'block',
+          'type': 'relu_layer',},
+        {'kind': 'block',
+          'type': 'average_pool_layer'},
+        {'kind': 'block',
+          'type': 'dropout_layer'},
+        {'kind': 'block',
+          'type': 'batch_norm_layer'},
+        {'kind': 'block',
+        'type': 'tanh_layer'},
+        {'kind': 'block',
+          'type': 'sigmoid_layer'},
+        {'kind': 'block',
+            'type': 'rnn_layer'},
         
 
       ],
     },
+    {
+      'kind': 'category',
+  'name': 'Data Handling',
+      'categorystyle': 'text_category',
+      'contents': [
+        {
+          'kind': 'block',
+          'type': 'dataset_selection'},
+       {
+            'kind': 'block',
+            'type': 'data_loader_config'},
+	{
+          'kind': 'block',
+          'type': 'data_preprocessing'},
+	{
+          'kind': 'block',
+          'type': 'data_batching'},
+	{
+          'kind': 'block',
+          'type': 'data_shuffling'},
+  {
+          'kind': 'block',
+          'type': 'data_transformations'},
+  {
+          'kind': 'block',
+          'type': 'split_data'},
+          
+]},
 
     {
       'kind': 'category',

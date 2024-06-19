@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
 // Load the initial state from storage and run the code.
-    load(ws);
+    //load(ws);
     runCode();
 
 // Every time the workspace changes state, save the changes to storage.

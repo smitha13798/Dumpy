@@ -2,30 +2,38 @@ import { app, BrowserWindow, ipcMain,dialog } from 'electron'
 import path  from 'path'
 const fs =await import('fs');
 function createWindow() {
-    const win = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false, // consider changing for production for security reasons
-            enableRemoteModule: true // if you need remote modul
-        }
-    });
+    // Clear the cache before creating the window
+    session.defaultSession.clearCache().then(() => {
+        console.log('Cache cleared!');
+        const win = new BrowserWindow({
+            width: 800,
+            height: 600,
+            webPreferences: {
+                nodeIntegration: true,
+                contextIsolation: false,  // consider changing for production for security reasons
+                enableRemoteModule: true  // if you need remote module
+            }
+        });
 
-    win.loadFile('./renderer/index.html');
+        win.loadFile('./renderer/index.html');
+    });
 }
 
 app.whenReady().then(() => {
     createWindow();
 
     ipcMain.on('save-code-to-file', async (event, code) => {
-        /*const { filePath } = await dialog.showSaveDialog({
-            buttonLabel: 'Save Codes',
+        const { filePath } = await dialog.showSaveDialog({
+            buttonLabel: 'Save Code',
             filters: [{ name: 'Text Files', extensions: ['txt'] },{ name: 'Python Files', extensions: ['py'] }]
-        });*/
-        fs.writeFileSync('/Users/tobias/Documents/fork/new/Dumpy/Electron-Blockly_File/generatedCode/modelDefinition.py', code);
+        });
 
-
+        if (filePath) {
+            fs.appendFileSync(filePath, code);
+            event.reply('code-save-status', 'File saved successfully to ' + filePath);
+        } else {
+            event.reply('code-save-status', 'Save cancelled');
+        }
     });
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

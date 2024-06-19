@@ -15,12 +15,7 @@ pythonGenerator.forBlock['python_class'] = function(block) {
     const methods = pythonGenerator.statementToCode(block, 'METHODS');
     return `class ${className}:\n${methods}`;
 };
-pythonGenerator.forBlock['relu'] = function(block, generator) {
-    var model = generator.valueToCode(block, 'model', Order.NONE);
-    // TODO: Assemble python into code variable.
-    // TODO: Change ORDER_NONE to the correct strength.
-    return 'nn.relu('+model+')\n';
-};
+
 pythonGenerator.forBlock['self'] = function(block, generator) {
     var model = generator.valueToCode(block, 'func', Order.NONE);
     // TODO: Assemble python into code variable.
@@ -29,12 +24,11 @@ pythonGenerator.forBlock['self'] = function(block, generator) {
         '    def __call__(self, x):\n';
 };
 
-pythonGenerator.forBlock['Conv'] = function(block, generator) {
-    var value_feature = generator.valueToCode(block, 'feature', Order.NONE);
-    var value_kernel_size = generator.valueToCode(block, 'kernel', Order.NONE);
-    // TODO: Assemble python into code variable.
-    // TODO: Change ORDER_NONE to the correct strength.
-    return 'nn.Conv('+value_feature+','+value_kernel_size+')(x)\n';
+pythonGenerator.forBlock['conv_layer'] = function(block) {
+    const features = block.getFieldValue('FEATURES');
+    const kernelSizeX = block.getFieldValue('KERNEL_SIZE_X');
+    const kernelSizeY = block.getFieldValue('KERNEL_SIZE_Y');
+    return `x = nn.Conv(features=${features}, kernel_size=(${kernelSizeX}, ${kernelSizeY}))(x)\n`;
 };
 
 
@@ -125,6 +119,9 @@ pythonGenerator.forBlock['add_text'] = function (block, generator) {
     return code;
 
 };
+pythonGenerator.forBlock['relu_layer'] = function(block) {
+    return `x = nn.relu(x)\n`;
+};
 pythonGenerator.forBlock['flatten_layer'] = function(block) {
     return 'x = x.reshape((x.shape[0], -1))\n';
   };
@@ -140,6 +137,73 @@ pythonGenerator.forBlock['max_pool_layer'] = function(block) {
     var strideY = block.getFieldValue('STRIDE_Y');
     return `x = nn.MaxPool(window_shape=(${windowShapeX}, ${windowShapeY}), strides=(${strideX}, ${strideY}))(x)\n`;
   };
+pythonGenerator.forBlock['average_pool_layer'] = function(block) {
+    const poolSizeX = block.getFieldValue('POOL_SIZE_X');
+    const poolSizeY = block.getFieldValue('POOL_SIZE_Y');
+    const strideX = block.getFieldValue('STRIDE_X');
+    const strideY = block.getFieldValue('STRIDE_Y');
+    return `x = nn.AvgPool(window_shape=(${poolSizeX}, ${poolSizeY}), strides=(${strideX}, ${strideY}))(x)\n`;
+};
+
+pythonGenerator.forBlock['dropout_layer'] = function(block) {
+    const rate = block.getFieldValue('RATE');
+    return `x = nn.Dropout(rate=${rate})(x)\n`;
+};
+
+pythonGenerator.forBlock['batch_norm_layer'] = function(block) {
+    return `x = nn.BatchNorm()(x)\n`;
+};
+pythonGenerator.forBlock['tanh_layer'] = function(block) {
+    return `x = nn.tanh(x)\n`;
+};
+
+pythonGenerator.forBlock['sigmoid_layer'] = function(block) {
+    return `x = nn.sigmoid(x)\n`;
+};
+
+pythonGenerator.forBlock['rnn_layer'] = function(block) {
+    const units = block.getFieldValue('UNITS');
+    const returnSeq = block.getFieldValue('RETURN_SEQ') === 'TRUE' ? 'True' : 'False';
+    return `x = nn.RNN(units=${units}, return_sequences=${returnSeq})(x)\n`;
+};
+pythonGenerator.forBlock['dataset_selection'] = function(block) {
+    const dataset = block.getFieldValue('DATASET');
+    return `dataset = load_dataset('${dataset}')\n`;
+};
+pythonGenerator.forBlock['data_loader_config'] = function(block) {
+    const batchSize = block.getFieldValue('BATCH_SIZE');
+    const shuffle = block.getFieldValue('SHUFFLE') === 'TRUE' ? 'True' : 'False';
+    const workers = block.getFieldValue('WORKERS');
+    return `data.DataLoader(dataset, batch_size=${batchSize}, shuffle=${shuffle}, num_workers=${workers})\n`;
+};
+
+
+pythonGenerator.forBlock['data_preprocessing'] = function(block) {
+    const method = block.getFieldValue('METHOD');
+    return `dataset = preprocess_data(dataset, method='${method}')\n`;
+};
+
+pythonGenerator.forBlock['data_batching'] = function(block) {
+    const batchSize = block.getFieldValue('BATCH_SIZE');
+    return `data_loader = DataLoader(dataset, batch_size=${batchSize}, shuffle=True)\n`;
+};
+
+pythonGenerator.forBlock['data_shuffling'] = function(block) {
+    return `dataset = shuffle_data(dataset)\n`;
+};
+pythonGenerator.forBlock['data_transformations'] = function(block) {
+    const statements_transforms = pythonGenerator.statementToCode(block, 'TRANSFORMS');
+    return `transforms.Compose([\n${statements_transforms}])\n`;
+};
+pythonGenerator.forBlock['split_data'] = function(block) {
+    const train = block.getFieldValue('TRAIN');
+    const valid = block.getFieldValue('VALID');
+    const test = block.getFieldValue('TEST');
+    return `train_set, valid_set, test_set = split_dataset(dataset, train=${train}, validation=${valid}, test=${test})\n`;
+};
+
+
+
 
 
 
