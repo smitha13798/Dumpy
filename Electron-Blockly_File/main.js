@@ -1,7 +1,15 @@
 import { app, BrowserWindow, ipcMain,dialog } from 'electron'
 
-import path  from 'path'
 const fs =await import('fs');
+var filePathModel = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/modelDefinition.py'
+var filePathData = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/dataloaderDefinition.py'
+var filePathTraining = ' generatedCode/trainingDefinition.py'
+var filePaths = [];
+filePaths[0] = filePathModel;
+filePaths[1] = filePathData;
+filePaths[2] = filePathTraining;
+
+var currentPath = filePathModel
 function createWindow() {
     // Clear the cache before creating the window
         console.log('Cache cleared!');
@@ -20,9 +28,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
     createWindow();
-    var filePathModel = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/modelDefinition.py'
-    var filePathData = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/dataloaderDefinition.py'
-    var currentPath = filePathModel
+
     ipcMain.on('save-code-to-file', async (event, code) => {
         /*const { filePath } = await dialog.showSaveDialog({
             buttonLabel: 'Save Codes',
@@ -41,6 +47,16 @@ app.whenReady().then(() => {
         }
         currentPath = filePathModel;
     })
+
+    ipcMain.on('change-view-option', async (event, view) => {
+        /*const { filePath } = await dialog.showSaveDialog({
+            buttonLabel: 'Save Codes',
+            filters: [{ name: 'Text Files', extensions: ['txt'] },{ name: 'Python Files', extensions: ['py'] }]
+        });*/
+        console.log("Changing frm main to" + view)
+        currentPath = filePaths[view];
+        console.log("current Path is.." + currentPath)
+    });
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
@@ -52,3 +68,6 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+
+

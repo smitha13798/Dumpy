@@ -9,6 +9,7 @@
     img-src 'self' https://blockly-demo.appspot.com/static/media/;
     media-src 'self' https://blockly-demo.appspot.com/static/media/;
 ">
+    <link rel="stylesheet" href="style.css">
     <style>
         #blocklyDiv {
             height: 480px;
@@ -18,13 +19,22 @@
     </style>
     <style>
         #textarea{
-            white-space: pre-wrap; 
-            border: 1px solid #ccc; 
-            padding: 10px; 
+            white-space: pre-wrap;
+            border: 1px solid #ccc;
+            padding: 10px;
             margin-top: 20px;
 
         }
+
+        #ViewList{
+            margin-left: 20px;
+
+        }
     </style>
+
+
+
+
 </head>
 <body>
     <h1>FlaxBlocks</h1>
@@ -33,5 +43,23 @@
     <button id="saveButton">Save Code to File</button>
     <button class="fa fa-exchange" id="swap" aria-hidden="true">Swap view</button>
     <script src="../workspaceInit.js"></script>
+
+
+    <div id="optionWrapper">
+        <label for="ViewList">
+        </label>
+        <select id="ViewList" onchange="test()">
+            <option value="0">Model Definition </option>
+            <option value="1">Data Loader Definition </option>
+            <option value="2">Training</option>
+        </select>
+
+        <label for="subViewList"></label>
+        <select id="subViewList" size="1">
+
+        </select>
+
+    </div>
+
 </body>
 </html>

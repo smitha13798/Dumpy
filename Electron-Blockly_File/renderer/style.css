@@ -1,0 +1,26 @@
+#ViewList{
+    height:50%
+}
+
+
+#blocklyDiv {
+    height: 480px;
+    width: 600px;
+    border: 1px solid #aaa; /* Added a border to make the Blockly area visible */
+}
+
+#textarea {
+    white-space: pre-wrap;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+#ViewList {
+    margin-left: 20px;
+}
+
+#subViewList {
+    margin-left: 10px;
+    display: none;
+}

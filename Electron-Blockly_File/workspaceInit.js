@@ -4,14 +4,31 @@ console.log('Attempting to load toolbox module...');
 const toolboxPath = './toolbox.js';
 const blocksPath = './blocks.js';
 const serializerPath = './serialization.js';
-const javascriptPath = './generator/javascript.js';
-let ws;
+const javascriptPath = './generator/javascript.js';let ws;
+const WorkspaceStates = [];
+var currentWS=0;
+const { ipcRenderer } = require('electron');
+
+
+function AddSubOption(optionTag,options){
+
+    var OptionTag = document.getElementById(optionTag);
+    OptionTag.style.display  = 'inline';
+    for(let i =0;i<optionTag.length;i++){
+        OptionTag.add(new Option(options[i]));
+    }
+}
+
+
+
+
 document.addEventListener('DOMContentLoaded', async function () {
     let toolbox;
     let blocks;
     let load;
     let save;
     let forBlock;
+
     try {
         const module = await import(toolboxPath);
         toolbox = module.toolbox;
@@ -22,36 +39,34 @@ document.addEventListener('DOMContentLoaded', async function () {
     try {
         const module = await import(blocksPath);
         blocks = module.blocks;
-    }
-    catch (error) {
-        console.error('Error loading toolbox:', error);
+    } catch (error) {
+        console.error('Error loading blocks:', error);
     }
     try {
         const module = await import(serializerPath);
         load = module.load;
         save = module.save;
-    }
-    catch (error) {
-        console.error('Error loading toolbox:', error);
+    } catch (error) {
+        console.error('Error loading serializer:', error);
     }
     try {
-            const module = await import(javascriptPath);
-            forBlock = module.forBlock;
-    }
-    catch (error) {
-        console.error('Error loading toolbox:', error);
+        const module = await import(javascriptPath);
+        forBlock = module.forBlock;
+    } catch (error) {
+        console.error('Error loading JavaScript generator:', error);
     }
 
     const Blockly = require('blockly');
     const pythonGenerator = require('blockly/python');
     const javaScriptGenerator = require('blockly/javascript');
-    Blockly.common.defineBlocks(blocks)
-    Object.assign(javaScriptGenerator.javascriptGenerator.forBlock,forBlock);
+    Blockly.common.defineBlocks(blocks);
+    Object.assign(javaScriptGenerator.javascriptGenerator.forBlock, forBlock);
+
     const blocklyDiv = document.getElementById('blocklyDiv');
     if (blocklyDiv) {
         console.log('blocklyDiv found:', blocklyDiv);
         try {
-            ws = Blockly.inject(blocklyDiv, {toolbox});
+            ws = Blockly.inject(blocklyDiv, { toolbox });
             console.log('Blockly has been initialized', ws);
         } catch (error) {
             console.error('Failed to initialize Blockly:', error);
@@ -60,43 +75,24 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.log('Failed to find blocklyDiv');
     }
 
-
-
-
     const runCode = () => {
-        const code = pythonGenerator.pythonGenerator.workspaceToCode(ws)
-
-        console.log("COde comes here"+ code)
-        //eval(code); Checking for JS code which wont work
+        const code = pythonGenerator.pythonGenerator.workspaceToCode(ws);
+        console.log("Code comes here: " + code);
     };
 
-
-
-// Load the initial state from storage and run the code.
-    //load(ws);
+    load(ws); // Load the initial state for the workspace
     runCode();
 
-// Every time the workspace changes state, save the changes to storage.
     ws.addChangeListener((e) => {
-        // UI events are things like scrolling, zooming, etc.
-        // No need to save after one of these.
-        console.log("Changed...")
         if (e.isUiEvent) return;
         save(ws);
     });
 
-
-// Whenever the workspace changes meaningfully, run the code again.
     ws.addChangeListener((e) => {
-        // Don't run the code when the workspace finishes loading; we're
-        // already running it once when the application starts.
-        // Don't run the code during drags; we might have invalid state.
-        if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING ||
-            ws.isDragging()) {
-            console.log("Dragging...")
+        if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING || ws.isDragging()) {
+            console.log("Dragging...");
             return;
         }
-
         runCode();
     });
 
@@ -108,39 +104,67 @@ document.addEventListener('DOMContentLoaded', async function () {
     ]);
 
     function updateCode(event) {
-        if (ws.isDragging()) return; // Don't update while changes are happening.
+        if (ws.isDragging()) return;
         if (!supportedEvents.has(event.type)) return;
 
         const code = pythonGenerator.pythonGenerator.workspaceToCode(ws);
-        console.log("changed")
+        console.log("changed");
         document.getElementById('textarea').textContent = code;
-
-        ipcRenderer.send('save-code-to-file', code)
+        ipcRenderer.send('save-code-to-file', code);
     }
 
     ws.addChangeListener(updateCode);
+
+    const viewList = document.getElementById('ViewList');
+
+    viewList.onchange = function () {
+        const selectedIndex = viewList.value;
+
+        // Save the current workspace state before switching
+        const currentXml = Blockly.Xml.workspaceToDom(ws);
+        WorkspaceStates[currentWS] = Blockly.Xml.domToText(currentXml);
+        currentWS = selectedIndex;
+        // Clear the current workspace
+        const code = pythonGenerator.pythonGenerator.workspaceToCode(ws);
+
+        ipcRenderer.send('save-code-to-file',code)
+        ipcRenderer.send('change-view-option',selectedIndex);
+
+        ws.clear();
+
+        // Load the selected workspace state
+        if (WorkspaceStates[selectedIndex]) {
+            const newXml = Blockly.utils.xml.textToDom(WorkspaceStates[selectedIndex]);
+            Blockly.Xml.domToWorkspace(newXml, ws);
+        }
+
+        runCode();
+        if(selectedIndex==='1'){
+            console.log("adding options...")
+            AddSubOption('subViewList',[7,22]);
+            return;
+        }
+        document.getElementById('subViewList').style.display = "none";
+    };
 });
-const { ipcRenderer } = require('electron');
 
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function () {
     const saveButton = document.getElementById('saveButton');
-    saveButton.addEventListener('click', function() {
+    saveButton.addEventListener('click', function () {
         const code = document.getElementById('textarea').textContent;
-        ipcRenderer.send('save-code-to-file', code)
-
+        ipcRenderer.send('save-code-to-file', code);
     });
 
     const swapButton = document.getElementById('swap');
-    swapButton.addEventListener('click', function() {
+    swapButton.addEventListener('click', function () {
         const code = document.getElementById('textarea').textContent;
-        ipcRenderer.send('save-code-to-file', code)
+        ipcRenderer.send('save-code-to-file', code);
         ws.clear();
         ipcRenderer.send('change-view');
-
-    })
-
+    });
 });
 
-
-
-
+function test() {
+    console.log("called from ws");
+}

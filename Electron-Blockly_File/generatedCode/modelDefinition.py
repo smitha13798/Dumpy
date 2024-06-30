@@ -1,6 +1,9 @@
-class CNN(nn.Module):
-  @nn.compact
-  def __call__(self,x):
-      x = nn.tanh(x)
-      x = nn.relu(x)
-      x = nn.BatchNorm()(x)
+function generate_randomePRNG(seed) {
+       key = jax.random.PRNGKey(seed)
+       return key
+}
+
+
+generate_randomePRNG('');
+
+x = x.reshape((x.shape[0], -1))
