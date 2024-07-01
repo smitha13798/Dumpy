@@ -1,26 +1,55 @@
-
-
 console.log('Attempting to load toolbox module...');
 const toolboxPath = './toolbox.js';
 const blocksPath = './blocks.js';
 const serializerPath = './serialization.js';
-const javascriptPath = './generator/javascript.js';let ws;
+const javascriptPath = './generator/javascript.js';
+let ws;
 const WorkspaceStates = [];
-var currentWS=0;
+var currentWS = 0;
 const { ipcRenderer } = require('electron');
 
-
-function AddSubOption(optionTag,options){
-
+function AddSubOption(optionTag, options) {
     var OptionTag = document.getElementById(optionTag);
-    OptionTag.style.display  = 'inline';
-    for(let i =0;i<optionTag.length;i++){
+    OptionTag.style.display = 'inline';
+    for (let i = 0; i < options.length; i++) {
         OptionTag.add(new Option(options[i]));
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const createNewViewButton = document.getElementById('createNewView');
+    createNewViewButton.addEventListener('click', () => {
+        const viewName = document.getElementById('new-view-name').value.trim();
+        if (viewName) {
+            window.electronAPI.createNewView(viewName).then(result => {
+                alert(result.message);
+                const viewList = document.getElementById('ViewList');
+                const newOption = document.createElement('option');
+                newOption.value = viewName;
+                newOption.text = viewName;
+                viewList.add(newOption);
+            }).catch(error => {
+                console.error(error);
+                alert('Error creating the new view.');
+            });
+        } else {
+            alert('Please enter a valid view name.');
+        }
+    });
+    const saveButton = document.getElementById('saveButton');
+    saveButton.addEventListener('click', function () {
+        const code = document.getElementById('textarea').textContent;
+        ipcRenderer.send('save-code-to-file', code);
+    });
 
-
+    const swapButton = document.getElementById('swap');
+    swapButton.addEventListener('click', function () {
+        const code = document.getElementById('textarea').textContent;
+        ipcRenderer.send('save-code-to-file', code);
+        ws.clear();
+        ipcRenderer.send('change-view');
+    });
+});
 
 document.addEventListener('DOMContentLoaded', async function () {
     let toolbox;
@@ -127,8 +156,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Clear the current workspace
         const code = pythonGenerator.pythonGenerator.workspaceToCode(ws);
 
-        ipcRenderer.send('save-code-to-file',code)
-        ipcRenderer.send('change-view-option',selectedIndex);
+        ipcRenderer.send('save-code-to-file', code);
+        ipcRenderer.send('change-view-option', selectedIndex);
 
         ws.clear();
 
@@ -139,32 +168,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         runCode();
-        if(selectedIndex==='1'){
-            console.log("adding options...")
-            AddSubOption('subViewList',[7,22]);
+        if (selectedIndex === '1') {
+            console.log("adding options...");
+            AddSubOption('subViewList', [7, 22]);
             return;
         }
         document.getElementById('subViewList').style.display = "none";
     };
 });
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const saveButton = document.getElementById('saveButton');
-    saveButton.addEventListener('click', function () {
-        const code = document.getElementById('textarea').textContent;
-        ipcRenderer.send('save-code-to-file', code);
-    });
-
-    const swapButton = document.getElementById('swap');
-    swapButton.addEventListener('click', function () {
-        const code = document.getElementById('textarea').textContent;
-        ipcRenderer.send('save-code-to-file', code);
-        ws.clear();
-        ipcRenderer.send('change-view');
-    });
-});
-
-function test() {
-    console.log("called from ws");
-}

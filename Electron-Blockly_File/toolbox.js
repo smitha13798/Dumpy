@@ -1,17 +1,3 @@
-/**
- * @license
- * Copyright 2023 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
-/*
-This toolbox contains nearly every single built-in block that Blockly offers,
-in addition to the custom block 'add_text' this sample app adds.
-You probably don't need every single block, and should consider either rewriting
-your toolbox from scratch, or carefully choosing whether you need each block
-listed here.
-*/
-
 export const toolbox = {
   'kind': 'categoryToolbox',
   'contents': [
@@ -63,7 +49,6 @@ export const toolbox = {
           'kind': 'block',
           'type': 'python_function'
         }
-
       ]
     },
     {
@@ -370,13 +355,8 @@ export const toolbox = {
               "nextStatement": null,
               "colour": 230
             }
-
-
-
           },
-
         },
-      
         {
           'kind': 'block',
           'type': 'self',
@@ -384,23 +364,17 @@ export const toolbox = {
             "func": {
               'shadow': {
                 "type": 'math_number',
-                'fields':{
+                'fields': {
                   'NUM': '',
                 }
-
-
-
               },
               "inputsInline": true,
               "previousStatement": null,
               "nextStatement": null,
               "colour": 230
             },
-
-
           },
         },
-      
         {
           'kind': 'block',
           'type': 'generate_randomePRNG',
@@ -418,66 +392,68 @@ export const toolbox = {
               "nextStatement": null,
               "colour": 230
             },
-
-
           },
-
         },
-        {'kind': 'block', 
-        'type': 'flatten_layer'}, // Newly added block
-        {'kind': 'block',
-         'type': 'dense_layer'},
-        {'kind': 'block',
-         'type': 'max_pool_layer'},
-        {'kind': 'block',
-          'type': 'conv_layer'},
-        {'kind': 'block',
-          'type': 'relu_layer',},
-        {'kind': 'block',
-          'type': 'average_pool_layer'},
-        {'kind': 'block',
-          'type': 'dropout_layer'},
-        {'kind': 'block',
-          'type': 'batch_norm_layer'},
-        {'kind': 'block',
-        'type': 'tanh_layer'},
-        {'kind': 'block',
-          'type': 'sigmoid_layer'},
-        {'kind': 'block',
-            'type': 'rnn_layer'},
-        
-
+        {'kind': 'block', 'type': 'flatten_layer'}, // Newly added block
+        {'kind': 'block', 'type': 'dense_layer'},
+        {'kind': 'block', 'type': 'max_pool_layer'},
+        {'kind': 'block', 'type': 'conv_layer'},
+        {'kind': 'block', 'type': 'relu_layer'},
+        {'kind': 'block', 'type': 'average_pool_layer'},
+        {'kind': 'block', 'type': 'dropout_layer'},
+        {'kind': 'block', 'type': 'batch_norm_layer'},
+        {'kind': 'block', 'type': 'tanh_layer'},
+        {'kind': 'block', 'type': 'sigmoid_layer'},
+        {'kind': 'block', 'type': 'rnn_layer'}
       ],
     },
     {
       'kind': 'category',
-  'name': 'Data Handling',
+      'name': 'Data Handling',
       'categorystyle': 'text_category',
       'contents': [
         {
           'kind': 'block',
-          'type': 'dataset_selection'},
-       {
-            'kind': 'block',
-            'type': 'data_loader_config'},
-	{
+          'type': 'dataset_selection'
+        },
+        {
           'kind': 'block',
-          'type': 'data_preprocessing'},
-	{
+          'type': 'data_loader_config'
+        },
+        {
           'kind': 'block',
-          'type': 'data_batching'},
-	{
+          'type': 'data_preprocessing'
+        },
+        {
           'kind': 'block',
-          'type': 'data_shuffling'},
-  {
+          'type': 'data_batching'
+        },
+        {
           'kind': 'block',
-          'type': 'data_transformations'},
-  {
+          'type': 'data_shuffling'
+        },
+        {
           'kind': 'block',
-          'type': 'split_data'},
-          
-]},
-
+          'type': 'data_transformations'
+        },
+        {
+          'kind': 'block',
+          'type': 'split_data'
+        }
+      ]
+    },
+    {
+      'kind': 'category',
+      'name': 'Training and Evaluation',
+      'categorystyle': 'procedure_category',
+      'contents': [
+        {'kind': 'block', 'type': 'loss_function'},
+        {'kind': 'block', 'type': 'optimizer'},
+        {'kind': 'block', 'type': 'training_step'},
+        {'kind': 'block', 'type': 'evaluation'},
+        {'kind': 'block', 'type': 'training_loop'}
+      ]
+    },
     {
       'kind': 'category',
       'name': 'Text',
@@ -676,7 +652,6 @@ export const toolbox = {
             },
           },
         },
-
         {
           'kind': 'block',
           'type': 'DataWrapper',
@@ -693,7 +668,6 @@ export const toolbox = {
         },
       ],
     },
-
     {
       'kind': 'category',
       'name': 'Lists',
@@ -887,5 +861,6 @@ export const toolbox = {
       'categorystyle': 'procedure_category',
       'custom': 'PROCEDURE',
     },
+    
   ],
 };

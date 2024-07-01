@@ -500,6 +500,141 @@ const splitDataBlock = {
   "helpUrl": ""
 };
 
+const lossFunctionBlock = {
+  "type": "loss_function",
+  "message0": "Loss function %1",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "LOSS_FUNCTION",
+      "options": [
+        ["Mean Squared Error", "mse"],
+        ["Cross Entropy", "cross_entropy"],
+        ["Mean Absolute Error", "mae"]
+      ]
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 160,
+  "tooltip": "Define a loss function",
+  "helpUrl": ""
+};
+
+// Optimizer Block
+const optimizerBlock = {
+  "type": "optimizer",
+  "message0": "Optimizer %1 with learning rate %2",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "OPTIMIZER",
+      "options": [
+        ["Adam", "adam"],
+        ["SGD", "sgd"],
+        ["RMSprop", "rmsprop"]
+      ]
+    },
+    {
+      "type": "field_number",
+      "name": "LEARNING_RATE",
+      "value": 0.001,
+      "min": 0,
+      "precision": 0.0001
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 160,
+  "tooltip": "Define an optimizer",
+  "helpUrl": ""
+};
+
+// Training Step Block
+const trainingStepBlock = {
+  "type": "training_step",
+  "message0": "Training step with model %1 data %2 loss %3 optimizer %4",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "MODEL",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "DATA",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "LOSS",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "OPTIMIZER",
+      "check": "String"
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 160,
+  "tooltip": "Define a single training step",
+  "helpUrl": ""
+};
+
+// Evaluation Block
+const evaluationBlock = {
+  "type": "evaluation",
+  "message0": "Evaluate model %1 with data %2",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "MODEL",
+      "check": "String"
+    },
+    {
+      "type": "input_value",
+      "name": "DATA",
+      "check": "String"
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 160,
+  "tooltip": "Evaluate the model",
+  "helpUrl": ""
+};
+
+// Training Loop Block
+const trainingLoopBlock = {
+  "type": "training_loop",
+  "message0": "Training loop for %1 epochs %2",
+  "args0": [
+    {
+      "type": "input_statement",
+      "name": "TRAINING_STEP"
+    },
+    {
+      "type": "field_number",
+      "name": "EPOCHS",
+      "value": 10,
+      "min": 1
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 160,
+  "tooltip": "Define the training loop",
+  "helpUrl": ""
+};
+// Custom Variable Block Example
+
+
+
+
+
+
 
 
 
@@ -509,7 +644,7 @@ const splitDataBlock = {
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
   [python_function,python_class,DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer,relu,conv,self,batchNorm,averagePool,dropout,tanh,sigmoid,rnn,dataBatchingBlock,dataLoaderBlock,dataselectionBlock,dataPreprocessingBlock,dataShufflingBlock,
-    transformationsBlock,splitDataBlock
+    transformationsBlock,splitDataBlock,lossFunctionBlock,optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock
   ]
 );
 

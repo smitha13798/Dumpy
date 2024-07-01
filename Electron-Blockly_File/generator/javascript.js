@@ -211,7 +211,52 @@ pythonGenerator.forBlock['split_data'] = function(block) {
     const test = block.getFieldValue('TEST');
     return `train_set, valid_set, test_set = split_dataset(dataset, train=${train}, validation=${valid}, test=${test})\n`;
 };
-
+pythonGenerator.forBlock['loss_function'] = function(block) {
+    const lossFunction = block.getFieldValue('LOSS_FUNCTION');
+    return `loss_fn = ${lossFunction}\n`;
+  };
+  
+  pythonGenerator.forBlock['optimizer'] = function(block) {
+    const optimizer = block.getFieldValue('OPTIMIZER');
+    const learningRate = block.getFieldValue('LEARNING_RATE');
+    return `optimizer = ${optimizer}(learning_rate=${learningRate})\n`;
+  };
+  
+  pythonGenerator.forBlock['training_step'] = function(block) {
+    const model = pythonGenerator.valueToCode(block, 'MODEL', Order.NONE);
+    const data = pythonGenerator.valueToCode(block, 'DATA', Order.NONE);
+    const loss = pythonGenerator.valueToCode(block, 'LOSS', Order.NONE);
+    const optimizer = pythonGenerator.valueToCode(block, 'OPTIMIZER', Order.NONE);
+    return `def train_step(model, data, loss_fn, optimizer):\n` +
+           `    # Forward pass\n` +
+           `    predictions = model(data)\n` +
+           `    loss = loss_fn(predictions, data['labels'])\n` +
+           `    # Backward pass and optimization\n` +
+           `    optimizer.zero_grad()\n` +
+           `    loss.backward()\n` +
+           `    optimizer.step()\n`;
+  };
+  
+  pythonGenerator.forBlock['evaluation'] = function(block) {
+    const model = pythonGenerator.valueToCode(block, 'MODEL', Order.NONE);
+    const data = pythonGenerator.valueToCode(block, 'DATA', Order.NONE);
+    return `def evaluate_model(model, data):\n` +
+           `    model.eval()\n` +
+           `    with torch.no_grad():\n` +
+           `        predictions = model(data)\n` +
+           `        accuracy = (predictions.argmax(dim=1) == data['labels']).float().mean()\n` +
+           `    return accuracy\n`;
+  };
+  
+  pythonGenerator.forBlock['training_loop'] = function(block) {
+    const trainingStep = pythonGenerator.statementToCode(block, 'TRAINING_STEP');
+    const epochs = block.getFieldValue('EPOCHS');
+    return `for epoch in range(${epochs}):\n` +
+           `    ${trainingStep}\n` +
+           `    print(f'Epoch {epoch+1}/{${epochs}} completed')\n`;
+  };
+  
+  
 
 
 

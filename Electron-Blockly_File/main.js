@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain,dialog } from 'electron'
-
+const path = await import('path');
 const fs =await import('fs');
 var filePathModel = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/modelDefinition.py'
 var filePathData = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/dataloaderDefinition.py'
@@ -19,7 +19,7 @@ function createWindow() {
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,  // consider changing for production for security reasons
-                enableRemoteModule: true  // if you need remote module
+                enableRemoteModule: true,  // if you need remote module
             }
         });
 
@@ -57,6 +57,16 @@ app.whenReady().then(() => {
         currentPath = filePaths[view];
         console.log("current Path is.." + currentPath)
     });
+    ipcMain.handle('createNewView', async (event, viewName) => {
+        const directoryPath = path.join(__dirname, 'generatedCode');
+        const filePath = path.join(directoryPath, `${viewName}.py`);
+    
+        const content = `# This is the generated Python file for the view: ${viewName}\n\n`;
+        fs.writeFileSync(filePath, content, 'utf8');
+    
+        return { message: `File created: ${filePath}`, viewName: viewName };
+    });
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
@@ -68,6 +78,5 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
 
 
