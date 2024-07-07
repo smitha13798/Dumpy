@@ -10,21 +10,8 @@ const {Order,pythonGenerator} = require('blockly/python')
 // but don't register them with Blockly yet.
 // This file has no side effects!
 export const forBlock = Object.create(null);
-pythonGenerator.forBlock['python_class'] = function(block) {
-    const className = block.getFieldValue('CLASS_NAME');
-    const methods = pythonGenerator.statementToCode(block, 'METHODS');
-    return `class ${className}:\n${methods}`;
-};
 
 
-pythonGenerator.forBlock['python_function'] = function(block) {
-    const functionName = block.getFieldValue('CLASS_NAME');
-    let methods = pythonGenerator.statementToCode(block, 'METHODS');
-    if (methods) {
-        methods = pythonGenerator.prefixLines(methods, pythonGenerator.INDENT);
-    }
-    return `@nn.compact\ndef ${functionName}:\n${methods}`;
-};
 
 pythonGenerator.forBlock['self'] = function(block, generator) {
     var model = generator.valueToCode(block, 'func', Order.NONE);
@@ -138,7 +125,9 @@ pythonGenerator.forBlock['flatten_layer'] = function(block) {
   
 pythonGenerator.forBlock['dense_layer'] = function(block) {
     var units = block.getFieldValue('UNITS');
-    return `x = nn.Dense(features=${units})(x)\n`;
+    var variableName = block.getFieldValue('VARIABLE_NAME') || 'x';
+    var code = `${variableName} = nn.Dense(${units})(x)\n`;
+    return code;
   };
 pythonGenerator.forBlock['max_pool_layer'] = function(block) {
     var windowShapeX = block.getFieldValue('WINDOW_SHAPE_X');
@@ -255,7 +244,35 @@ pythonGenerator.forBlock['loss_function'] = function(block) {
            `    ${trainingStep}\n` +
            `    print(f'Epoch {epoch+1}/{${epochs}} completed')\n`;
   };
+  pythonGenerator.forBlock['python_class'] = function(block) {
+    const className = block.getFieldValue('CLASS_NAME');
+    const methods = pythonGenerator.statementToCode(block, 'METHODS');
+    return `class ${className}:\n${methods}`;
+};
+
+
+pythonGenerator.forBlock['python_function'] = function(block) {
+    const functionName = block.getFieldValue('CLASS_NAME');
+    let methods = pythonGenerator.statementToCode(block, 'METHODS');
+    if (methods) {
+        methods = pythonGenerator.prefixLines(methods, pythonGenerator.INDENT);
+    }
+    return `def ${functionName}:\n${methods}`;
+};
+pythonGenerator.forBlock['python_class_attribute'] = function(block) {
+    const attributeName = block.getFieldValue('ATTRIBUTE_NAME');
+    const attributeValue = block.getFieldValue('ATTRIBUTE_VALUE');
+    return `${attributeName}: ${attributeValue}\n`;
+  };
   
+  pythonGenerator.forBlock['python_return'] = function(block) {
+    const returnValue = block.getFieldValue('RETURN_VALUE');
+    return `return ${returnValue}\n`;
+  };
+  pythonGenerator.forBlock['nn_compact'] = function(block) {
+    return `@nn.compact\n`;
+  };
+
   
 
 

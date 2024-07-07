@@ -48,7 +48,21 @@ export const toolbox = {
         {
           'kind': 'block',
           'type': 'python_function'
+        },
+        {
+          'kind': 'block',
+          'type': 'python_class_attribute'
+        },
+        {
+          'kind': 'block',
+          'type': 'python_return'
+        },
+        {
+          'kind': 'block',
+          'type': 'nn_compact'
         }
+        
+        
       ]
     },
     {

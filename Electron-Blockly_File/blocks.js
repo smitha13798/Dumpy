@@ -30,7 +30,7 @@ const python_function = {
   "colour": 230,
   'previousStatement': null,
   'nextStatement': null,
-  "tooltip": "Define a Python class with methods and attributes.",
+  "tooltip": "Define a Python function with methods and attributes.",
   "helpUrl": ""
 };
 
@@ -52,7 +52,53 @@ const python_class = {
       }
   ],
   "colour": 230,
-  "tooltip": "Define a Python class with methods and attributes.",
+  "tooltip": "Define a Python class with methods",
+  "helpUrl": ""
+};
+const nn_compact= { 
+  "type": "nn_compact",
+  "message0": "@nn.compact",
+  "colour": 160,
+  "previousStatement": null,
+  "nextStatement": null,
+  "tooltip": "Define a Flax @nn.compact decorater",
+  "helpUrl": ""
+};
+const python_class_attribute = {
+  "type": "python_class_attribute",
+  "message0": "attribute %1 : %2",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "ATTRIBUTE_NAME",
+      "text": "latents"
+    },
+    {
+      "type": "field_input",
+      "name": "ATTRIBUTE_VALUE",
+      "text": "20"
+    }
+  ],
+  "colour": 160,
+  "previousStatement": null,
+  "nextStatement": null,
+  "tooltip": "Define a Python class attribute.",
+  "helpUrl": ""
+};
+const python_return = {
+  "type": "python_return",
+  "message0": "return %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "RETURN_VALUE",
+      "text": "value"
+    }
+  ],
+  "colour": 160,
+  "previousStatement": null,
+  "nextStatement": null,
+  "tooltip": "Return a value from a function.",
   "helpUrl": ""
 };
 
@@ -144,22 +190,29 @@ const flattenLayer = {
 };
 const denseLayer = {
   'type': 'dense_layer',
-  'message0': 'Dense layer with %1 units',
-
+  'message0': 'Dense layer %2 with params %1',
   'args0': [
     {
-      'type': 'field_number',
+      'type': 'field_input',
       'name': 'UNITS',
       'value': 10,  // Default number of units
       'min': 1
-    }
+    },
+    {
+      'type': 'field_input',
+      'name': 'VARIABLE_NAME',
+      'text': 'x'  // Default variable name
+    },
   ],
   'previousStatement': null,
   'nextStatement': null,
   'colour': 230,
-  'tooltip': 'Adds a dense layer with specified number of units.',
+  'tooltip': 'Adds a dense layer with specified number of units and variable name.',
   'helpUrl': ''
 };
+
+
+
 const maxPoolLayer = {
   'type': 'max_pool_layer',
   'message0': 'MaxPool with window shape: %1 %2 strides: %3 %4',
@@ -644,7 +697,7 @@ const trainingLoopBlock = {
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
   [python_function,python_class,DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer,relu,conv,self,batchNorm,averagePool,dropout,tanh,sigmoid,rnn,dataBatchingBlock,dataLoaderBlock,dataselectionBlock,dataPreprocessingBlock,dataShufflingBlock,
-    transformationsBlock,splitDataBlock,lossFunctionBlock,optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock
+    transformationsBlock,splitDataBlock,lossFunctionBlock,optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock,python_class_attribute, python_return,nn_compact
   ]
 );
 
