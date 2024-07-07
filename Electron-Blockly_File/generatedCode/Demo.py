@@ -1,11 +1,50 @@
 import os
+import re
 import sys
 import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+PROJECTSRC_PATH = '../projectsrc/projectsrc.py'
 
+
+def insert_new_comment(target_file_path, insert_string, line_number):
+    try:
+        with open(target_file_path, 'r') as target_file:
+            target_content = target_file.readlines()
+
+        insert_content = insert_string.splitlines(True)
+        updated_content = target_content[:line_number] + insert_content + target_content[line_number:]
+
+        with open(target_file_path, 'w') as target_file:
+            target_file.writelines(updated_content)
+
+        print(f"String inserted into {target_file_path} at line {line_number}.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+def log_number_and_update_projectsrc(file_path):
+    try:
+        base_name = os.path.basename(file_path)
+        match = re.search(r'(\d+)', base_name)
+        if match:
+            number = int(match.group(1))
+            print(f"Found number {number} in file name {base_name}")
+            logging.info(f"Found number {number} in file name {base_name}")
+
+            # Construct the strings to insert
+            start_comment = f"#{extract_filename_without_extension(base_name)}+"
+            end_comment = f"#{extract_filename_without_extension(base_name)}-"
+
+            # Insert the strings into projectsrc.py
+            insert_new_comment(PROJECTSRC_PATH, start_comment + '\n', number)
+            insert_new_comment(PROJECTSRC_PATH, end_comment + '\n', number + 1)
+        else:
+            logging.info(f"No number found in file name {base_name}")
+    except Exception as e:
+        logging.error(f"Error processing file {file_path}: {e}")
 def extract_filename_without_extension(file_path):
     base_name = os.path.basename(file_path)
     file_name, _ = os.path.splitext(base_name)
@@ -100,6 +139,8 @@ class Handler(FileSystemEventHandler):
     def on_created(event):
         if not event.is_directory:
             logging.info(f"File created: {event.src_path}")
+            log_number_and_update_projectsrc(event.src_path)
+
 
     @staticmethod
     def on_deleted(event):

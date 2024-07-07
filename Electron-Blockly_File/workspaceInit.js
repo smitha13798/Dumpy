@@ -1,3 +1,4 @@
+
 console.log('Attempting to load toolbox module...');
 const toolboxPath = './toolbox.js';
 const blocksPath = './blocks.js';
@@ -16,25 +17,54 @@ function AddSubOption(optionTag, options) {
     }
 }
 
+function getMaxValue() {
+    // Get the select element
+    let selectElement = document.getElementById('ViewList');
+
+    // Initialize the maximum value
+    let maxValue = -Infinity;
+
+    // Iterate through the options to find the maximum value
+    for (let i = 0; i < selectElement.options.length; i++) {
+        let optionValue = parseFloat(selectElement.options[i].value);
+        if (optionValue > maxValue) {
+            maxValue = optionValue;
+        }
+    }
+
+    // Display the maximum value
+    return maxValue;
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const createNewViewButton = document.getElementById('createNewView');
+    var buttonState = 0;
+    var viewName = "";
+
     createNewViewButton.addEventListener('click', () => {
-        const viewName = document.getElementById('new-view-name').value.trim();
-        if (viewName) {
-            window.electronAPI.createNewView(viewName).then(result => {
-                alert(result.message);
-                const viewList = document.getElementById('ViewList');
-                const newOption = document.createElement('option');
-                newOption.value = viewName;
-                newOption.text = viewName;
-                viewList.add(newOption);
-            }).catch(error => {
-                console.error(error);
-                alert('Error creating the new view.');
-            });
-        } else {
-            alert('Please enter a valid view name.');
+
+        if(buttonState===0){
+            viewName = document.getElementById('new-view-name').value.trim();
+            document.getElementById('new-view-name').value = "";
+            document.getElementById('new-view-name').placeholder = 'Index...';
+
+            buttonState=1;
+            return;
         }
+        let newOption = document.createElement('option');
+        const index = document.getElementById('new-view-name').value.trim();
+
+        // Step 2: Set the text and value of the new <option> element
+        newOption.text = viewName+index+"";
+        newOption.value = getMaxValue()+1+"";
+
+        // Step 3: Append the new <option> element to the <select> element
+
+        document.getElementById('ViewList').add(newOption);
+        ipcRenderer.send('create-new-view',viewName,index);
+        buttonState=0;
     });
     const saveButton = document.getElementById('saveButton');
     saveButton.addEventListener('click', function () {

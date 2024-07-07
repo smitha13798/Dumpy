@@ -1,46 +1,35 @@
 
 
+
 #modelDefinition+
-function generate_randomePRNG(seed) {
-       key = jax.random.PRNGKey(seed)
-       return key
-}
-
-
-generate_randomePRNG('');
-
-x = x.reshape((x.shape[0], -1))
-#modelDefinition-
-#modelDefinition-
-#modelDefinition-
 #modelDefinition-
 
 
 #dataloaderDefinition+
-function generate_randomePRNG(seed) {
-       key = jax.random.PRNGKey(seed)
-       return key
-}
+#dataloaderDefinition-
 
 
-generate_randomePRNG('');
 
+
+
+
+
+
+
+
+#Jamal27.py+
+#Jamal27.py-
+
+
+
+
+
+
+
+
+#Kroos87+
+optimizer = adam(learning_rate=0.001)
+#Kroos87-
+#Phone60+
 data_loader = DataLoader(dataset, batch_size=32, shuffle=True)
-#dataloaderDefinition-
-#dataloaderDefinition-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Phone60-

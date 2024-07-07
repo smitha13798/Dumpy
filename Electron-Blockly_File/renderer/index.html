@@ -36,14 +36,16 @@
     <h3 id="textarea">Code comes here :)</h3>
     <button id="saveButton">Save Code to File</button>
     <button class="fa fa-exchange" id="swap" aria-hidden="true">Clear Workspace</button>
-    <input type="text" id="new-view-name" placeholder="Enter view name">
-    <button id="createNewView">Create New View</button>
+    <div id="CreateHandle">
+        <input type="text" id="new-view-name" placeholder="Enter view name">
+        <button id="createNewView">Create New View</button>
+    </div>
     <div id="optionWrapper">
         <label for="ViewList"></label>
         <select id="ViewList">
-            <option value="Model Definition">Model Definition</option>
-            <option value="Data Loader Definition">Data Loader Definition</option>
-            <option value="Training">Training</option>
+            <option value="0">Model Definition</option>
+            <option value="1">Data Loader Definition</option>
+            <option value="2">Training</option>
         </select>
 
         <label for="subViewList"></label>

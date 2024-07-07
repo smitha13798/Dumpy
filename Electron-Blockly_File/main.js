@@ -1,9 +1,9 @@
 import { app, BrowserWindow, ipcMain,dialog } from 'electron'
 const path = await import('path');
 const fs =await import('fs');
-var filePathModel = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/modelDefinition.py'
-var filePathData = '/Users/tobias/Documents/Dumpy/Electron-Blockly_File/generatedCode/dataloaderDefinition.py'
-var filePathTraining = ' generatedCode/trainingDefinition.py'
+var filePathModel = './generatedCode/modelDefinition.py'
+var filePathData = './generatedCode/dataloaderDefinition.py'
+var filePathTraining = './generatedCode/trainingDefinition.py'
 var filePaths = [];
 filePaths[0] = filePathModel;
 filePaths[1] = filePathData;
@@ -57,14 +57,19 @@ app.whenReady().then(() => {
         currentPath = filePaths[view];
         console.log("current Path is.." + currentPath)
     });
-    ipcMain.handle('createNewView', async (event, viewName) => {
-        const directoryPath = path.join(__dirname, 'generatedCode');
-        const filePath = path.join(directoryPath, `${viewName}.py`);
-    
-        const content = `# This is the generated Python file for the view: ${viewName}\n\n`;
-        fs.writeFileSync(filePath, content, 'utf8');
-    
-        return { message: `File created: ${filePath}`, viewName: viewName };
+    ipcMain.on('create-new-view', async (event, viewName,index) => {
+
+        //const directoryPath = path.join(__dirname, 'generatedCode');
+        //const filePath = path.join(directoryPath, `${viewName}.py`);
+        var filePath = './generatedCode'+'/'+viewName+index+"";
+
+        console.log(viewName+"here");
+
+        filePaths.push(filePath+'.py');
+        console.log(filePath);
+        fs.writeFileSync(filePath+'.py',"", 'utf8');
+
+        return { message: `File created: ${viewName}`, viewName: viewName };
     });
 
 app.on('window-all-closed', () => {
