@@ -30,7 +30,7 @@ const python_function = {
   "colour": 230,
   'previousStatement': null,
   'nextStatement': null,
-  "tooltip": "Define a Python class with methods and attributes.",
+  "tooltip": "Define a Python function with methods and attributes.",
   "helpUrl": ""
 };
 
@@ -38,21 +38,67 @@ const python_class = {
   "type": "python_class",
   "message0": "class %1 :%2 %3",
   "args0": [
-      {
-          "type": "field_input",
-          "name": "CLASS_NAME",
-          "text": "MyClass"
-      },
-      {
-          "type": "input_dummy"
-      },
-      {
-          "type": "input_statement",
-          "name": "METHODS"
-      }
+    {
+      "type": "field_input",
+      "name": "CLASS_NAME",
+      "text": "MyClass"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_statement",
+      "name": "METHODS"
+    }
   ],
   "colour": 230,
-  "tooltip": "Define a Python class with methods and attributes.",
+  "tooltip": "Define a Python class with methods",
+  "helpUrl": ""
+};
+const nn_compact= {
+  "type": "nn_compact",
+  "message0": "@nn.compact",
+  "colour": 160,
+  "previousStatement": null,
+  "nextStatement": null,
+  "tooltip": "Define a Flax @nn.compact decorater",
+  "helpUrl": ""
+};
+const python_class_attribute = {
+  "type": "python_class_attribute",
+  "message0": "attribute %1 : %2",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "ATTRIBUTE_NAME",
+      "text": "latents"
+    },
+    {
+      "type": "field_input",
+      "name": "ATTRIBUTE_VALUE",
+      "text": "20"
+    }
+  ],
+  "colour": 160,
+  "previousStatement": null,
+  "nextStatement": null,
+  "tooltip": "Define a Python class attribute.",
+  "helpUrl": ""
+};
+const python_return = {
+  "type": "python_return",
+  "message0": "return %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "RETURN_VALUE",
+      "text": "value"
+    }
+  ],
+  "colour": 160,
+  "previousStatement": null,
+  "nextStatement": null,
+  "tooltip": "Return a value from a function.",
   "helpUrl": ""
 };
 
@@ -98,7 +144,7 @@ const DataWrapperG = {
 const AddVectors = {
   "type": "Add_vectors",
   "message0": "Add vector%1 %2",
-    'previousStatement': null,
+  'previousStatement': null,
   'nextStatement': null,
   "args0": [
     {
@@ -120,7 +166,7 @@ const AddVectors = {
 const generateRandome = {
   "type": "generate_randomePRNG",
   "message0": "Generate Randome PRNGKey %1",
-    'previousStatement': null,
+  'previousStatement': null,
   'nextStatement': null,
   "args0": [
     {
@@ -144,22 +190,29 @@ const flattenLayer = {
 };
 const denseLayer = {
   'type': 'dense_layer',
-  'message0': 'Dense layer with %1 units',
-
+  'message0': 'Dense layer %2 with params %1',
   'args0': [
     {
-      'type': 'field_number',
+      'type': 'field_input',
       'name': 'UNITS',
       'value': 10,  // Default number of units
       'min': 1
-    }
+    },
+    {
+      'type': 'field_input',
+      'name': 'VARIABLE_NAME',
+      'text': 'x'  // Default variable name
+    },
   ],
   'previousStatement': null,
   'nextStatement': null,
   'colour': 230,
-  'tooltip': 'Adds a dense layer with specified number of units.',
+  'tooltip': 'Adds a dense layer with specified number of units and variable name.',
   'helpUrl': ''
 };
+
+
+
 const maxPoolLayer = {
   'type': 'max_pool_layer',
   'message0': 'MaxPool with window shape: %1 %2 strides: %3 %4',
@@ -208,25 +261,53 @@ const relu = {
   "tooltip": "Apply ReLU activation",
   "helpUrl": ""
 };
-
-const conv = {
-  "type": "conv_layer",
-  "message0": "Conv layer with features %1 kernel size %2 %3",
+const convTranspose = {
+  "type": "convTranspose",
+  "message0": "convTrranspose function with features %1 kernel size %2 %3",
   "args0": [
     {
-      "type": "field_number",
+      'type': 'field_input',
       "name": "FEATURES",
       "value": 64, // default number of features
       "min": 1
     },
     {
-      "type": "field_number",
+      'type': 'field_input',
       "name": "KERNEL_SIZE_X",
       "value": 3, // default kernel size X
       "min": 1
     },
     {
-      "type": "field_number",
+      'type': 'field_input',
+      "name": "KERNEL_SIZE_Y",
+      "value": 3, // default kernel size Y
+      "min": 1
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Apply a convolutional layer",
+  "helpUrl": ""
+};
+const conv = {
+  "type": "conv_layer",
+  "message0": "Conv layer with features %1 kernel size %2 %3",
+  "args0": [
+    {
+      'type': 'field_input',
+      "name": "FEATURES",
+      "value": 64, // default number of features
+      "min": 1
+    },
+    {
+      'type': 'field_input',
+      "name": "KERNEL_SIZE_X",
+      "value": 3, // default kernel size X
+      "min": 1
+    },
+    {
+      'type': 'field_input',
       "name": "KERNEL_SIZE_Y",
       "value": 3, // default kernel size Y
       "min": 1
@@ -320,6 +401,7 @@ const self = {
   "tooltip": "Give linear layer",
   "helpUrl": ""
 }
+
 const tanh = {
   "type": "tanh_layer",
   "message0": "Tanh activation",
@@ -354,6 +436,15 @@ const rnn = {
       "checked": true
     }
   ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Add a recurrent neural network layer",
+  "helpUrl": ""
+};
+const gelu = {
+  "type": "gelu",
+  "message0": "nn.gelu()",
   "previousStatement": null,
   "nextStatement": null,
   "colour": 230,
@@ -628,7 +719,48 @@ const trainingLoopBlock = {
   "tooltip": "Define the training loop",
   "helpUrl": ""
 };
-// Custom Variable Block Example
+
+const setVariableBlock = {
+  "type": "set_var",
+  "message0": "Set %1 to %2",
+  "args0": [
+    {
+      "type":  "field_input",
+      "name": "SET_VARIABLE",
+      "variable": "item"
+    },
+    {
+      "type": "input_value",
+      "name": "VALUE"
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Set a variable to a value",
+  "helpUrl": ""
+};
+
+const getVariableBlock = {
+  "type": "get_variable",
+  "message0": "Get %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VARIABLE_NAME",
+      "variable": "item"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Get the value of a variable",
+  "helpUrl": ""
+};
+
+// Add the new blocks to the blocks array
+export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
+    convTranspose,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer, relu, conv, self, batchNorm, averagePool, dropout, tanh, sigmoid, rnn, dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock, splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock, python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock
+]);
 
 
 
@@ -639,16 +771,4 @@ const trainingLoopBlock = {
 
 
 
-// Create the block definitions for the JSON-only blocks.
-// This does not register their definitions with Blockly.
-// This file has no side effects!
-export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray(
-  [python_function,python_class,DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer,relu,conv,self,batchNorm,averagePool,dropout,tanh,sigmoid,rnn,dataBatchingBlock,dataLoaderBlock,dataselectionBlock,dataPreprocessingBlock,dataShufflingBlock,
-    transformationsBlock,splitDataBlock,lossFunctionBlock,optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock
-  ]
-);
 
-
-// Create the block definitions for the JSON-only blocks.
-// This does not register their definitions with Blockly.
-// This file has no side effects!

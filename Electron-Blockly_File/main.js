@@ -8,6 +8,7 @@ var filePaths = [];
 filePaths[0] = filePathModel;
 filePaths[1] = filePathData;
 filePaths[2] = filePathTraining;
+filePaths[3] = './generatedCode/decoderDefinition.py';
 
 var currentPath = filePathModel
 function createWindow() {
@@ -68,7 +69,6 @@ app.whenReady().then(() => {
         filePaths.push(filePath+'.py');
         console.log(filePath);
         fs.writeFileSync(filePath+'.py',"", 'utf8');
-
         return { message: `File created: ${viewName}`, viewName: viewName };
     });
 

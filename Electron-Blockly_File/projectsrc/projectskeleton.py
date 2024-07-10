@@ -32,46 +32,12 @@ import numpy as np
 import optax
 import tensorflow_datasets as tfds
 
+#modelDefinition+
+#modelDefinition-
 
-class CNN(nn.Module):
-  """A simple CNN model."""
+#decoderDefinition+
+#decoderDefinition-
 
-  @nn.compact
-  def __call__(self, x):
-    x = nn.Conv(features=32, kernel_size=(3, 3))(x)
-    x = nn.relu(x)
-    x = nn.avg_pool(x, window_shape=(2, 2), strides=(2, 2))
-    x = nn.Conv(features=64, kernel_size=(3, 3))(x)
-    x = nn.relu(x)
-    x = nn.avg_pool(x, window_shape=(2, 2), strides=(2, 2))
-    x = x.reshape((x.shape[0], -1))  # flatten
-    x = nn.Dense(features=256)(x)
-    x = nn.relu(x)
-    x = nn.Dense(features=10)(x)
-    return x
-
-:
-class Decoder(nn.Module):
-    c_out : int
-    c_hid : int
-    latent_dim : int
-
-    @nn.compact
-    def __call__(self, x):
-        x = nn.Dense(features=2*16*self.c_hid)(x)
-        x = nn.gelu(x)
-        x = x.reshape(x.shape[0], 4, 4, -1)
-        x = nn.ConvTranspose(features=2*self.c_hid, kernel_size=(3, 3), strides=(2, 2))(x)
-        x = nn.gelu(x)
-        x = nn.Conv(features=2*self.c_hid, kernel_size=(3, 3))(x)
-        x = nn.gelu(x)
-        x = nn.ConvTranspose(features=self.c_hid, kernel_size=(3, 3), strides=(2, 2))(x)
-        x = nn.gelu(x)
-        x = nn.Conv(features=self.c_hid, kernel_size=(3, 3))(x)
-        x = nn.gelu(x)
-        x = nn.ConvTranspose(features=self.c_out, kernel_size=(3, 3), strides=(2, 2))(x)
-        x = nn.tanh(x)
-        return x
 
 @jax.jit
 def apply_model(state, images, labels):

@@ -10,28 +10,15 @@ const {Order,pythonGenerator} = require('blockly/python')
 // but don't register them with Blockly yet.
 // This file has no side effects!
 export const forBlock = Object.create(null);
-pythonGenerator.forBlock['python_class'] = function(block) {
-    const className = block.getFieldValue('CLASS_NAME');
-    const methods = pythonGenerator.statementToCode(block, 'METHODS');
-    return `class ${className}:\n${methods}`;
-};
 
 
-pythonGenerator.forBlock['python_function'] = function(block) {
-    const functionName = block.getFieldValue('CLASS_NAME');
-    let methods = pythonGenerator.statementToCode(block, 'METHODS');
-    if (methods) {
-        methods = pythonGenerator.prefixLines(methods, pythonGenerator.INDENT);
-    }
-    return `@nn.compact\ndef ${functionName}:\n${methods}`;
-};
 
 pythonGenerator.forBlock['self'] = function(block, generator) {
     var model = generator.valueToCode(block, 'func', Order.NONE);
     // TODO: Assemble python into code variable.
     // TODO: Change ORDER_NONE to the correct strength.
     return '@nn.compact\n' +
-        '    def __call__(self, x):\n';
+        'def __call__(self, x):\n';
 };
 
 pythonGenerator.forBlock['conv_layer'] = function(block) {
@@ -40,7 +27,12 @@ pythonGenerator.forBlock['conv_layer'] = function(block) {
     const kernelSizeY = block.getFieldValue('KERNEL_SIZE_Y');
     return `x = nn.Conv(features=${features}, kernel_size=(${kernelSizeX}, ${kernelSizeY}))(x)\n`;
 };
-
+pythonGenerator.forBlock['convTranspose'] = function(block) {
+    const features = block.getFieldValue('FEATURES');
+    const kernelSizeX = block.getFieldValue('KERNEL_SIZE_X');
+    const kernelSizeY = block.getFieldValue('KERNEL_SIZE_Y');
+    return `x = nn.ConvTranspose(features=${features}, kernel_size=(${kernelSizeX}, ${kernelSizeY}))(x)\n`;
+};
 
 
 
@@ -134,25 +126,30 @@ pythonGenerator.forBlock['relu_layer'] = function(block) {
 };
 pythonGenerator.forBlock['flatten_layer'] = function(block) {
     return 'x = x.reshape((x.shape[0], -1))\n';
-  };
-  
+};
+pythonGenerator.forBlock['gelu'] = function(block) {
+    return 'x = nn.gelu(x)\n';
+};
+
 pythonGenerator.forBlock['dense_layer'] = function(block) {
     var units = block.getFieldValue('UNITS');
-    return `x = nn.Dense(features=${units})(x)\n`;
-  };
+    var variableName = block.getFieldValue('VARIABLE_NAME') || 'x';
+    var code = `${variableName} = nn.Dense(${units})(x)\n`;
+    return code;
+};
 pythonGenerator.forBlock['max_pool_layer'] = function(block) {
     var windowShapeX = block.getFieldValue('WINDOW_SHAPE_X');
     var windowShapeY = block.getFieldValue('WINDOW_SHAPE_Y');
     var strideX = block.getFieldValue('STRIDE_X');
     var strideY = block.getFieldValue('STRIDE_Y');
     return `x = nn.MaxPool(window_shape=(${windowShapeX}, ${windowShapeY}), strides=(${strideX}, ${strideY}))(x)\n`;
-  };
+};
 pythonGenerator.forBlock['average_pool_layer'] = function(block) {
     const poolSizeX = block.getFieldValue('POOL_SIZE_X');
     const poolSizeY = block.getFieldValue('POOL_SIZE_Y');
     const strideX = block.getFieldValue('STRIDE_X');
     const strideY = block.getFieldValue('STRIDE_Y');
-    return `x = nn.AvgPool(window_shape=(${poolSizeX}, ${poolSizeY}), strides=(${strideX}, ${strideY}))(x)\n`;
+    return `x = nn.avg_pool(window_shape=(${poolSizeX}, ${poolSizeY}), strides=(${strideX}, ${strideY}))(x)\n`;
 };
 
 pythonGenerator.forBlock['dropout_layer'] = function(block) {
@@ -214,48 +211,86 @@ pythonGenerator.forBlock['split_data'] = function(block) {
 pythonGenerator.forBlock['loss_function'] = function(block) {
     const lossFunction = block.getFieldValue('LOSS_FUNCTION');
     return `loss_fn = ${lossFunction}\n`;
-  };
-  
-  pythonGenerator.forBlock['optimizer'] = function(block) {
+};
+
+pythonGenerator.forBlock['optimizer'] = function(block) {
     const optimizer = block.getFieldValue('OPTIMIZER');
     const learningRate = block.getFieldValue('LEARNING_RATE');
     return `optimizer = ${optimizer}(learning_rate=${learningRate})\n`;
-  };
-  
-  pythonGenerator.forBlock['training_step'] = function(block) {
+};
+
+pythonGenerator.forBlock['training_step'] = function(block) {
     const model = pythonGenerator.valueToCode(block, 'MODEL', Order.NONE);
     const data = pythonGenerator.valueToCode(block, 'DATA', Order.NONE);
     const loss = pythonGenerator.valueToCode(block, 'LOSS', Order.NONE);
     const optimizer = pythonGenerator.valueToCode(block, 'OPTIMIZER', Order.NONE);
     return `def train_step(model, data, loss_fn, optimizer):\n` +
-           `    # Forward pass\n` +
-           `    predictions = model(data)\n` +
-           `    loss = loss_fn(predictions, data['labels'])\n` +
-           `    # Backward pass and optimization\n` +
-           `    optimizer.zero_grad()\n` +
-           `    loss.backward()\n` +
-           `    optimizer.step()\n`;
-  };
-  
-  pythonGenerator.forBlock['evaluation'] = function(block) {
+        `    # Forward pass\n` +
+        `    predictions = model(data)\n` +
+        `    loss = loss_fn(predictions, data['labels'])\n` +
+        `    # Backward pass and optimization\n` +
+        `    optimizer.zero_grad()\n` +
+        `    loss.backward()\n` +
+        `    optimizer.step()\n`;
+};
+
+pythonGenerator.forBlock['evaluation'] = function(block) {
     const model = pythonGenerator.valueToCode(block, 'MODEL', Order.NONE);
     const data = pythonGenerator.valueToCode(block, 'DATA', Order.NONE);
     return `def evaluate_model(model, data):\n` +
-           `    model.eval()\n` +
-           `    with torch.no_grad():\n` +
-           `        predictions = model(data)\n` +
-           `        accuracy = (predictions.argmax(dim=1) == data['labels']).float().mean()\n` +
-           `    return accuracy\n`;
-  };
-  
-  pythonGenerator.forBlock['training_loop'] = function(block) {
+        `    model.eval()\n` +
+        `    with torch.no_grad():\n` +
+        `        predictions = model(data)\n` +
+        `        accuracy = (predictions.argmax(dim=1) == data['labels']).float().mean()\n` +
+        `    return accuracy\n`;
+};
+
+pythonGenerator.forBlock['training_loop'] = function(block) {
     const trainingStep = pythonGenerator.statementToCode(block, 'TRAINING_STEP');
     const epochs = block.getFieldValue('EPOCHS');
     return `for epoch in range(${epochs}):\n` +
-           `    ${trainingStep}\n` +
-           `    print(f'Epoch {epoch+1}/{${epochs}} completed')\n`;
-  };
-  
+        `    ${trainingStep}\n` +
+        `    print(f'Epoch {epoch+1}/{${epochs}} completed')\n`;
+};
+pythonGenerator.forBlock['python_class'] = function(block) {
+    const className = block.getFieldValue('CLASS_NAME');
+    const methods = pythonGenerator.statementToCode(block, 'METHODS');
+    return `class ${className}:\n${methods}`;
+};
+
+pythonGenerator.forBlock['python_function'] = function(block) {
+    const functionName = block.getFieldValue('CLASS_NAME');
+    let methods = pythonGenerator.statementToCode(block, 'METHODS');
+    if (methods) {
+        methods = pythonGenerator.prefixLines(methods, pythonGenerator.INDENT);
+    }
+    return `def ${functionName}:\n${methods}`;
+};
+
+pythonGenerator.forBlock['python_class_attribute'] = function(block) {
+    const attributeName = block.getFieldValue('ATTRIBUTE_NAME');
+    const attributeValue = block.getFieldValue('ATTRIBUTE_VALUE');
+    return `${attributeName}: ${attributeValue}\n`;
+};
+
+pythonGenerator.forBlock['python_return'] = function(block) {
+    const returnValue = block.getFieldValue('RETURN_VALUE');
+    return `return ${returnValue}\n`;
+};
+
+pythonGenerator.forBlock['nn_compact'] = function(block) {
+    return `@nn.compact\n`;
+};
+pythonGenerator.forBlock['set_var'] = function(block) {
+    var variable = block.getFieldValue('SET_VARIABLE');
+    const value = pythonGenerator.valueToCode(block, 'VALUE', Order.NONE)||"''";
+    return `${variable} = ${value}\n`;
+};
+pythonGenerator.forBlock['get_variable'] = function(block) {
+    const variableName = block.getFieldValue('VARIABLE_NAME');
+    const code = `${variableName}`;
+    return [code, Order.ATOMIC];
+};
   
 
 

@@ -48,7 +48,21 @@ export const toolbox = {
         {
           'kind': 'block',
           'type': 'python_function'
+        },
+        {
+          'kind': 'block',
+          'type': 'python_class_attribute'
+        },
+        {
+          'kind': 'block',
+          'type': 'python_return'
+        },
+        {
+          'kind': 'block',
+          'type': 'nn_compact'
         }
+
+
       ]
     },
     {
@@ -404,7 +418,11 @@ export const toolbox = {
         {'kind': 'block', 'type': 'batch_norm_layer'},
         {'kind': 'block', 'type': 'tanh_layer'},
         {'kind': 'block', 'type': 'sigmoid_layer'},
-        {'kind': 'block', 'type': 'rnn_layer'}
+        {'kind': 'block', 'type': 'rnn_layer'},
+        {'kind': 'block', 'type': 'gelu'},
+        {'kind': 'block', 'type': 'convTranspose'}
+
+
       ],
     },
     {
@@ -773,6 +791,22 @@ export const toolbox = {
     },
     {
       'kind': 'category',
+      'name': 'Variable',
+      'categorystyle': 'variables_category',
+      'contents': [
+        {
+          'kind': 'block',
+          'type': 'set_var'
+        },
+        {
+          'kind': 'block',
+          'type': 'get_variable'
+        },
+
+      ]
+    },
+    {
+      'kind': 'category',
       'name': 'Color',
       'categorystyle': 'colour_category',
       'contents': [
@@ -851,16 +885,11 @@ export const toolbox = {
     },
     {
       'kind': 'category',
-      'name': 'Variables',
-      'categorystyle': 'variable_category',
-      'custom': 'VARIABLE',
-    },
-    {
-      'kind': 'category',
       'name': 'Functions',
       'categorystyle': 'procedure_category',
       'custom': 'PROCEDURE',
     },
-    
+
   ],
+
 };

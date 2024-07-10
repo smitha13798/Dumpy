@@ -169,9 +169,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         const code = pythonGenerator.pythonGenerator.workspaceToCode(ws);
         console.log("changed");
         document.getElementById('textarea').textContent = code;
-        ipcRenderer.send('save-code-to-file', code);
+        //ipcRenderer.send('save-code-to-file', code);
     }
-
+    const saveButton = document.getElementById('Save');
+    saveButton.onclick = function(){
+        ipcRenderer.send('save-code-to-file', pythonGenerator.pythonGenerator.workspaceToCode(ws));
+    }
     ws.addChangeListener(updateCode);
 
     const viewList = document.getElementById('ViewList');
@@ -186,7 +189,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Clear the current workspace
         const code = pythonGenerator.pythonGenerator.workspaceToCode(ws);
 
-        ipcRenderer.send('save-code-to-file', code);
+        //ipcRenderer.send('save-code-to-file', code);
         ipcRenderer.send('change-view-option', selectedIndex);
 
         ws.clear();

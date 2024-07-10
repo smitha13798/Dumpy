@@ -6,7 +6,7 @@ import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-PROJECTSRC_PATH = '../projectsrc/projectsrc.py'
+PROJECTSRC_PATH = '../projectsrc/projectskeleton.py'
 
 
 def insert_new_comment(target_file_path, insert_string, line_number):
@@ -103,10 +103,10 @@ def read_file(file_path):
         start_comment = base+"+"
         end_comment = base+"-"
         print("Start/END is.." + start_comment + "\n" + end_comment)
-        start_line, end_line = find_comment_block('../projectsrc/projectsrc.py', start_comment, end_comment)
+        start_line, end_line = find_comment_block('../projectsrc/projectskeleton.py', start_comment, end_comment)
 
         if start_line is not None and end_line is not None:
-            insert_string_at_line('../projectsrc/projectsrc.py', code, start_line, end_line,end_comment)
+            insert_string_at_line('../projectsrc/projectskeleton.py', code, start_line, end_line,end_comment)
         else:
             print("Markers not found.")
     except Exception as e:
