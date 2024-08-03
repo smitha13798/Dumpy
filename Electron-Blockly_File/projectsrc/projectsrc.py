@@ -50,7 +50,7 @@ class CNN(nn.Module):
     x = nn.Dense(features=10)(x)
     return x
 
-:
+
 class Decoder(nn.Module):
     c_out : int
     c_hid : int
@@ -186,3 +186,5 @@ def train_and_evaluate(
 
   summary_writer.flush()
   return state
+
+

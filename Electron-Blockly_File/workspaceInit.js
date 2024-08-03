@@ -4,6 +4,9 @@ const toolboxPath = './toolbox.js';
 const blocksPath = './blocks.js';
 const serializerPath = './serialization.js';
 const javascriptPath = './generator/javascript.js';
+const Blockly = require('blockly');
+const pythonGenerator = require('blockly/python');
+const javaScriptGenerator = require('blockly/javascript');
 let ws;
 const WorkspaceStates = [];
 var currentWS = 0;
@@ -43,6 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var buttonState = 0;
     var viewName = "";
 
+
+
     createNewViewButton.addEventListener('click', () => {
 
         if(buttonState===0){
@@ -66,11 +71,11 @@ document.addEventListener('DOMContentLoaded', function () {
         ipcRenderer.send('create-new-view',viewName,index);
         buttonState=0;
     });
-    const saveButton = document.getElementById('saveButton');
+    /*const saveButton = document.getElementById('saveButton');
     saveButton.addEventListener('click', function () {
         const code = document.getElementById('textarea').textContent;
         ipcRenderer.send('save-code-to-file', code);
-    });
+    });*/
 
     const swapButton = document.getElementById('swap');
     swapButton.addEventListener('click', function () {
@@ -87,6 +92,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     let load;
     let save;
     let forBlock;
+    const codeToBlock = document.getElementById('CodeToBlock');
 
     try {
         const module = await import(toolboxPath);
@@ -120,6 +126,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     const javaScriptGenerator = require('blockly/javascript');
     Blockly.common.defineBlocks(blocks);
     Object.assign(javaScriptGenerator.javascriptGenerator.forBlock, forBlock);
+
+    codeToBlock.addEventListener('click',function(){
+        ipcRenderer.send('read-file');
+    })
 
     const blocklyDiv = document.getElementById('blocklyDiv');
     if (blocklyDiv) {
@@ -171,7 +181,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('textarea').textContent = code;
         //ipcRenderer.send('save-code-to-file', code);
     }
-    const saveButton = document.getElementById('Save');
+    const saveButton = document.getElementById('saveButton');
     saveButton.onclick = function(){
         ipcRenderer.send('save-code-to-file', pythonGenerator.pythonGenerator.workspaceToCode(ws));
     }

@@ -121,6 +121,8 @@ pythonGenerator.forBlock['add_text'] = function (block, generator) {
     return code;
 
 };
+
+
 pythonGenerator.forBlock['relu_layer'] = function(block) {
     return `x = nn.relu(x)\n`;
 };
@@ -291,7 +293,29 @@ pythonGenerator.forBlock['get_variable'] = function(block) {
     const code = `${variableName}`;
     return [code, Order.ATOMIC];
 };
-  
+pythonGenerator.forBlock['celu_layer'] = function(block) {
+    return `x = nn.celu(x)\n`;
+};
+
+pythonGenerator.forBlock['elu_layer'] = function(block) {
+    return `x = nn.elu(x)\n`;
+};
+
+pythonGenerator.forBlock['gelu_layer'] = function(block) {
+    return `x = nn.gelu(x)\n`;
+};
+
+pythonGenerator.forBlock['glu_layer'] = function(block) {
+    return `x = nn.glu(x)\n`;
+};
+
+pythonGenerator.forBlock['hard_sigmoid_layer'] = function(block) {
+    return `x = nn.hard_sigmoid(x)\n`;
+};
+
+pythonGenerator.forBlock['hard_silu_layer'] = function(block) {
+    return `x = nn.hard_silu(x)\n`;
+};
 
 
 

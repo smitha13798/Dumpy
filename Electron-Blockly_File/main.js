@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain,dialog } from 'electron'
 const path = await import('path');
 const fs =await import('fs');
+const readline = await import('readline');
 var filePathModel = './generatedCode/modelDefinition.py'
 var filePathData = './generatedCode/dataloaderDefinition.py'
 var filePathTraining = './generatedCode/trainingDefinition.py'
@@ -9,6 +10,13 @@ filePaths[0] = filePathModel;
 filePaths[1] = filePathData;
 filePaths[2] = filePathTraining;
 filePaths[3] = './generatedCode/decoderDefinition.py';
+
+const functionNamesContent = fs.readFileSync('./functions.json', 'utf8');
+const functionNamesJson = JSON.parse(functionNamesContent);
+
+// Extract function names
+
+
 
 var currentPath = filePathModel
 function createWindow() {
@@ -37,7 +45,6 @@ app.whenReady().then(() => {
         });*/
         fs.writeFileSync(currentPath, code);
 
-
     });
 
 
@@ -47,6 +54,30 @@ app.whenReady().then(() => {
             return;
         }
         currentPath = filePathModel;
+    })
+
+
+    function checkMatch(codeLine){
+
+    }
+
+
+
+
+    ipcMain.on('read-file',() =>{
+
+        var filePath = 'projectsrc/CodeToBlockDemo.py';
+        const readInterface = readline.createInterface({
+            input: fs.createReadStream(filePath),
+            output: process.stdout,
+            console: false
+        });
+        console.log(functionNamesJson);
+        readInterface.on('line', (line) => {
+            console.log("Reading .." + line)
+
+        });
+
     })
 
     ipcMain.on('change-view-option', async (event, view) => {
@@ -64,7 +95,6 @@ app.whenReady().then(() => {
         //const filePath = path.join(directoryPath, `${viewName}.py`);
         var filePath = './generatedCode'+'/'+viewName+index+"";
 
-        console.log(viewName+"here");
 
         filePaths.push(filePath+'.py');
         console.log(filePath);

@@ -756,10 +756,69 @@ const getVariableBlock = {
   "tooltip": "Get the value of a variable",
   "helpUrl": ""
 };
+const celu_layer = {
+  "type": "celu_layer",
+  "message0": "CELU activation",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Applies the CELU activation function.",
+  "helpUrl": ""
+};
 
+const elu_layer = {
+  "type": "elu_layer",
+  "message0": "ELU activation",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Applies the ELU activation function.",
+  "helpUrl": ""
+};
+
+const gelu_layer = {
+  "type": "gelu_layer",
+  "message0": "GELU activation",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Applies the GELU activation function.",
+  "helpUrl": ""
+};
+
+const glu_layer = {
+  "type": "glu_layer",
+  "message0": "GLU activation",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Applies the GLU activation function.",
+  "helpUrl": ""
+};
+
+const hard_sigmoid_layer = {
+  "type": "hard_sigmoid_layer",
+  "message0": "Hard Sigmoid activation",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Applies the Hard Sigmoid activation function.",
+  "helpUrl": ""
+};
+
+const hard_silu_layer = {
+  "type": "hard_silu_layer",
+  "message0": "Hard SiLU activation",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Applies the Hard SiLU activation function.",
+  "helpUrl": ""
+};
 // Add the new blocks to the blocks array
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
-    convTranspose,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer, relu, conv, self, batchNorm, averagePool, dropout, tanh, sigmoid, rnn, dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock, splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock, python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock
+  celu_layer,elu_layer,gelu_layer,glu_layer,hard_sigmoid_layer,hard_silu_layer
+  ,convTranspose,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer, relu, conv, self, batchNorm, averagePool, dropout, tanh, sigmoid, rnn, dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock, splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock, python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock
 ]);
 
 

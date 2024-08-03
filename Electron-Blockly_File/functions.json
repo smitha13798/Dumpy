@@ -1,0 +1,20 @@
+{
+    "FunctionNames": [
+        "Add_vectors",
+        "self",
+        "generate_randomePRNG",
+        "flatten_layer",
+        "dense_layer",
+        "max_pool_layer",
+        "conv_layer",
+        "relu_layer",
+        "average_pool_layer",
+        "dropout_layer",
+        "batch_norm_layer",
+        "tanh_layer",
+        "sigmoid_layer",
+        "rnn_layer",
+        "gelu",
+        "convTranspose"
+    ]
+}

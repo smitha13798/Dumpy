@@ -427,6 +427,38 @@ export const toolbox = {
     },
     {
       'kind': 'category',
+      'type': 'Activation Function',
+      'categorystyle': 'text_category',
+      'contents':[
+
+
+        {
+          'kind': 'block',
+          'type': 'celu_layer'
+        },
+        {
+          'kind': 'block',
+          'type': 'elu_layer'
+        },
+        {
+          'kind': 'block',
+          'type': 'gelu_layer'
+        },
+        {
+          'kind': 'block',
+          'type': 'glu_layer'
+        },
+        {
+          'kind': 'block',
+          'type': 'hard_sigmoid_layer'
+        },
+        {
+          'kind': 'block',
+          'type': 'hard_silu_layer'
+        },
+      ],},
+    {
+      'kind': 'category',
       'name': 'Data Handling',
       'categorystyle': 'text_category',
       'contents': [
