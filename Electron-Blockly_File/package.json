@@ -5,8 +5,9 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "electron .",
-    "dev": "electron ."
+    "start": "python ./generator/patternMatch.py && electron .",
+    "dev": "electron .",
+    "watch": "python ./generatedCode/Demo.py generatedCode"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +17,8 @@
     "renderer": "^0.1.5",
     "resize-img": "^1.1.2",
     "toastify": "^2.0.1",
+    "tree-sitter": "^0.21.1",
+    "tree-sitter-python": "^0.21.0",
     "typescript": "^5.5.3"
   },
   "devDependencies": {

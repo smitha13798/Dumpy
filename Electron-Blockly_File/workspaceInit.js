@@ -71,11 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ipcRenderer.send('create-new-view',viewName,index);
         buttonState=0;
     });
-    /*const saveButton = document.getElementById('saveButton');
-    saveButton.addEventListener('click', function () {
-        const code = document.getElementById('textarea').textContent;
-        ipcRenderer.send('save-code-to-file', code);
-    });*/
+
 
     const swapButton = document.getElementById('swap');
     swapButton.addEventListener('click', function () {
@@ -86,6 +82,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+
+
+
 document.addEventListener('DOMContentLoaded', async function () {
     let toolbox;
     let blocks;
@@ -93,6 +93,26 @@ document.addEventListener('DOMContentLoaded', async function () {
     let save;
     let forBlock;
     const codeToBlock = document.getElementById('CodeToBlock');
+    codeToBlock.addEventListener('click', function() {
+        console.log("Going to server now")
+        ipcRenderer.send('read-outputjson');
+    });
+    ipcRenderer.on('response-outputjson', (event, functionNamesJson) => {
+        for(const element of functionNamesJson){
+
+            console.log("Scope is " + element.scope)
+            for(const functions of element.functions){
+                if(!functions.translate){
+                    continue;
+                }
+                console.log("def "+ functions.functionName )
+                for(const functionCalls of functions.functionCalls){
+                    console.log(functionCalls)
+                }
+            }
+
+        }
+    });
 
     try {
         const module = await import(toolboxPath);
@@ -127,9 +147,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     Blockly.common.defineBlocks(blocks);
     Object.assign(javaScriptGenerator.javascriptGenerator.forBlock, forBlock);
 
-    codeToBlock.addEventListener('click',function(){
-        ipcRenderer.send('read-file');
-    })
+
+
+
+
+
+
+
 
     const blocklyDiv = document.getElementById('blocklyDiv');
     if (blocklyDiv) {

@@ -1,0 +1,370 @@
+[
+    {
+        "scope": "CNN",
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [
+                    {
+                        "function": "relu",
+                        "parameters": "(x)"
+                    }
+                ],
+                "scope": "CNN",
+                "row": "47",
+                "start_index": 1243,
+                "end_index": 1298,
+                "translate": true
+            }
+        ],
+        "translate": true,
+        "start_index": 1176,
+        "end_index": 1298,
+        "row_number": 43,
+        "parameters": "",
+        "base_classes": "(nn.Module)"
+    },
+    {
+        "scope": "global",
+        "functions": [
+            {
+                "functionName": "apply_model",
+                "parameters": "(state, images, labels)",
+                "functionCalls": [
+                    {
+                        "function": "value_and_grad",
+                        "parameters": "(loss_fn, has_aux=True)"
+                    },
+                    {
+                        "function": "grad_fn",
+                        "parameters": "(state.params)"
+                    },
+                    {
+                        "function": "mean",
+                        "parameters": "(jnp.argmax(logits, -1) == labels)"
+                    },
+                    {
+                        "function": "argmax",
+                        "parameters": "(logits, -1)"
+                    }
+                ],
+                "scope": "",
+                "row": "55",
+                "start_index": 1311,
+                "end_index": 1831,
+                "translate": false
+            },
+            {
+                "functionName": "loss_fn",
+                "parameters": "(params)",
+                "functionCalls": [
+                    {
+                        "function": "apply_fn",
+                        "parameters": "({'params': params}, images)"
+                    },
+                    {
+                        "function": "one_hot",
+                        "parameters": "(labels, 10)"
+                    },
+                    {
+                        "function": "mean",
+                        "parameters": "(optax.softmax_cross_entropy(logits=logits, labels=one_hot))"
+                    },
+                    {
+                        "function": "softmax_cross_entropy",
+                        "parameters": "(logits=logits, labels=one_hot)"
+                    }
+                ],
+                "scope": "",
+                "row": "58",
+                "start_index": 1420,
+                "end_index": 1641,
+                "translate": false
+            },
+            {
+                "functionName": "update_model",
+                "parameters": "(state, grads)",
+                "functionCalls": [
+                    {
+                        "function": "apply_gradients",
+                        "parameters": "(grads=grads)"
+                    }
+                ],
+                "scope": "",
+                "row": "71",
+                "start_index": 1843,
+                "end_index": 1918,
+                "translate": false
+            },
+            {
+                "functionName": "train_epoch",
+                "parameters": "(state, train_ds, batch_size, rng)",
+                "functionCalls": [
+                    {
+                        "function": "len",
+                        "parameters": "(train_ds['image'])"
+                    },
+                    {
+                        "function": "permutation",
+                        "parameters": "(rng, len(train_ds['image']))"
+                    },
+                    {
+                        "function": "reshape",
+                        "parameters": "((steps_per_epoch, batch_size))"
+                    },
+                    {
+                        "function": "apply_model",
+                        "parameters": "(state, batch_images, batch_labels)"
+                    },
+                    {
+                        "function": "update_model",
+                        "parameters": "(state, grads)"
+                    },
+                    {
+                        "function": "append",
+                        "parameters": "(loss)"
+                    },
+                    {
+                        "function": "append",
+                        "parameters": "(accuracy)"
+                    },
+                    {
+                        "function": "mean",
+                        "parameters": "(epoch_loss)"
+                    },
+                    {
+                        "function": "mean",
+                        "parameters": "(epoch_accuracy)"
+                    }
+                ],
+                "scope": "",
+                "row": "75",
+                "start_index": 1921,
+                "end_index": 2743,
+                "translate": false
+            },
+            {
+                "functionName": "get_datasets",
+                "parameters": "()",
+                "functionCalls": [
+                    {
+                        "function": "builder",
+                        "parameters": "('mnist')"
+                    },
+                    {
+                        "function": "download_and_prepare",
+                        "parameters": "()"
+                    },
+                    {
+                        "function": "as_numpy",
+                        "parameters": "(ds_builder.as_dataset(split='train', batch_size=-1))"
+                    },
+                    {
+                        "function": "as_dataset",
+                        "parameters": "(split='train', batch_size=-1)"
+                    },
+                    {
+                        "function": "as_numpy",
+                        "parameters": "(ds_builder.as_dataset(split='test', batch_size=-1))"
+                    },
+                    {
+                        "function": "as_dataset",
+                        "parameters": "(split='test', batch_size=-1)"
+                    },
+                    {
+                        "function": "float32",
+                        "parameters": "(train_ds['image'])"
+                    },
+                    {
+                        "function": "float32",
+                        "parameters": "(test_ds['image'])"
+                    }
+                ],
+                "scope": "",
+                "row": "99",
+                "start_index": 2746,
+                "end_index": 3199,
+                "translate": false
+            },
+            {
+                "functionName": "get_test",
+                "parameters": "()",
+                "functionCalls": [
+                    {
+                        "function": "relu",
+                        "parameters": "(x)"
+                    }
+                ],
+                "scope": "",
+                "row": "109",
+                "start_index": 3201,
+                "end_index": 3233,
+                "translate": true
+            },
+            {
+                "functionName": "create_train_state",
+                "parameters": "(rng, config)",
+                "functionCalls": [
+                    {
+                        "function": "CNN",
+                        "parameters": "()"
+                    },
+                    {
+                        "function": "init",
+                        "parameters": "(rng, jnp.ones([1, 28, 28, 1]))"
+                    },
+                    {
+                        "function": "ones",
+                        "parameters": "([1, 28, 28, 1])"
+                    },
+                    {
+                        "function": "sgd",
+                        "parameters": "(config.learning_rate, config.momentum)"
+                    },
+                    {
+                        "function": "create",
+                        "parameters": "(apply_fn=cnn.apply, params=params, tx=tx)"
+                    }
+                ],
+                "scope": "",
+                "row": "111",
+                "start_index": 3234,
+                "end_index": 3520,
+                "translate": false
+            },
+            {
+                "functionName": "train_and_evaluate",
+                "parameters": "(\n    config: ml_collections.ConfigDict, workdir: str\n)",
+                "functionCalls": [
+                    {
+                        "function": "get_datasets",
+                        "parameters": "()"
+                    },
+                    {
+                        "function": "key",
+                        "parameters": "(0)"
+                    },
+                    {
+                        "function": "SummaryWriter",
+                        "parameters": "(workdir)"
+                    },
+                    {
+                        "function": "hparams",
+                        "parameters": "(dict(config))"
+                    },
+                    {
+                        "function": "dict",
+                        "parameters": "(config)"
+                    },
+                    {
+                        "function": "split",
+                        "parameters": "(rng)"
+                    },
+                    {
+                        "function": "create_train_state",
+                        "parameters": "(init_rng, config)"
+                    },
+                    {
+                        "function": "range",
+                        "parameters": "(1, config.num_epochs + 1)"
+                    },
+                    {
+                        "function": "train_epoch",
+                        "parameters": "(\n        state, train_ds, config.batch_size, input_rng\n    )"
+                    },
+                    {
+                        "function": "apply_model",
+                        "parameters": "(\n        state, test_ds['image'], test_ds['label']\n    )"
+                    },
+                    {
+                        "function": "info",
+                        "parameters": "(\n        'epoch:% 3d, train_loss: %.4f, train_accuracy: %.2f, test_loss: %.4f,'\n        ' test_accuracy: %.2f'\n        % (\n            epoch,\n            train_loss,\n            train_accuracy * 100,\n            test_loss,\n            test_accuracy * 100,\n        )\n    )"
+                    },
+                    {
+                        "function": "scalar",
+                        "parameters": "('train_loss', train_loss, epoch)"
+                    },
+                    {
+                        "function": "scalar",
+                        "parameters": "('train_accuracy', train_accuracy, epoch)"
+                    },
+                    {
+                        "function": "scalar",
+                        "parameters": "('test_loss', test_loss, epoch)"
+                    },
+                    {
+                        "function": "scalar",
+                        "parameters": "('test_accuracy', test_accuracy, epoch)"
+                    },
+                    {
+                        "function": "flush",
+                        "parameters": "()"
+                    }
+                ],
+                "scope": "",
+                "row": "127",
+                "start_index": 3649,
+                "end_index": 5155,
+                "translate": false
+            }
+        ],
+        "translate": false
+    },
+    {
+        "scope": "CNNf",
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [
+                    {
+                        "function": "relu",
+                        "parameters": "(x)"
+                    }
+                ],
+                "scope": "CNNf",
+                "row": "122",
+                "start_index": 3592,
+                "end_index": 3647,
+                "translate": true
+            }
+        ],
+        "translate": true,
+        "start_index": 3522,
+        "end_index": 3647,
+        "row_number": 118,
+        "parameters": "",
+        "base_classes": "(nn.Modulefd)"
+    },
+    {
+        "scope": "CNNaa",
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [
+                    {
+                        "function": "nope",
+                        "parameters": "()"
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)"
+                    }
+                ],
+                "scope": "CNNaa",
+                "row": "181",
+                "start_index": 5226,
+                "end_index": 5294,
+                "translate": false
+            }
+        ],
+        "translate": false,
+        "start_index": 5157,
+        "end_index": 5294,
+        "row_number": 177,
+        "parameters": "",
+        "base_classes": "(nn.Module)"
+    }
+]

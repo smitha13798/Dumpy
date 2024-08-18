@@ -1,117 +1,84 @@
-import { app, BrowserWindow, ipcMain,dialog } from 'electron'
-const path = await import('path');
-const fs =await import('fs');
-const readline = await import('readline');
-var filePathModel = './generatedCode/modelDefinition.py'
-var filePathData = './generatedCode/dataloaderDefinition.py'
-var filePathTraining = './generatedCode/trainingDefinition.py'
-var filePaths = [];
-filePaths[0] = filePathModel;
-filePaths[1] = filePathData;
-filePaths[2] = filePathTraining;
-filePaths[3] = './generatedCode/decoderDefinition.py';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import path from 'path';
+import fs from 'fs';
+import readline from 'readline';
 
-const functionNamesContent = fs.readFileSync('./functions.json', 'utf8');
-const functionNamesJson = JSON.parse(functionNamesContent);
+const filePathModel = './generatedCode/modelDefinition.py';
+const filePathData = './generatedCode/dataloaderDefinition.py';
+const filePathTraining = './generatedCode/trainingDefinition.py';
+const filePaths = [filePathModel, filePathData, filePathTraining, './generatedCode/decoderDefinition.py'];
 
-// Extract function names
+let currentPath = filePathModel;
 
-
-
-var currentPath = filePathModel
 function createWindow() {
-    // Clear the cache before creating the window
-        console.log('Cache cleared!');
-        const win = new BrowserWindow({
-            width: 800,
-            height: 600,
-            webPreferences: {
-                nodeIntegration: true,
-                contextIsolation: false,  // consider changing for production for security reasons
-                enableRemoteModule: true,  // if you need remote module
-            }
-        });
+    const win = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false, // Consider enabling context isolation in production for security reasons
+        },
+    });
 
-        win.loadFile('./renderer/index.html');
+    win.loadFile('./renderer/index.html');
 }
 
 app.whenReady().then(() => {
     createWindow();
 
     ipcMain.on('save-code-to-file', async (event, code) => {
-        /*const { filePath } = await dialog.showSaveDialog({
-            buttonLabel: 'Save Codes',
-            filters: [{ name: 'Text Files', extensions: ['txt'] },{ name: 'Python Files', extensions: ['py'] }]
-        });*/
         fs.writeFileSync(currentPath, code);
-
     });
 
-
-    ipcMain.on('change-view', () => {
-        if(currentPath===filePathModel){
+    ipcMain.on('change-view', (event) => {
+        if (currentPath === filePathModel) {
             currentPath = filePathData;
-            return;
+        } else {
+            currentPath = filePathModel;
         }
-        currentPath = filePathModel;
-    })
+    });
 
+    ipcMain.on('read-outputjson', (event) => {
+        const functionNamesContent = fs.readFileSync('./output.json', 'utf8');
+        const functionNamesJson = JSON.parse(functionNamesContent);
+        console.log("Are in server now")
+        event.sender.send('response-outputjson', functionNamesJson);
+    });
 
-    function checkMatch(codeLine){
-
-    }
-
-
-
-
-    ipcMain.on('read-file',() =>{
-
-        var filePath = 'projectsrc/CodeToBlockDemo.py';
+    ipcMain.on('read-file', (event) => {
+        const filePath = 'projectsrc/CodeToBlockDemo.py';
         const readInterface = readline.createInterface({
             input: fs.createReadStream(filePath),
             output: process.stdout,
-            console: false
+            console: false,
         });
-        console.log(functionNamesJson);
+
         readInterface.on('line', (line) => {
-            console.log("Reading .." + line)
-
+            console.log('Reading ..' + line);
         });
+    });
 
-    })
-
-    ipcMain.on('change-view-option', async (event, view) => {
-        /*const { filePath } = await dialog.showSaveDialog({
-            buttonLabel: 'Save Codes',
-            filters: [{ name: 'Text Files', extensions: ['txt'] },{ name: 'Python Files', extensions: ['py'] }]
-        });*/
-        console.log("Changing frm main to" + view)
+    ipcMain.on('change-view-option', (event, view) => {
         currentPath = filePaths[view];
-        console.log("current Path is.." + currentPath)
-    });
-    ipcMain.on('create-new-view', async (event, viewName,index) => {
-
-        //const directoryPath = path.join(__dirname, 'generatedCode');
-        //const filePath = path.join(directoryPath, `${viewName}.py`);
-        var filePath = './generatedCode'+'/'+viewName+index+"";
-
-
-        filePaths.push(filePath+'.py');
-        console.log(filePath);
-        fs.writeFileSync(filePath+'.py',"", 'utf8');
-        return { message: `File created: ${viewName}`, viewName: viewName };
+        console.log('Current Path is:', currentPath);
     });
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});});
+    ipcMain.on('create-new-view', (event, viewName, index) => {
+        const filePath = `./generatedCode/${viewName}${index}.py`;
+        filePaths.push(filePath);
+        fs.writeFileSync(filePath, '', 'utf8');
+        event.sender.send('new-view-created', { message: `File created: ${viewName}`, viewName: viewName });
+    });
+
+    app.on('window-all-closed', () => {
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
+    });
+});
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();
     }
 });
-
-

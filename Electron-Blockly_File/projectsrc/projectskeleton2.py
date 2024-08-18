@@ -40,14 +40,8 @@ data_loader = DataLoader(dataset, batch_size=32, shuffle=True)
 #decoderDefinition-
 
 
-class CNN(nn.Module):
-  """A simple CNN model."""
+#Doable
 
-  @nn.compact
-  def __call__(self, x):
-
-    x = nn.relu(x)
-    return x
 
 
 
@@ -115,14 +109,8 @@ def create_train_state(rng, config):
   tx = optax.sgd(config.learning_rate, config.momentum)
   return train_state.TrainState.create(apply_fn=cnn.apply, params=params, tx=tx)
 
-class CNNf(nn.Modulefd):
-  """A simple CNN model."""
+#Doable
 
-  @nn.compact
-  def __call__(self, x):
-
-    x = nn.relu(x)
-    return x
 
 def train_and_evaluate(
     config: ml_collections.ConfigDict, workdir: str
