@@ -82,7 +82,48 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const searchBox = document.getElementById('searchBox');
+    const searchResults = document.getElementById('searchResults');
 
+    // Listen for input events in the search box
+    searchBox.addEventListener('input', function () {
+        const searchTerm = searchBox.value.toLowerCase();
+        searchResults.innerHTML = '';  // Clear previous results
+
+        // Get the toolbox object
+        const toolbox = ws.getToolbox();
+        const categories = toolbox.getToolboxItems();
+
+        let foundBlocks = false;
+
+        // Loop through all categories
+        categories.forEach(function (category) {
+            const categoryName = category.name_;  // Get category name
+            const categoryBlocks = category.getContents();  // Get blocks in the category
+
+            // Loop through blocks within the category
+            categoryBlocks.forEach(function (block) {
+                if (block.kind === 'block') {
+                    const blockType = block.type;  // Get the block type (name)
+                    
+                    // Check if the block type includes the search term
+                    if (blockType.toLowerCase().includes(searchTerm)) {
+                        foundBlocks = true;
+
+                        // Display the block's category and block name
+                        searchResults.innerHTML += `<p>Block: <strong>${blockType}</strong> is in Category: <strong>${categoryName}</strong></p>`;
+                    }
+                }
+            });
+        });
+
+        // If no blocks were found, display a message
+        if (!foundBlocks && searchTerm.length > 0) {
+            searchResults.innerHTML = `<p>No blocks found matching "${searchTerm}"</p>`;
+        }
+    });
+});
 
 
 
