@@ -35,9 +35,27 @@ src_bytes = src.encode("utf-8")
 
 # Parse the source code
 tree = parser.parse(src_bytes)
+# Function to check if a node contains flax operations and extract them
+def extract_flax_operations(node):
+    operations = []
+    prefixes = ('nn.', 'jax.', 'jnp.', 'random.');
+    if node.type == 'call':
+        function_name_node = node.child_by_field_name('function')
+        if function_name_node:
+            function_name = function_name_node.text.decode('utf-8')
+            if function_name.startswith(prefixes):
+                parameters_node = node.child_by_field_name('arguments')
+                parameters_text = src[parameters_node.start_byte:parameters_node.end_byte].strip() if parameters_node else ""
+                operations.append({
+                    "function": function_name.split('.')[-1],  
+                    "parameters": parameters_text
+                })
+    for child in node.children:
+        operations.extend(extract_flax_operations(child))
+    return operations
 
-# Function to find functions and their calls categorized by their parent nodes
-def find_functions_and_calls(root_node):
+# Function to find functions and classes with flax operations
+def find_functions_with_flax(root_node):
     scope_data = []
 
     def traverse(node, current_scope=None, current_class=None):
@@ -90,17 +108,20 @@ def find_functions_and_calls(root_node):
                 else:
                     parameters = ""
 
-                function_data = {
-                    "functionName": current_scope,
-                    "parameters": parameters,
-                    "functionCalls": [],
-                    "scope": current_class if current_class else "",
-                    "row": str(row_number),
-                    "start_index": start_index,
-                    "end_index": end_index,
-                    "translate": True
-                }
+                # Extract flax operations within the function
+                flax_operations = extract_flax_operations(node)
 
+                if flax_operations:
+                    function_data = {
+                        "functionName": current_scope,
+                        "parameters": parameters,
+                        "functionCalls": flax_operations,
+                        "scope": current_class if current_class else "",
+                        "row": str(row_number),
+                        "start_index": start_index,
+                        "end_index": end_index,
+                        "translate": True
+                    }
                 if current_class:
                     class_entry = next((item for item in scope_data if item["scope"] == current_class), None)
                     if class_entry:
