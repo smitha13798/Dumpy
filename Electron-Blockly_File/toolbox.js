@@ -411,7 +411,6 @@ export const toolbox = {
         {'kind': 'block', 'type': 'flatten_layer'}, // Newly added block
         {'kind': 'block', 'type': 'dense_layer'},
         {'kind': 'block', 'type': 'max_pool_layer'},
-        {'kind': 'block', 'type': 'conv_layer'},
         {'kind': 'block', 'type': 'relu_layer'},
         {'kind': 'block', 'type': 'average_pool_layer'},
         {'kind': 'block', 'type': 'dropout_layer'},
@@ -420,14 +419,11 @@ export const toolbox = {
         {'kind': 'block', 'type': 'sigmoid_layer'},
         {'kind': 'block', 'type': 'rnn_layer'},
         {'kind': 'block', 'type': 'gelu'},
-        {'kind': 'block', 'type': 'convTranspose'}
-
-
-      ],
+     ],
     },
     {
       'kind': 'category',
-      'type': 'Activation Function',
+      'name': 'Activation Function',
       'categorystyle': 'text_category',
       'contents':[
 
@@ -456,6 +452,22 @@ export const toolbox = {
           'kind': 'block',
           'type': 'hard_silu_layer'
         },
+      ],},
+    {
+      'kind': 'category',
+      'name': 'flax.linen package',
+      'categorystyle': 'text_category',
+      'contents':[
+        {'kind': 'block', 'type': 'embed'},
+        {'kind': 'block', 'type': 'dense_general'},
+        {'kind': 'block', 'type': 'tabulate'},
+        {'kind': 'block', 'type': 'vmap'},
+        {'kind': 'block', 'type': 'scan'},
+        {'kind': 'block', 'type': 'jit'},
+        {'kind': 'block', 'type': 'remat'},
+        {'kind': 'block', 'type': 'convTranspose'},
+        {'kind': 'block', 'type': 'conv_local'},
+        {'kind': 'block', 'type': 'conv_layer'},
       ],},
     {
       'kind': 'category',

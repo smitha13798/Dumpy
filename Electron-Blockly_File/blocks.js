@@ -179,210 +179,6 @@ const generateRandome = {
   "tooltip": "",
   "helpUrl": ""
 };
-const flattenLayer = {
-  'type': 'flatten_layer',
-  'message0': 'Flatten tensor',
-  'previousStatement': null,
-  'nextStatement': null,
-  'colour': 210,
-  'tooltip': 'Flattens the input tensor into a single continuous vector.',
-  'helpUrl': ''
-};
-const denseLayer = {
-  'type': 'dense_layer',
-  'message0': 'Dense layer %2 with params %1',
-  'args0': [
-    {
-      'type': 'field_input',
-      'name': 'UNITS',
-      'value': 10,  // Default number of units
-      'min': 1
-    },
-    {
-      'type': 'field_input',
-      'name': 'VARIABLE_NAME',
-      'text': 'x'  // Default variable name
-    },
-  ],
-  'previousStatement': null,
-  'nextStatement': null,
-  'colour': 230,
-  'tooltip': 'Adds a dense layer with specified number of units and variable name.',
-  'helpUrl': ''
-};
-
-
-
-const maxPoolLayer = {
-  'type': 'max_pool_layer',
-  'message0': 'MaxPool with window shape: %1 %2 strides: %3 %4',
-
-  'args0': [
-    {
-      'type': 'field_number',
-      'name': 'WINDOW_SHAPE_X',
-      'value': 2,  // Default window shape X
-      'min': 1
-    },
-    {
-      'type': 'field_number',
-      'name': 'WINDOW_SHAPE_Y',
-      'value': 2,  // Default window shape Y
-      'min': 1
-    },
-    {
-      'type': 'field_number',
-      'name': 'STRIDE_X',
-      'value': 2,  // Default stride X
-      'min': 1
-    },
-    {
-      'type': 'field_number',
-      'name': 'STRIDE_Y',
-      'value': 2,  // Default stride Y
-      'min': 1
-    }
-  ],
-  'previousStatement': null,
-  'nextStatement': null,
-  'colour': 120,
-  'tooltip': 'Applies a MaxPooling operation with specified window shape and strides.',
-  'helpUrl': ''
-};
-
-
-
-const relu = {
-  "type": "relu_layer",
-  "message0": "ReLU activation",
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply ReLU activation",
-  "helpUrl": ""
-};
-const convTranspose = {
-  "type": "convTranspose",
-  "message0": "convTrranspose function with features %1 kernel size %2 %3",
-  "args0": [
-    {
-      'type': 'field_input',
-      "name": "FEATURES",
-      "value": 64, // default number of features
-      "min": 1
-    },
-    {
-      'type': 'field_input',
-      "name": "KERNEL_SIZE_X",
-      "value": 3, // default kernel size X
-      "min": 1
-    },
-    {
-      'type': 'field_input',
-      "name": "KERNEL_SIZE_Y",
-      "value": 3, // default kernel size Y
-      "min": 1
-    }
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply a convolutional layer",
-  "helpUrl": ""
-};
-const conv = {
-  "type": "conv_layer",
-  "message0": "Conv layer with features %1 kernel size %2 %3",
-  "args0": [
-    {
-      'type': 'field_input',
-      "name": "FEATURES",
-      "value": 64, // default number of features
-      "min": 1
-    },
-    {
-      'type': 'field_input',
-      "name": "KERNEL_SIZE_X",
-      "value": 3, // default kernel size X
-      "min": 1
-    },
-    {
-      'type': 'field_input',
-      "name": "KERNEL_SIZE_Y",
-      "value": 3, // default kernel size Y
-      "min": 1
-    }
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply a convolutional layer",
-  "helpUrl": ""
-};
-const averagePool = {
-  "type": "average_pool_layer",
-  "message0": "Average Pool with pool size: %1 %2 strides: %3 %4",
-  "args0": [
-    {
-      "type": "field_number",
-      "name": "POOL_SIZE_X",
-      "value": 2,  // Default pool size X
-      "min": 1
-    },
-    {
-      "type": "field_number",
-      "name": "POOL_SIZE_Y",
-      "value": 2,  // Default pool size Y
-      "min": 1
-    },
-    {
-      "type": "field_number",
-      "name": "STRIDE_X",
-      "value": 2,  // Default stride X
-      "min": 1
-    },
-    {
-      "type": "field_number",
-      "name": "STRIDE_Y",
-      "value": 2,  // Default stride Y
-      "min": 1
-    }
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply an average pooling layer",
-  "helpUrl": ""
-};
-const dropout = {
-  "type": "dropout_layer",
-  "message0": "Dropout with rate %1",
-  "args0": [
-    {
-      "type": "field_number",
-      "name": "RATE",
-      "value": 0.5,  // Default dropout rate
-      "min": 0,
-      "max": 1
-    }
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply dropout for regularization",
-  "helpUrl": ""
-};
-
-const batchNorm = {
-  "type": "batch_norm_layer",
-  "message0": "Batch Normalization",
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply batch normalization",
-  "helpUrl": ""
-};
-
 const self = {
   "type": "self",
   "message0": "Init self  %1",
@@ -402,55 +198,9 @@ const self = {
   "helpUrl": ""
 }
 
-const tanh = {
-  "type": "tanh_layer",
-  "message0": "Tanh activation",
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply Tanh activation",
-  "helpUrl": ""
-};
-const sigmoid = {
-  "type": "sigmoid_layer",
-  "message0": "Sigmoid activation",
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Apply Sigmoid activation",
-  "helpUrl": ""
-};
-const rnn = {
-  "type": "rnn_layer",
-  "message0": "RNN layer with %1 units return sequences %2",
-  "args0": [
-    {
-      "type": "field_number",
-      "name": "UNITS",
-      "value": 50,
-      "min": 1
-    },
-    {
-      "type": "field_checkbox",
-      "name": "RETURN_SEQ",
-      "checked": true
-    }
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Add a recurrent neural network layer",
-  "helpUrl": ""
-};
-const gelu = {
-  "type": "gelu",
-  "message0": "nn.gelu()",
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 230,
-  "tooltip": "Add a recurrent neural network layer",
-  "helpUrl": ""
-};
+
+
+
 const dataselectionBlock = {
   "type": "dataset_selection",
   "message0": "Select dataset %1",
@@ -756,11 +506,19 @@ const getVariableBlock = {
   "tooltip": "Get the value of a variable",
   "helpUrl": ""
 };
+
+
 const celu_layer = {
   "type": "celu_layer",
-  "message0": "CELU activation",
-  "previousStatement": null,
-  "nextStatement": null,
+  "message0": "CELU activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
   "colour": 230,
   "tooltip": "Applies the CELU activation function.",
   "helpUrl": ""
@@ -768,9 +526,15 @@ const celu_layer = {
 
 const elu_layer = {
   "type": "elu_layer",
-  "message0": "ELU activation",
-  "previousStatement": null,
-  "nextStatement": null,
+  "message0": "ELU activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
   "colour": 230,
   "tooltip": "Applies the ELU activation function.",
   "helpUrl": ""
@@ -788,9 +552,15 @@ const gelu_layer = {
 
 const glu_layer = {
   "type": "glu_layer",
-  "message0": "GLU activation",
-  "previousStatement": null,
-  "nextStatement": null,
+  "message0": "GLU activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
   "colour": 230,
   "tooltip": "Applies the GLU activation function.",
   "helpUrl": ""
@@ -798,9 +568,15 @@ const glu_layer = {
 
 const hard_sigmoid_layer = {
   "type": "hard_sigmoid_layer",
-  "message0": "Hard Sigmoid activation",
-  "previousStatement": null,
-  "nextStatement": null,
+  "message0": "Hard Sigmoid activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
   "colour": 230,
   "tooltip": "Applies the Hard Sigmoid activation function.",
   "helpUrl": ""
@@ -808,17 +584,483 @@ const hard_sigmoid_layer = {
 
 const hard_silu_layer = {
   "type": "hard_silu_layer",
-  "message0": "Hard SiLU activation",
-  "previousStatement": null,
-  "nextStatement": null,
+  "message0": "Hard SiLU activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
   "colour": 230,
   "tooltip": "Applies the Hard SiLU activation function.",
   "helpUrl": ""
 };
+
+
+
+const embed = {
+  'type': 'embed',
+  'message0': 'Embed with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users will input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Adds an embedding layer with user-defined parameters.',
+  'helpUrl': ''
+};
+
+const scanBlock = {
+  'type': 'scan',
+  'message0': 'Scan with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Applies the scan transformation with user-defined parameters.',
+  'helpUrl': ''
+};
+
+const vmapBlock = {
+  'type': 'vmap',
+  'message0': 'Vmap with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Applies the vmap transformation with user-defined parameters.',
+  'helpUrl': ''
+};
+
+const tabulateBlock = {
+  'type': 'tabulate',
+  'message0': 'Tabulate with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Applies the tabulate function with user-defined parameters.',
+  'helpUrl': ''
+};
+
+
+
+const gelu = {
+  "type": "gelu",
+  "message0": "nn.gelu() activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply GELU activation",
+  "helpUrl": ""
+};
+
+const flattenLayer = {
+  'type': 'flatten_layer',
+  'message0': 'Flatten tensor %1',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 210,
+  'tooltip': 'Flattens the input tensor into a single continuous vector.',
+  'helpUrl': ''
+};
+
+const denseLayer = {
+  'type': 'dense_layer',
+  'message0': 'Dense layer with units %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'UNITS',
+      'text': '10'
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Adds a dense layer with specified number of units.',
+  'helpUrl': ''
+};
+
+const maxPoolLayer = {
+  'type': 'max_pool_layer',
+  'message0': 'MaxPool with window shape %1 %2 strides %3 %4 input %5',
+  'args0': [
+    {
+      'type': 'field_number',
+      'name': 'WINDOW_SHAPE_X',
+      'value': 2
+    },
+    {
+      'type': 'field_number',
+      'name': 'WINDOW_SHAPE_Y',
+      'value': 2
+    },
+    {
+      'type': 'field_number',
+      'name': 'STRIDE_X',
+      'value': 2
+    },
+    {
+      'type': 'field_number',
+      'name': 'STRIDE_Y',
+      'value': 2
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 120,
+  'tooltip': 'Applies a MaxPooling operation with specified window shape and strides.',
+  'helpUrl': ''
+};
+
+const relu = {
+  "type": "relu_layer",
+  "message0": "ReLU activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply ReLU activation",
+  "helpUrl": ""
+};
+
+
+
+
+
+const batchNorm = {
+  "type": "batch_norm_layer",
+  "message0": "Batch Normalization %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply batch normalization",
+  "helpUrl": ""
+};
+
+const averagePool = {
+  "type": "average_pool_layer",
+  "message0": "Average Pool with pool size %1 %2 strides %3 %4 input %5",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "POOL_SIZE_X",
+      "value": 2
+    },
+    {
+      "type": "field_number",
+      "name": "POOL_SIZE_Y",
+      "value": 2
+    },
+    {
+      "type": "field_number",
+      "name": "STRIDE_X",
+      "value": 2
+    },
+    {
+      "type": "field_number",
+      "name": "STRIDE_Y",
+      "value": 2
+    },
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply an average pooling layer.",
+  "helpUrl": ""
+};
+
+const dropout = {
+  "type": "dropout_layer",
+  "message0": "Dropout with rate %1 input %2",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "RATE",
+      "value": 0.5
+    },
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply dropout for regularization.",
+  "helpUrl": ""
+};
+
+const tanh = {
+  "type": "tanh_layer",
+  "message0": "Tanh activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply Tanh activation",
+  "helpUrl": ""
+};
+
+const sigmoid = {
+  "type": "sigmoid_layer",
+  "message0": "Sigmoid activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply Sigmoid activation",
+  "helpUrl": ""
+};
+
+const rnn = {
+  "type": "rnn_layer",
+  "message0": "RNN layer with %1 units return sequences %2 input %3",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": 50
+    },
+    {
+      "type": "field_checkbox",
+      "name": "RETURN_SEQ",
+      "checked": true
+    },
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Add a recurrent neural network layer",
+  "helpUrl": ""
+};
+
+const denseGeneralBlock = {
+  'type': 'dense_general',
+  'message0': 'DenseGeneral with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Adds a DenseGeneral layer with user-defined parameters.',
+  'helpUrl': ''
+};
+
+const jitBlock = {
+  'type': 'jit',
+  'message0': 'Jit with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Applies the JIT compilation with user-defined parameters.',
+  'helpUrl': ''
+};
+
+const rematBlock = {
+  'type': 'remat',
+  'message0': 'Remat with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Applies the remat transformation with user-defined parameters.',
+  'helpUrl': ''
+};
+
+const conv = {
+  'type': 'conv_layer',
+  'message0': 'Conv Layer with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users will input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Adds a Conv Layer layer with user-defined parameters.',
+  'helpUrl': ''
+};
+const convLocal = {
+  'type': 'conv_local',
+  'message0': 'ConvLocal with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users will input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Adds a ConvLocal layer with user-defined parameters.',
+  'helpUrl': ''
+};
+const convTranspose = {
+  'type': 'convTranspose',
+  'message0': 'ConvTranspose with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users will input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Adds a ConvTranspose layer with user-defined parameters.',
+  'helpUrl': ''
+};
+
+
+
+
 // Add the new blocks to the blocks array
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
-  celu_layer,elu_layer,gelu_layer,glu_layer,hard_sigmoid_layer,hard_silu_layer
-  ,convTranspose,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome, flattenLayer, denseLayer, maxPoolLayer, relu, conv, self, batchNorm, averagePool, dropout, tanh, sigmoid, rnn, dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock, splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock, python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock
+  celu_layer,elu_layer,gelu_layer,glu_layer,hard_sigmoid_layer,hard_silu_layer,embed,scanBlock,vmapBlock,tabulateBlock
+  ,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome,conv,convLocal,convTranspose,
+  flattenLayer, denseLayer, maxPoolLayer, relu, self, batchNorm, averagePool, dropout, tanh, sigmoid, rnn, 
+  dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock, 
+  splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock, 
+  python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock,denseGeneralBlock,jitBlock,rematBlock
 ]);
 
 
