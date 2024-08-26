@@ -21,18 +21,6 @@ pythonGenerator.forBlock['self'] = function(block, generator) {
         'def __call__(self, x):\n';
 };
 
-pythonGenerator.forBlock['conv_layer'] = function(block) {
-    const features = block.getFieldValue('FEATURES');
-    const kernelSizeX = block.getFieldValue('KERNEL_SIZE_X');
-    const kernelSizeY = block.getFieldValue('KERNEL_SIZE_Y');
-    return `x = nn.Conv(features=${features}, kernel_size=(${kernelSizeX}, ${kernelSizeY}))(x)\n`;
-};
-pythonGenerator.forBlock['convTranspose'] = function(block) {
-    const features = block.getFieldValue('FEATURES');
-    const kernelSizeX = block.getFieldValue('KERNEL_SIZE_X');
-    const kernelSizeY = block.getFieldValue('KERNEL_SIZE_Y');
-    return `x = nn.ConvTranspose(features=${features}, kernel_size=(${kernelSizeX}, ${kernelSizeY}))(x)\n`;
-};
 
 
 
@@ -123,58 +111,8 @@ pythonGenerator.forBlock['add_text'] = function (block, generator) {
 };
 
 
-pythonGenerator.forBlock['relu_layer'] = function(block) {
-    return `x = nn.relu(x)\n`;
-};
-pythonGenerator.forBlock['flatten_layer'] = function(block) {
-    return 'x = x.reshape((x.shape[0], -1))\n';
-};
-pythonGenerator.forBlock['gelu'] = function(block) {
-    return 'x = nn.gelu(x)\n';
-};
 
-pythonGenerator.forBlock['dense_layer'] = function(block) {
-    var units = block.getFieldValue('UNITS');
-    var variableName = block.getFieldValue('VARIABLE_NAME') || 'x';
-    var code = `${variableName} = nn.Dense(${units})(x)\n`;
-    return code;
-};
-pythonGenerator.forBlock['max_pool_layer'] = function(block) {
-    var windowShapeX = block.getFieldValue('WINDOW_SHAPE_X');
-    var windowShapeY = block.getFieldValue('WINDOW_SHAPE_Y');
-    var strideX = block.getFieldValue('STRIDE_X');
-    var strideY = block.getFieldValue('STRIDE_Y');
-    return `x = nn.MaxPool(window_shape=(${windowShapeX}, ${windowShapeY}), strides=(${strideX}, ${strideY}))(x)\n`;
-};
-pythonGenerator.forBlock['average_pool_layer'] = function(block) {
-    const poolSizeX = block.getFieldValue('POOL_SIZE_X');
-    const poolSizeY = block.getFieldValue('POOL_SIZE_Y');
-    const strideX = block.getFieldValue('STRIDE_X');
-    const strideY = block.getFieldValue('STRIDE_Y');
-    return `x = nn.avg_pool(window_shape=(${poolSizeX}, ${poolSizeY}), strides=(${strideX}, ${strideY}))(x)\n`;
-};
 
-pythonGenerator.forBlock['dropout_layer'] = function(block) {
-    const rate = block.getFieldValue('RATE');
-    return `x = nn.Dropout(rate=${rate})(x)\n`;
-};
-
-pythonGenerator.forBlock['batch_norm_layer'] = function(block) {
-    return `x = nn.BatchNorm()(x)\n`;
-};
-pythonGenerator.forBlock['tanh_layer'] = function(block) {
-    return `x = nn.tanh(x)\n`;
-};
-
-pythonGenerator.forBlock['sigmoid_layer'] = function(block) {
-    return `x = nn.sigmoid(x)\n`;
-};
-
-pythonGenerator.forBlock['rnn_layer'] = function(block) {
-    const units = block.getFieldValue('UNITS');
-    const returnSeq = block.getFieldValue('RETURN_SEQ') === 'TRUE' ? 'True' : 'False';
-    return `x = nn.RNN(units=${units}, return_sequences=${returnSeq})(x)\n`;
-};
 pythonGenerator.forBlock['dataset_selection'] = function(block) {
     const dataset = block.getFieldValue('DATASET');
     return `dataset = load_dataset('${dataset}')\n`;
@@ -293,28 +231,210 @@ pythonGenerator.forBlock['get_variable'] = function(block) {
     const code = `${variableName}`;
     return [code, Order.ATOMIC];
 };
-pythonGenerator.forBlock['celu_layer'] = function(block) {
-    return `x = nn.celu(x)\n`;
+pythonGenerator.forBlock['relu_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.relu(${variableName})\n`;
+    return [code, Order.ATOMIC];
 };
 
-pythonGenerator.forBlock['elu_layer'] = function(block) {
-    return `x = nn.elu(x)\n`;
+pythonGenerator.forBlock['celu_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.celu(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['elu_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.elu(${variableName})`;
+    return [code, Order.ATOMIC];
 };
 
 pythonGenerator.forBlock['gelu_layer'] = function(block) {
-    return `x = nn.gelu(x)\n`;
+    const code = `x = nn.gelu(x)\n`;
+    return [code, Order.ATOMIC];
+
 };
 
-pythonGenerator.forBlock['glu_layer'] = function(block) {
-    return `x = nn.glu(x)\n`;
+pythonGenerator.forBlock['glu_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.glu(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
 };
 
-pythonGenerator.forBlock['hard_sigmoid_layer'] = function(block) {
-    return `x = nn.hard_sigmoid(x)\n`;
+pythonGenerator.forBlock['hard_sigmoid_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.hard_sigmoid(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
 };
 
-pythonGenerator.forBlock['hard_silu_layer'] = function(block) {
-    return `x = nn.hard_silu(x)\n`;
+pythonGenerator.forBlock['hard_silu_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.hard_silu(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+
+pythonGenerator.forBlock['embed'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.Embed(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+  
+pythonGenerator.forBlock['scan'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.scan(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['vmap'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.vmap(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['tabulate'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.tabulate(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['gelu'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.gelu(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['flatten_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `${variableName}.reshape((${variableName}.shape[0], -1))\n`;
+    return [code, Order.ATOMIC];
+
+}; 
+pythonGenerator.forBlock['dense_layer'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.Dense(${units})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['max_pool_layer'] = function(block, generator) {
+    const windowShapeX = block.getFieldValue('WINDOW_SHAPE_X');
+    const windowShapeY = block.getFieldValue('WINDOW_SHAPE_Y');
+    const strideX = block.getFieldValue('STRIDE_X');
+    const strideY = block.getFieldValue('STRIDE_Y');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.MaxPool(window_shape=(${windowShapeX}, ${windowShapeY}), strides=(${strideX}, ${strideY}))(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['average_pool_layer'] = function(block, generator) {
+    const poolSizeX = block.getFieldValue('POOL_SIZE_X');
+    const poolSizeY = block.getFieldValue('POOL_SIZE_Y');
+    const strideX = block.getFieldValue('STRIDE_X');
+    const strideY = block.getFieldValue('STRIDE_Y');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.avg_pool(window_shape=(${poolSizeX}, ${poolSizeY}), strides=(${strideX}, ${strideY}))(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['dropout_layer'] = function(block, generator) {
+    const rate = block.getFieldValue('RATE');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.Dropout(rate=${rate})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['batch_norm_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.BatchNorm()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['tanh_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.tanh(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['sigmoid_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.sigmoid(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['rnn_layer'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const returnSeq = block.getFieldValue('RETURN_SEQ') === 'TRUE' ? 'True' : 'False';
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.RNN(units=${units}, return_sequences=${returnSeq})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['dense_general'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.DenseGeneral(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['jit'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.jit(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['remat'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.remat(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
+pythonGenerator.forBlock['convTranspose'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.ConvTranspose(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['conv_local'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.ConvLocal(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['conv_layer'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.Conv(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
 };
 
 
