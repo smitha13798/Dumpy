@@ -251,7 +251,7 @@ pythonGenerator.forBlock['elu_layer'] = function(block, generator) {
 };
 
 pythonGenerator.forBlock['gelu_layer'] = function(block) {
-    const code = `x = nn.gelu(x)\n`;
+    const code = `nn.gelu(x)\n`;
     return [code, Order.ATOMIC];
 
 };
@@ -282,6 +282,13 @@ pythonGenerator.forBlock['embed'] = function(block, generator) {
     const params = block.getFieldValue('PARAMS');
     const variableName = block.getFieldValue( 'VAR') || 'x';
     const code = `nn.Embed(${params})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['einsum'] = function(block, generator) {
+    const params = block.getFieldValue('PARAMS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.Einsum(${params})(${variableName})\n`;
     return [code, Order.ATOMIC];
 
 };
@@ -330,6 +337,13 @@ pythonGenerator.forBlock['dense_layer'] = function(block, generator) {
     return [code, Order.ATOMIC];
 
 };
+pythonGenerator.forBlock['Sequential'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.Sequential(${units})(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
 
 pythonGenerator.forBlock['max_pool_layer'] = function(block, generator) {
     const windowShapeX = block.getFieldValue('WINDOW_SHAPE_X');
@@ -337,10 +351,20 @@ pythonGenerator.forBlock['max_pool_layer'] = function(block, generator) {
     const strideX = block.getFieldValue('STRIDE_X');
     const strideY = block.getFieldValue('STRIDE_Y');
     const variableName = block.getFieldValue( 'VAR') || 'x';
-    const code = `nn.MaxPool(window_shape=(${windowShapeX}, ${windowShapeY}), strides=(${strideX}, ${strideY}))(${variableName})\n`;
+    const code = `nn.max_pool(window_shape=(${windowShapeX}, ${windowShapeY}), strides=(${strideX}, ${strideY}))(${variableName})\n`;
     return [code, Order.ATOMIC];
 
 };
+pythonGenerator.forBlock['pool_layer'] = function(block, generator) {
+    const windowShapeX = block.getFieldValue('WINDOW_SHAPE_X');
+    const windowShapeY = block.getFieldValue('WINDOW_SHAPE_Y');
+    const strideX = block.getFieldValue('STRIDE_X');
+    const strideY = block.getFieldValue('STRIDE_Y');
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.pool(window_shape=(${windowShapeX}, ${windowShapeY}), strides=(${strideX}, ${strideY}))(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+
 
 pythonGenerator.forBlock['average_pool_layer'] = function(block, generator) {
     const poolSizeX = block.getFieldValue('POOL_SIZE_X');
@@ -367,6 +391,84 @@ pythonGenerator.forBlock['batch_norm_layer'] = function(block, generator) {
     return [code, Order.ATOMIC];
 
 };
+pythonGenerator.forBlock['layer_norm_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.LayerNorm()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['group_norm_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.GroupNorm()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['RMS_norm_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.RMSNorm()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['Instance_norm_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.InstanceNorm()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['Spectral_norm_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.SpectralNorm()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['Weight_norm_layer'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.WeightNorm()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['MultiHeadAttention'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.MultiHeadAttention()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['MultiHeadDotProductAttention'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.MultiHeadDotProductAttention()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['SelfAttention'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.SelfAttention()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['DotProductAttention'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.dot_product_attention()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['DotProductAttentionWeights'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.dot_product_attention_weights()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['makeattentionmask'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.make_attention_mask()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['makecausalnmask'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.make_causal_mask()(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
 
 pythonGenerator.forBlock['tanh_layer'] = function(block, generator) {
     const variableName = block.getFieldValue( 'VAR') || 'x';
@@ -384,12 +486,55 @@ pythonGenerator.forBlock['sigmoid_layer'] = function(block, generator) {
 
 pythonGenerator.forBlock['rnn_layer'] = function(block, generator) {
     const units = block.getFieldValue('UNITS');
-    const returnSeq = block.getFieldValue('RETURN_SEQ') === 'TRUE' ? 'True' : 'False';
-    const variableName = block.getFieldValue( 'VAR') || 'x';
-    const code = `nn.RNN(units=${units}, return_sequences=${returnSeq})(${variableName})\n`;
+    const code = `nn.RNN(units=${units})\n`;
     return [code, Order.ATOMIC];
 
 };
+
+pythonGenerator.forBlock['RNNCellBase'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.RNNCellBase(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};pythonGenerator.forBlock['LSTMCell'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.LSTMCell(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};pythonGenerator.forBlock['OptimizedLSTMCell'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.OptimizedLSTMCell(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};pythonGenerator.forBlock['ConvLSTMCell'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.ConvLSTMCell(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};pythonGenerator.forBlock['SimpleCell'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.SimpleCell(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['GRUCell'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.GRUCell(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};pythonGenerator.forBlock['MGUCell'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.MGUCell(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};
+pythonGenerator.forBlock['Bidirectional'] = function(block, generator) {
+    const units = block.getFieldValue('UNITS');
+    const code = `nn.Bidirectional(units=${units})\n`;
+    return [code, Order.ATOMIC];
+
+};
+
 
 pythonGenerator.forBlock['dense_general'] = function(block, generator) {
     const params = block.getFieldValue('PARAMS');
