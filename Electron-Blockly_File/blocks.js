@@ -620,6 +620,26 @@ const embed = {
   'tooltip': 'Adds an embedding layer with user-defined parameters.',
   'helpUrl': ''
 };
+const einsum = {
+  'type': 'einsum',
+  'message0': 'Einsum with parameters %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'PARAMS',
+      'text': ''  // Users will input all parameters here
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 230,
+  'tooltip': 'Adds an Einsum layer with user-defined parameters.',
+  'helpUrl': ''
+};
 
 const scanBlock = {
   'type': 'scan',
@@ -738,6 +758,26 @@ const denseLayer = {
   'tooltip': 'Adds a dense layer with specified number of units.',
   'helpUrl': ''
 };
+const Sequential = {
+  'type': 'Sequential',
+  'message0': 'Sequential Combinator with units %1 input %2',
+  'args0': [
+    {
+      'type': 'field_input',
+      'name': 'UNITS',
+      'text': '10'
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 300,
+  'tooltip': 'Applies a linear chain of Modules.',
+  'helpUrl': ''
+};
 
 const maxPoolLayer = {
   'type': 'max_pool_layer',
@@ -774,6 +814,42 @@ const maxPoolLayer = {
   'tooltip': 'Applies a MaxPooling operation with specified window shape and strides.',
   'helpUrl': ''
 };
+const poolLayer = {
+  'type': 'pool_layer',
+  'message0': 'Pool with window shape %1 %2 strides %3 %4 input %5',
+  'args0': [
+    {
+      'type': 'field_number',
+      'name': 'WINDOW_SHAPE_X',
+      'value': 2
+    },
+    {
+      'type': 'field_number',
+      'name': 'WINDOW_SHAPE_Y',
+      'value': 2
+    },
+    {
+      'type': 'field_number',
+      'name': 'STRIDE_X',
+      'value': 2
+    },
+    {
+      'type': 'field_number',
+      'name': 'STRIDE_Y',
+      'value': 2
+    },
+    {
+      'type': 'field_input',
+      'name': 'VAR',
+      'check': 'Variable'
+    }
+  ],
+  'output': 'Variable',
+  'colour': 120,
+  'tooltip': 'Helper function to define pooling functions.',
+  'helpUrl': ''
+};
+
 
 const relu = {
   "type": "relu_layer",
@@ -791,10 +867,6 @@ const relu = {
   "helpUrl": ""
 };
 
-
-
-
-
 const batchNorm = {
   "type": "batch_norm_layer",
   "message0": "Batch Normalization %1",
@@ -806,10 +878,206 @@ const batchNorm = {
     }
   ],
   "output": null,
-  "colour": 230,
+  "colour": 50,
   "tooltip": "Apply batch normalization",
   "helpUrl": ""
 };
+const layernorm = {
+  "type": "layer_norm_layer",
+  "message0": "Layer Normalization %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 50,
+  "tooltip": "Apply Layer normalization",
+  "helpUrl": ""
+};
+const groupnorm = {
+  "type": "group_norm_layer",
+  "message0": "Group Normalization %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 50,
+  "tooltip": "Apply group normalization",
+  "helpUrl": ""
+};
+const RMSNorm = {
+  "type": "RMS_norm_layer",
+  "message0": "RMS Normalization %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 50,
+  "tooltip": "Apply RMS normalization",
+  "helpUrl": ""
+};
+const InstanceNorm = {
+  "type": "Instance_norm_layer",
+  "message0": "Instance Normalization %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 50,
+  "tooltip": "Apply instance normalization",
+  "helpUrl": ""
+};
+const SpectralNorm = {
+  "type": "Spectral_norm_layer",
+  "message0": "Spectral Normalization %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 50,
+  "tooltip": "Apply spectral normalization",
+  "helpUrl": ""
+};
+const WeightNorm = {
+  "type": "Weight_norm_layer",
+  "message0": "Weight Normalization %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 50,
+  "tooltip": "Apply Weight normalization",
+  "helpUrl": ""
+};
+const MultiHeadDotProductAttention = {
+  "type": "MultiHeadDotProductAttention",
+  "message0": "Multi-Head-Dot-Product Attention %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 70,
+  "tooltip": "Multi-Head-Dot-Product Attention",
+  "helpUrl": ""
+};
+const MultiHeadAttention = {
+  "type": "MultiHeadAttention",
+  "message0": "Multi-Head Attention  %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 70,
+  "tooltip": "Multi-Head Attention",
+  "helpUrl": ""
+};
+const SelfAttention = {
+  "type": "SelfAttention",
+  "message0": "Self Attention  %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 70,
+  "tooltip": "Self Attention",
+  "helpUrl": ""
+};
+const DotProductAttention = {
+  "type": "DotProductAttention",
+  "message0": "Dot Product Attention  %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 70,
+  "tooltip": "Dot Product Attention",
+  "helpUrl": ""
+};
+const DotProductAttentionWeights = {
+  "type": "DotProductAttentionWeights",
+  "message0": "Dot Product Attention Weights %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 70,
+  "tooltip": "Dot Product Attention Weights",
+  "helpUrl": ""
+};
+const makecausalmask = {
+  "type": "makecausalmask",
+  "message0": "Make  causal mask  %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 70,
+  "tooltip": "Make a causal mask for self-attention.",
+  "helpUrl": ""
+};
+const makeattentionmask = {
+  "type": "makeattentionmask",
+  "message0": "Make  Attention mask  %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 70,
+  "tooltip": "Mask-making helper for attention weights.",
+  "helpUrl": ""
+};
+
 
 const averagePool = {
   "type": "average_pool_layer",
@@ -842,7 +1110,7 @@ const averagePool = {
     }
   ],
   "output": null,
-  "colour": 230,
+  "colour": 120,
   "tooltip": "Apply an average pooling layer.",
   "helpUrl": ""
 };
@@ -863,7 +1131,7 @@ const dropout = {
     }
   ],
   "output": null,
-  "colour": 230,
+  "colour": 180,
   "tooltip": "Apply dropout for regularization.",
   "helpUrl": ""
 };
@@ -900,29 +1168,139 @@ const sigmoid = {
   "helpUrl": ""
 };
 
-const rnn = {
+const rnn_layer = {
   "type": "rnn_layer",
-  "message0": "RNN layer with %1 units return sequences %2 input %3",
+  "message0": "RNN with %1 units ",
   "args0": [
     {
       "type": "field_number",
       "name": "UNITS",
-      "value": 50
+      "value": "params"
     },
-    {
-      "type": "field_checkbox",
-      "name": "RETURN_SEQ",
-      "checked": true
-    },
-    {
-      "type": "field_input",
-      "name": "VAR",
-      "variable": "Variable"
-    }
   ],
   "output": null,
   "colour": 230,
-  "tooltip": "Add a recurrent neural network layer",
+  "tooltip": " The RNN module takes any RNNCellBase instance and applies it over a sequence",
+  "helpUrl": ""
+};
+const RNNCellBase = {
+  "type": "RNNCellBase",
+  "message0": "RNNCellBase layer with %1 units ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": " RNN cell Base",
+  "helpUrl": ""
+};
+const LSTMCell = {
+  "type": "LSTMCell",
+  "message0": "LSTMCell layer with %1 units ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "LSTM cell.",
+  "helpUrl": ""
+};
+const OptimizedLSTMCell = {
+  "type": "OptimizedLSTMCell",
+  "message0": "Optimized LSTM Cell layer with %1 units ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "More efficient LSTM Cell that concatenates state components before matmul.",
+  "helpUrl": ""
+};
+const ConvLSTMCell = {
+  "type": "ConvLSTMCell",
+  "message0": "convolutional LSTM cell with %1 Unit ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"    
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "A convolutional LSTM cell.",
+  "helpUrl": ""
+};
+const SimpleCell = {
+  "type": "SimpleCell",
+  "message0": "Simple Cell with %1 Unit ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "A Simple cell",
+  "helpUrl": ""
+};
+const GRUCell = {
+  "type": "GRUCell",
+  "message0": "GRU Cell with %1 Unit ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "A GRU cell",
+  "helpUrl": ""
+};
+const MGUCell = {
+  "type": "MGUCell",
+  "message0": "MGU Cell with %1 Unit ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "An MGU cell",
+  "helpUrl": ""
+};
+const Bidirectional = {
+  "type": "Bidirectional",
+  "message0": "Bidirectional Cell with %1 Unit ",
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "UNITS",
+      "value": "params"
+    },
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Processes the input in both directions and merges the results.",
   "helpUrl": ""
 };
 
@@ -1057,10 +1435,13 @@ const convTranspose = {
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   celu_layer,elu_layer,gelu_layer,glu_layer,hard_sigmoid_layer,hard_silu_layer,embed,scanBlock,vmapBlock,tabulateBlock
   ,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome,conv,convLocal,convTranspose,
-  flattenLayer, denseLayer, maxPoolLayer, relu, self, batchNorm, averagePool, dropout, tanh, sigmoid, rnn, 
+  flattenLayer, denseLayer, maxPoolLayer, relu, self, batchNorm,layernorm,groupnorm,RMSNorm,InstanceNorm,SpectralNorm,WeightNorm, averagePool, dropout, tanh, sigmoid, rnn_layer, 
   dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock, 
   splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock, 
-  python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock,denseGeneralBlock,jitBlock,rematBlock
+  python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock,denseGeneralBlock,jitBlock,rematBlock,einsum,poolLayer,
+  Sequential,MultiHeadAttention,MultiHeadDotProductAttention,SelfAttention,DotProductAttention,DotProductAttentionWeights,makecausalmask,makeattentionmask,
+  RNNCellBase,LSTMCell,OptimizedLSTMCell,ConvLSTMCell,SimpleCell,GRUCell,MGUCell,Bidirectional,
+
 ]);
 
 
