@@ -33,11 +33,22 @@ import optax
 import tensorflow_datasets as tfds
 
 #modelDefinition+
-dasd#modelDefinition-
+data_loader = DataLoader(dataset, batch_size=32, shuffle=True)
+#modelDefinition-
 
 #decoderDefinition+
-gagg#decoderDefinition-
+#decoderDefinition-
 
+
+def test():
+  gelu()
+  gelu(2)
+  gelu(1)
+  gelu(3)
+  gelu()
+  x = nn.Conv(features=32, kernel_size=(3, 3))(x)
+  x = gelu(3)
+  return 0
 
 @jax.jit
 def apply_model(state, images, labels):
@@ -84,6 +95,9 @@ def train_epoch(state, train_ds, batch_size, rng):
   return state, train_loss, train_accuracy
 
 
+
+
+
 def get_datasets():
   """Load MNIST train and test datasets into memory."""
   ds_builder = tfds.builder('mnist')
@@ -101,6 +115,7 @@ def create_train_state(rng, config):
   params = cnn.init(rng, jnp.ones([1, 28, 28, 1]))['params']
   tx = optax.sgd(config.learning_rate, config.momentum)
   return train_state.TrainState.create(apply_fn=cnn.apply, params=params, tx=tx)
+
 
 
 def train_and_evaluate(
@@ -152,3 +167,12 @@ def train_and_evaluate(
 
   summary_writer.flush()
   return state
+
+class CNN(nn.Module):
+  """A simple CNN model."""
+
+  @nn.compact
+  def __call__(self, x):
+
+    x = nn.relu(x)
+    return 5

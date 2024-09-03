@@ -408,16 +408,17 @@ export const toolbox = {
             },
           },
         },
-        {'kind': 'block', 'type': 'flatten_layer'}, // Newly added block
-        {'kind': 'block', 'type': 'dense_layer'},
+        {'kind': 'block', 'type': 'reshape'}, // Newly added block
+        {'kind': 'block', 'type': 'Dense'},
         {'kind': 'block', 'type': 'max_pool_layer'},
-        {'kind': 'block', 'type': 'relu_layer'},
+        {'kind': 'block', 'type': 'relu'},
         {'kind': 'block', 'type': 'dropout_layer'},
         {'kind': 'block', 'type': 'tanh_layer'},
         {'kind': 'block', 'type': 'sigmoid_layer'},
         {'kind': 'block', 'type': 'rnn_layer'},
         {'kind': 'block', 'type': 'gelu'},
-     ],
+
+      ],
     },
     {
       'kind': 'category',
@@ -450,187 +451,188 @@ export const toolbox = {
           'kind': 'block',
           'type': 'hard_silu_layer'
         },
+        {'kind':'block','type':'comment'},
       ],},
-      {
-        'kind': 'category',
-        'name': 'flax.linen package',
-        'categorystyle': 'text_category',
-        'contents': [
-          {
-            'kind': 'category',
-            'name': 'Layers',
-            'colour': 120,
-            'contents': [
-              {
-                'kind': 'category',
-                'name': 'Linear Modules',
-                'colour': 230,
-                'contents': [
-                  {'kind': 'block', 'type': 'dense_layer'},
-                  {'kind': 'block', 'type': 'dense_general'},
-                  {'kind': 'block', 'type': 'flatten_layer'},
-                  {'kind': 'block', 'type': 'conv_layer'},
-                  {'kind': 'block', 'type': 'convTranspose'},
-                  {'kind': 'block', 'type': 'conv_local'},
-                  {'kind': 'block', 'type': 'embed'},
-                  {'kind': 'block', 'type': 'einsum'},
-                  
-                ],
-              },
-              {
-                'kind': 'category',
-                'name': 'Pooling',
-                'colour': 130,
-                'contents': [
-                  {'kind': 'block', 'type': 'max_pool_layer'},
-                  {'kind': 'block', 'type': 'average_pool_layer'},
-                  {'kind': 'block', 'type': 'pool_layer'},
+    {
+      'kind': 'category',
+      'name': 'flax.linen package',
+      'categorystyle': 'text_category',
+      'contents': [
+        {
+          'kind': 'category',
+          'name': 'Layers',
+          'colour': 120,
+          'contents': [
+            {
+              'kind': 'category',
+              'name': 'Linear Modules',
+              'colour': 230,
+              'contents': [
+                {'kind': 'block', 'type': 'Dense'},
+                {'kind': 'block', 'type': 'dense_general'},
+                {'kind': 'block', 'type': 'reshape'},
+                {'kind': 'block', 'type': 'Conv'},
+                {'kind': 'block', 'type': 'convTranspose'},
+                {'kind': 'block', 'type': 'conv_local'},
+                {'kind': 'block', 'type': 'embed'},
+                {'kind': 'block', 'type': 'einsum'},
 
-                  
-                ],
-              },
-              {
-                'kind': 'category',
-                'name': 'Normalisation',
-                'colour': 50,
-                'contents': [
-                  {'kind': 'block', 'type': 'batch_norm_layer'},
-                  {'kind': 'block', 'type': 'layer_norm_layer'},
-                  {'kind': 'block', 'type': 'group_norm_layer'},
-                  {'kind': 'block', 'type': 'RMS_norm_layer'},
-                  {'kind': 'block', 'type': 'Spectral_norm_layer'},
-                  {'kind': 'block', 'type': 'Instance_norm_layer'},
-                  {'kind': 'block', 'type': 'Weight_norm_layer'},
+              ],
+            },
+            {
+              'kind': 'category',
+              'name': 'Pooling',
+              'colour': 130,
+              'contents': [
+                {'kind': 'block', 'type': 'max_pool_layer'},
+                {'kind': 'block', 'type': 'avg_pool'},
+                {'kind': 'block', 'type': 'pool_layer'},
 
-                  
-                ],
-              },
-              {
-                'kind': 'category',
-                'name': 'Combinators',
-                'colour': 300,
-                'contents': [
-                  {'kind': 'block', 'type': 'Sequential'}                  
-                ],
-              },
-              {
-                'kind': 'category',
-                'name': 'Stochastic',
-                'colour': 180,
-                'contents': [
-                  {'kind': 'block', 'type': 'dropout_layer'},
-                ],
-              },
-              {
-                'kind': 'category',
-                'name': 'Attention',
-                'colour': 70,
-                'contents': [
-                  {'kind': 'block', 'type': 'MultiHeadDotProductAttention'},
-                  {'kind': 'block', 'type': 'MultiHeadAttention'},
-                  {'kind': 'block', 'type': 'SelfAttention'},
-                  {'kind': 'block', 'type': 'DotProductAttentionWeights'},
-                  {'kind': 'block', 'type': 'DotProductAttention'},
-                  {'kind': 'block', 'type': 'makeattentionmask'}, 
-                  {'kind': 'block', 'type': 'makecausalmask'},                  
-                ],
-              },
-              {
-                'kind': 'category',
-                'name': 'Recurrent',
-                'colour': 100,
-                'contents': [
-                  {'kind': 'block', 'type': 'RNNCellBase'},
-                  {'kind': 'block', 'type': 'LSTMCell'},
-                  {'kind': 'block', 'type': 'OptimizedLSTMCell'},
-                  {'kind': 'block', 'type': 'ConvLSTMCell'},
-                  {'kind': 'block', 'type': 'SimpleCell'},
-                  {'kind': 'block', 'type': 'GRUCell'}, 
-                  {'kind': 'block', 'type': 'MGUCell'},
-                  {'kind': 'block', 'type': 'rnn_layer'},
-                  {'kind': 'block', 'type': 'Bidirectional'}, 
-                ],
-              },
-            ],
-          },
-          {
-            'kind': 'category',
-            'name': 'Activation Functions',
-            'contents': [
-              {'kind': 'block', 'type': 'sigmoid_layer'},
-              {'kind': 'block', 'type': 'tanh_layer'},
-              {'kind': 'block', 'type': 'relu_layer'},
-              {'kind': 'block', 'type': 'gelu_layer'},
-              // Add more activation functions as needed
-            ],
-          },
-          // Other blocks in the flax.linen package can go here
-          {
-            'kind': 'category',
-            'name': 'Module',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'Init/Apply',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'Initializers',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'Transformation',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'Inspection',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'Variable Dictionary',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'SPMD',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'Decorators',
-            'contents': [
-              
-            ],
-          },
-{
-            'kind': 'category',
-            'name': 'Profiling',
-            'contents': [
-              
-            ],
-          },
-          // Add other blocks outside the subgroups as needed
-        ],
-      },
+
+              ],
+            },
+            {
+              'kind': 'category',
+              'name': 'Normalisation',
+              'colour': 50,
+              'contents': [
+                {'kind': 'block', 'type': 'batch_norm_layer'},
+                {'kind': 'block', 'type': 'layer_norm_layer'},
+                {'kind': 'block', 'type': 'group_norm_layer'},
+                {'kind': 'block', 'type': 'RMS_norm_layer'},
+                {'kind': 'block', 'type': 'Spectral_norm_layer'},
+                {'kind': 'block', 'type': 'Instance_norm_layer'},
+                {'kind': 'block', 'type': 'Weight_norm_layer'},
+
+
+              ],
+            },
+            {
+              'kind': 'category',
+              'name': 'Combinators',
+              'colour': 300,
+              'contents': [
+                {'kind': 'block', 'type': 'Sequential'}
+              ],
+            },
+            {
+              'kind': 'category',
+              'name': 'Stochastic',
+              'colour': 180,
+              'contents': [
+                {'kind': 'block', 'type': 'dropout_layer'},
+              ],
+            },
+            {
+              'kind': 'category',
+              'name': 'Attention',
+              'colour': 70,
+              'contents': [
+                {'kind': 'block', 'type': 'MultiHeadDotProductAttention'},
+                {'kind': 'block', 'type': 'MultiHeadAttention'},
+                {'kind': 'block', 'type': 'SelfAttention'},
+                {'kind': 'block', 'type': 'DotProductAttentionWeights'},
+                {'kind': 'block', 'type': 'DotProductAttention'},
+                {'kind': 'block', 'type': 'makeattentionmask'},
+                {'kind': 'block', 'type': 'makecausalmask'},
+              ],
+            },
+            {
+              'kind': 'category',
+              'name': 'Recurrent',
+              'colour': 100,
+              'contents': [
+                {'kind': 'block', 'type': 'RNNCellBase'},
+                {'kind': 'block', 'type': 'LSTMCell'},
+                {'kind': 'block', 'type': 'OptimizedLSTMCell'},
+                {'kind': 'block', 'type': 'ConvLSTMCell'},
+                {'kind': 'block', 'type': 'SimpleCell'},
+                {'kind': 'block', 'type': 'GRUCell'},
+                {'kind': 'block', 'type': 'MGUCell'},
+                {'kind': 'block', 'type': 'rnn_layer'},
+                {'kind': 'block', 'type': 'Bidirectional'},
+              ],
+            },
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Activation Functions',
+          'contents': [
+            {'kind': 'block', 'type': 'sigmoid_layer'},
+            {'kind': 'block', 'type': 'tanh_layer'},
+            {'kind': 'block', 'type': 'relu_layer'},
+            {'kind': 'block', 'type': 'gelu_layer'},
+            // Add more activation functions as needed
+          ],
+        },
+        // Other blocks in the flax.linen package can go here
+        {
+          'kind': 'category',
+          'name': 'Module',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Init/Apply',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Initializers',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Transformation',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Inspection',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Variable Dictionary',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'SPMD',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Decorators',
+          'contents': [
+
+          ],
+        },
+        {
+          'kind': 'category',
+          'name': 'Profiling',
+          'contents': [
+
+          ],
+        },
+        // Add other blocks outside the subgroups as needed
+      ],
+    },
     {
       'kind': 'category',
       'name': 'Text',

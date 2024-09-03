@@ -1,6 +1,6 @@
 from enum import Enum
 
-
+#CAP TEXT IS FUNCTION NAME AND ="is type from toolbox
 # Class-based enum definition
 class FunctionType(Enum):
     CELU_LAYER = "celu_layer"
@@ -17,14 +17,14 @@ class FunctionType(Enum):
     ADD_TEXT = "addText"
     ADD_VECTORS = "AddVectors"
     GENERATE_RANDOM = "generateRandome"
-    FLATTEN_LAYER = "flattenLayer"
-    DENSE = "denseLayer"
+    RESHAPE = "reshape"
+    DENSE = "Dense"
     MAX_POOL_LAYER = "maxPoolLayer"
     RELU = "relu"
-    CONV = "nn.Conv"
+    CONV = "Conv"
     SELF = "self"
     BATCH_NORM = "batchNorm"
-    AVERAGE_POOL = "averagePool"
+    AVG_POOL = "avg_pool"
     DROPOUT = "dropout"
     TANH = "tanh"
     SIGMOID = "sigmoid"

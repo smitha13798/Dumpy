@@ -52,6 +52,9 @@ const python_class = {
     }
   ],
   "colour": 230,
+  "previousStatement": null,
+  "nextStatement": null,
+
   "tooltip": "Define a Python class with methods",
   "helpUrl": ""
 };
@@ -484,12 +487,14 @@ const setVariableBlock = {
       "name": "VALUE"
     }
   ],
+  "output": null,
   "previousStatement": null,
   "nextStatement": null,
   "colour": 230,
   "tooltip": "Set a variable to a value",
   "helpUrl": ""
 };
+
 
 const getVariableBlock = {
   "type": "get_variable",
@@ -543,6 +548,8 @@ const elu_layer = {
 const gelu_layer = {
   "type": "gelu_layer",
   "message0": "GELU activation",
+  "output":null,
+
   "previousStatement": null,
   "nextStatement": null,
   "colour": 230,
@@ -717,13 +724,15 @@ const gelu = {
     }
   ],
   "output": null,
+  "previousStatement": null,
+  "nextStatement": null,
   "colour": 230,
   "tooltip": "Apply GELU activation",
   "helpUrl": ""
 };
 
 const flattenLayer = {
-  'type': 'flatten_layer',
+  'type': 'reshape',
   'message0': 'Flatten tensor %1',
   'args0': [
     {
@@ -738,26 +747,45 @@ const flattenLayer = {
   'helpUrl': ''
 };
 
-const denseLayer = {
-  'type': 'dense_layer',
-  'message0': 'Dense layer with units %1 input %2',
-  'args0': [
+const comment = {
+  "type": "comment",
+  "message0": "Add comment %1",
+  "args0": [
     {
-      'type': 'field_input',
-      'name': 'UNITS',
-      'text': '10'
-    },
-    {
-      'type': 'field_input',
-      'name': 'VAR',
-      'check': 'Variable'
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
     }
   ],
-  'output': 'Variable',
-  'colour': 230,
-  'tooltip': 'Adds a dense layer with specified number of units.',
-  'helpUrl': ''
+  "output": 'Variable',
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 120,
+  "tooltip": "Add a comment",
+  "helpUrl": ""
 };
+
+const denseLayer = {
+  "type": "Dense",
+  "message0": "Dense layer with units %1 input %2",
+  "args0": [
+    {
+      "type": "input_value",  // Changed to input_value
+      "name": "UNITS",
+      "check": "Number"  // Ensure this is validated as a number
+    },
+    {
+      "type": "input_value",  // Changed to input_value
+      "name": "VAR",
+      "check": "Variable"  // Check to ensure the connected block is of type Variable
+    }
+  ],
+  "output": "Variable",
+  "colour": 230,
+  "tooltip": "Adds a dense layer with the specified number of units.",
+  "helpUrl": ""
+};
+
 const Sequential = {
   'type': 'Sequential',
   'message0': 'Sequential Combinator with units %1 input %2',
@@ -852,7 +880,7 @@ const poolLayer = {
 
 
 const relu = {
-  "type": "relu_layer",
+  "type": "relu",
   "message0": "ReLU activation %1",
   "args0": [
     {
@@ -1080,29 +1108,9 @@ const makeattentionmask = {
 
 
 const averagePool = {
-  "type": "average_pool_layer",
-  "message0": "Average Pool with pool size %1 %2 strides %3 %4 input %5",
-  "args0": [
-    {
-      "type": "field_number",
-      "name": "POOL_SIZE_X",
-      "value": 2
-    },
-    {
-      "type": "field_number",
-      "name": "POOL_SIZE_Y",
-      "value": 2
-    },
-    {
-      "type": "field_number",
-      "name": "STRIDE_X",
-      "value": 2
-    },
-    {
-      "type": "field_number",
-      "name": "STRIDE_Y",
-      "value": 2
-    },
+  "type": "avg_pool",
+  "message0": "Average Pool with pool size %1",
+ "args0": [
     {
       "type": "field_input",
       "name": "VAR",
@@ -1116,7 +1124,7 @@ const averagePool = {
 };
 
 const dropout = {
-  "type": "dropout_layer",
+  "type": "Dropout",
   "message0": "Dropout with rate %1 input %2",
   "args0": [
     {
@@ -1235,7 +1243,7 @@ const ConvLSTMCell = {
     {
       "type": "field_number",
       "name": "UNITS",
-      "value": "params"    
+      "value": "params"
     },
   ],
   "output": null,
@@ -1305,11 +1313,11 @@ const Bidirectional = {
 };
 
 const denseGeneralBlock = {
-  'type': 'dense_general',
+  'type': 'Dense',
   'message0': 'DenseGeneral with parameters %1 input %2',
   'args0': [
     {
-      'type': 'field_input',
+        'type': 'field_input',
       'name': 'PARAMS',
       'text': ''  // Users input all parameters here
     },
@@ -1368,7 +1376,7 @@ const rematBlock = {
 };
 
 const conv = {
-  'type': 'conv_layer',
+  'type': 'Conv',
   'message0': 'Conv Layer with parameters %1 input %2',
   'args0': [
     {
@@ -1435,15 +1443,14 @@ const convTranspose = {
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   celu_layer,elu_layer,gelu_layer,glu_layer,hard_sigmoid_layer,hard_silu_layer,embed,scanBlock,vmapBlock,tabulateBlock
   ,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome,conv,convLocal,convTranspose,
-  flattenLayer, denseLayer, maxPoolLayer, relu, self, batchNorm,layernorm,groupnorm,RMSNorm,InstanceNorm,SpectralNorm,WeightNorm, averagePool, dropout, tanh, sigmoid, rnn_layer, 
-  dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock, 
-  splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock, 
+  flattenLayer, denseLayer, maxPoolLayer, relu, self, batchNorm,layernorm,groupnorm,RMSNorm,InstanceNorm,SpectralNorm,WeightNorm, averagePool, dropout, tanh, sigmoid, rnn_layer,
+  dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock,
+  splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock,
   python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock,denseGeneralBlock,jitBlock,rematBlock,einsum,poolLayer,
   Sequential,MultiHeadAttention,MultiHeadDotProductAttention,SelfAttention,DotProductAttention,DotProductAttentionWeights,makecausalmask,makeattentionmask,
-  RNNCellBase,LSTMCell,OptimizedLSTMCell,ConvLSTMCell,SimpleCell,GRUCell,MGUCell,Bidirectional,
+  RNNCellBase,LSTMCell,OptimizedLSTMCell,ConvLSTMCell,SimpleCell,GRUCell,MGUCell,Bidirectional,comment
 
 ]);
-
 
 
 

@@ -10,29 +10,19 @@
     media-src 'self' https://blockly-demo.appspot.com/static/media/;
     script-src 'self'">
     <link rel="stylesheet" href="style.css">
-    <div>
-        <input type="text" id="searchBox" placeholder="Search for a block..." style="margin-bottom: 10px; width: 50%;">
-        <div id="searchResults"></div>
-    </div>
     <style>
-        #container {
-            display: flex;
-            justify-content: space-between;
-        }
-
         #blocklyDiv {
-            height: 1000px;
-            width: 50%;
-            border: 1px solid #aaa;
+            height: 480px;
+            width: 600px;
+            border: 1px solid #aaa; 
         }
-
+    </style>
+    <style>
         #textarea {
-            width: 50%;
-            height: 1000px;
             white-space: pre-wrap;
             border: 1px solid #ccc;
             padding: 10px;
-            margin-left: 20px;
+            margin-top: 20px;
         }
 
         #ViewList {
@@ -42,10 +32,8 @@
 </head>
 <body>
     <h1>FlaxBlocks</h1>
-    <div id="container">
-        <div id="blocklyDiv"></div>
-        <div id="textarea">Code comes here :)</div>
-    </div>
+    <div id="blocklyDiv"></div>
+    <h3 id="textarea">Code comes here :)</h3>
     <button id="saveButton">Save code</button>
     <button class="fa fa-exchange" id="swap" aria-hidden="true">Clear Workspace</button>
     <button id="CodeToBlock" style="display:flex">Generate blocks from src </button>
@@ -60,11 +48,13 @@
             <option value="1">Data Loader Definition</option>
             <option value="2">Training</option>
             <option value="3">Decoder</option>
+
         </select>
 
         <label for="subViewList"></label>
         <select id="subViewList" size="1"></select>
     </div>
     <script type="module" src="../workspaceInit.js"></script>
+
 </body>
 </html>
