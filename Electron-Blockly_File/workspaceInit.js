@@ -6,6 +6,8 @@ const javascriptPath = './generator/javascript.js';
 const Blockly = require('blockly');
 const pythonGenerator = require('blockly/python');
 const javaScriptGenerator = require('blockly/javascript');
+const fs = require('fs');
+const path = require('path');
 
 let ws;
 const WorkspaceStates = [];
@@ -180,7 +182,48 @@ function getBlockInformation(e) {
         parameters: e.parameters
     };
 }
+document.addEventListener('DOMContentLoaded', function () {
+    const searchBox = document.getElementById('searchBox');
+    const searchResults = document.getElementById('searchResults');
 
+    // Listen for input events in the search box
+    searchBox.addEventListener('input', function () {
+        const searchTerm = searchBox.value.toLowerCase();
+        searchResults.innerHTML = '';  // Clear previous results
+
+        // Get the toolbox object
+        const toolbox = ws.getToolbox();
+        const categories = toolbox.getToolboxItems();
+
+        let foundBlocks = false;
+
+        // Loop through all categories
+        categories.forEach(function (category) {
+            const categoryName = category.name_;  // Get category name
+            const categoryBlocks = category.getContents();  // Get blocks in the category
+
+            // Loop through blocks within the category
+            categoryBlocks.forEach(function (block) {
+                if (block.kind === 'block') {
+                    const blockType = block.type;  // Get the block type (name)
+
+                    // Check if the block type includes the search term
+                    if (blockType.toLowerCase().includes(searchTerm)) {
+                        foundBlocks = true;
+
+                        // Display the block's category and block name
+                        searchResults.innerHTML += `<p>Block: <strong>${blockType}</strong> is in Category: <strong>${categoryName}</strong></p>`;
+                    }
+                }
+            });
+        });
+
+        // If no blocks were found, display a message
+        if (!foundBlocks && searchTerm.length > 0) {
+            searchResults.innerHTML = `<p>No blocks found matching "${searchTerm}"</p>`;
+        }
+    });
+});
 document.addEventListener('DOMContentLoaded', function () {
     const createNewViewButton = document.getElementById('createNewView');
     let buttonState = 0;
@@ -211,6 +254,24 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    var editor = ace.edit("codeeditor"); 
+    editor.setTheme("ace/theme/monokai"); 
+    editor.session.setMode("ace/mode/python"); 
+
+    document.getElementById('loadFileButton').addEventListener('click', function() {
+        const filePath = path.join('C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/projectsrc/projectsrc.py');
+
+        fs.readFile(filePath, 'utf-8', (err, data) => {
+            if (err) {
+                console.error('Failed to load file:', err);
+                return;
+            }
+            editor.setValue(data, -1);
+        });
+    });
+
+});
 document.addEventListener('DOMContentLoaded', async function () {
     let toolbox, blocks, load, save, forBlock;
 
