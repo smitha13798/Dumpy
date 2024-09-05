@@ -6,35 +6,74 @@
     <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     style-src 'self' 'unsafe-inline';
-    img-src 'self' https://blockly-demo.appspot.com/static/media/;
+    img-src 'self' https://blockly-demo.appspot.com/static/media/ data:;
     media-src 'self' https://blockly-demo.appspot.com/static/media/;
-    script-src 'self'">
+    script-src 'self';
+">
+
+
     <link rel="stylesheet" href="style.css">
     <style>
-        #blocklyDiv {
-            height: 480px;
-            width: 600px;
-            border: 1px solid #aaa; 
+        #container {
+            display: flex;
+            justify-content: space-between;
         }
-    </style>
-    <style>
+
+        #blocklyDiv {
+            height: 420px;
+            width: 50%;
+            border: 1px solid #aaa;
+        }
+
+        #codeeditor {
+            width: 50%;
+            height: 400px;
+            white-space: pre-wrap;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-left: 20px;
+        }
+
         #textarea {
+            height: 400px;
+            width: 100%;
             white-space: pre-wrap;
             border: 1px solid #ccc;
             padding: 10px;
             margin-top: 20px;
         }
+        
+        /* To ensure the layout is responsive */
+        @media (max-width: 1200px) {
+            #container {
+                flex-direction: column;
+                align-items: center;
+            }
 
-        #ViewList {
-            margin-left: 20px;
+            #blocklyDiv, #codeeditor, #textarea {
+                width: 90%;
+            }
+
+            #textarea {
+                margin-top: 20px;
+            }
         }
+
     </style>
 </head>
 <body>
     <h1>FlaxBlocks</h1>
-    <div id="blocklyDiv"></div>
-    <h3 id="textarea">Code comes here :)</h3>
+    <div>
+        <input type="text" id="searchBox" placeholder="Search for a block..." style="margin-bottom: 10px; width: 50%;">
+        <div id="searchResults"></div>
+    </div>
+    <div id="container">
+        <div id="blocklyDiv"></div>
+        <div id="codeeditor"></div> <!-- Make sure this id matches in the script below -->
+    </div>
+    <div id="textarea">Code comes here :)</div>
     <button id="saveButton">Save code</button>
+    <button id="loadFileButton">Load File</button>
     <button class="fa fa-exchange" id="swap" aria-hidden="true">Clear Workspace</button>
     <button id="CodeToBlock" style="display:flex">Generate blocks from src </button>
     <div id="CreateHandle">
@@ -48,13 +87,15 @@
             <option value="1">Data Loader Definition</option>
             <option value="2">Training</option>
             <option value="3">Decoder</option>
-
         </select>
-
         <label for="subViewList"></label>
         <select id="subViewList" size="1"></select>
     </div>
     <script type="module" src="../workspaceInit.js"></script>
-
+    
+    <!-- Ace Editor Script -->
+    <script src="C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/renderer/ace.js"></script>
+    <script src="C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/renderer/theme-monokai.js"></script>
+    <script src="C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/renderer/mode-python.js"></script>
 </body>
 </html>
