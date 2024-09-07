@@ -1,17 +1,13 @@
 
+def koray():
+    x = np_solver(10)
+
+#test5+
+#test5-
 
 
-#test4
-
-#test13
 
 
-class CNN(nn.Module):
-  """A simple CNN model."""
+#CNN16+
+#CNN16-
 
-  @nn.compact
-  #__call__27
-
-  #test42
-
-x = nn.Dense(features=10)(x)

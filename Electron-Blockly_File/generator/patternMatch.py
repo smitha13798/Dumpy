@@ -54,7 +54,6 @@ def find_functions_and_calls(root_node):
             end_byte = node.end_byte  # Capture the end_byte for the function/class
 
             has_return_statement = False
-            return_assigned_to = None
             return_value = None  # Initialize return_value
 
             # Traverse the function body to find return statements and assignments
@@ -63,7 +62,6 @@ def find_functions_and_calls(root_node):
                     return_info = find_return_statements(child)
                     if return_info["has_return"]:
                         has_return_statement = True
-                        return_assigned_to = return_info["assigned_to"]
                         return_value = return_info["return_value"]  # Capture return_value
 
             if node.type == "class_definition":
@@ -112,8 +110,7 @@ def find_functions_and_calls(root_node):
                     "translate": True,
                     "returns": {
                         "has_return": has_return_statement,
-                        "assigned_to": return_assigned_to,
-                        "return_value": return_value  # Add this line
+                        "return_value": return_value  # Add this line to capture the return value
                     },
                     "start_byte": start_byte,
                     "end_byte": end_byte
@@ -213,24 +210,18 @@ def find_functions_and_calls(root_node):
 
 
 def find_return_statements(node):
-    """Find return statements within a function body and assignments."""
+    """Find return statements within a function body and capture return values."""
     has_return = False
     return_value = None
-    assigned_to = None
 
     def traverse_returns(n):
-        nonlocal has_return, return_value, assigned_to
+        nonlocal has_return, return_value
         if n.type == "return_statement":
             has_return = True
+            # Check if the return statement has a value (like a literal, variable, or expression)
             return_value_node = n.child_by_field_name("value")
             if return_value_node:
                 return_value = src[return_value_node.start_byte:return_value_node.end_byte].strip()
-
-        if n.type == "assignment":
-            assigned_to_node = n.child_by_field_name("left")
-            assigned_value_node = n.child_by_field_name("right")
-            if assigned_value_node and assigned_value_node.type == "call":
-                assigned_to = src[assigned_to_node.start_byte:assigned_to_node.end_byte].strip()
 
         for child in n.children:
             traverse_returns(child)
@@ -238,8 +229,7 @@ def find_return_statements(node):
     traverse_returns(node)
     return {
         "has_return": has_return,
-        "return_value": return_value,
-        "assigned_to": assigned_to
+        "return_value": return_value  # Return the value here
     }
 
 
@@ -294,18 +284,39 @@ modified_skeleton = ""
 last_index = 0
 
 # Insert #Doable comments at the head of translatable functions and classes, and remove the translatable part
+# Insert #Doable comments at the head of translatable functions and classes, and remove the translatable part
 for scope in scope_data:
     if 'translate' in scope and scope['translate']:
-        for function in scope['functions']:
-            start_byte = function['start_byte']  # Start byte of the function definition
-            end_byte = function['end_byte']  # End byte of the function definition
+        if scope['scope'] != 'global':
+            # If the scope is a class, remove the entire class definition
+            start_byte = scope['start_byte']  # Start byte of the class definition
+            end_byte = scope['end_byte']  # End byte of the class definition
 
-            # Append the source code up to the start of the function definition
+            # Append the source code up to the start of the class definition
             modified_skeleton += skeleton_src[last_index:start_byte]
-            # Insert the #Doable comment at the head of the function
-            modified_skeleton += '#' + function['functionName'] + function['row']
-            # Update last_index to skip the translatable function or class
+
+            # Insert the #Doable comment at the head of the class
+
+            modified_skeleton += '#' + scope['scope'] + str(scope['row_number']) + "+" + '\n'
+            modified_skeleton += '#' + scope['scope'] + str(scope['row_number']) + "-"
+
+            # Update last_index to skip the entire class definition
             last_index = end_byte
+        else:
+            # If the scope is global, handle functions within the global scope
+            for function in scope['functions']:
+                start_byte = function['start_byte']  # Start byte of the function definition
+                end_byte = function['end_byte']  # End byte of the function definition
+
+                # Append the source code up to the start of the function definition
+                modified_skeleton += skeleton_src[last_index:start_byte]
+
+                # Insert the #Doable comment at the head of the function
+                modified_skeleton += '#' + function['functionName'] + function['row'] + "+" + '\n'
+                modified_skeleton += '#' + function['functionName'] + function['row'] + "-"
+
+                # Update last_index to skip the translatable function
+                last_index = end_byte
 
 # Add the remaining part of the file after the last processed scope
 modified_skeleton += skeleton_src[last_index:]
@@ -314,3 +325,4 @@ modified_skeleton += skeleton_src[last_index:]
 write_file(destination_file_path, modified_skeleton)
 
 print(f"Translatable scopes have been marked with #Doable and removed from '{destination_file_path}'.")
+

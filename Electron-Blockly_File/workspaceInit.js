@@ -1,3 +1,5 @@
+
+
 console.log('Attempting to load toolbox module...');
 const toolboxPath = './toolbox.js';
 const blocksPath = './blocks.js';
@@ -6,42 +8,19 @@ const javascriptPath = './generator/javascript.js';
 const Blockly = require('blockly');
 const pythonGenerator = require('blockly/python');
 const javaScriptGenerator = require('blockly/javascript');
-const fs = require('fs');
-const path = require('path');
-
 let ws;
 const WorkspaceStates = [];
 let currentWS = 0;
 const { ipcRenderer } = require('electron');
-
+const fs = require('fs');
+const path = require('path');
 // Utility function to add sub-options to a dropdown
-function AddSubOption(optionTag, options) {
-    const optionElement = document.getElementById(optionTag);
-    optionElement.style.display = 'inline';
-    options.forEach(option => {
-        optionElement.add(new Option(option));
-    });
-}
+var editor = ace.edit("codeeditor");
+editor.setTheme("ace/theme/monokai");
+editor.session.setMode("ace/mode/python");
 
 // Function to create and return a block with configured input fields
-function createConfiguredBlock(blockInfo) {
-    const block = ws.newBlock(blockInfo.name);
-    block.inputList.forEach(input => {
-        input.fieldRow.forEach(field => {
-            if (field.name !== undefined) {
-                let inputValue = blockInfo.parameters.toString();
-                if (inputValue === "()") inputValue = "";
-                console.log(`Creating block for ${blockInfo.name} with input ${inputValue} at ${field.name}`);
-                block.setFieldValue(inputValue, field.name);
-            }
 
-        });
-    });
-
-    block.initSvg();
-    block.render();
-    return block;
-}
 
 // Function to connect a variable block to a function block
 function appendBlockToClass(classBlock, blockToAppend) {
@@ -99,6 +78,7 @@ function appendBlockToWorkspace(blockInfo) {
     }
     let inputValue = blockInfo.parameters.toString();
     if (inputValue === "()") inputValue = "";
+
     // Configure the new block with its parameters
     block.inputList.forEach(input => {
         if (input.fieldRow) {
@@ -183,11 +163,81 @@ function getBlockInformation(e) {
     };
 }
 document.addEventListener('DOMContentLoaded', function () {
+    var editor = ace.edit("codeeditor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+
+    document.getElementById('loadFileButton').addEventListener('click', function() {
+        const filePath = path.join('./projectsrc/projectskeleton2.py'); //Reads the generated file
+        console.log("READING FILE")
+        fs.readFile(filePath, 'utf-8', (err, data) => {
+            console.log("reading...")
+            if (err) {
+                console.error('Failed to load file:', err);
+                return;
+            }
+            editor.setValue(data, -1);
+        });
+    });
+
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const createNewViewButton = document.getElementById('createNewView');
+    let buttonState = 0;
+    let viewName = "";
+    let select = document.getElementById('ViewList');
+    createNewViewButton.addEventListener('click', () => {
+        if (buttonState === 0) {
+            viewName = document.getElementById('new-view-name').value.trim();
+            document.getElementById('new-view-name').value = "";
+            document.getElementById('new-view-name').placeholder = 'Index...';
+            buttonState = 1;
+        } else {
+            const index = document.getElementById('new-view-name').value.trim();
+
+
+
+
+
+            buttonState = 0;
+            const workspaceState = Blockly.serialization.workspaces.save(ws);
+            WorkspaceStates[select.length-1] = JSON.stringify(workspaceState);
+            var value = 0;
+            if(select.length!==0){
+                value=select.length-1;
+            }
+
+            select.add(new Option(`${viewName}${index}`,value))
+            currentWS  =value;
+            ws.clear();
+            select.value  = currentWS;
+            ipcRenderer.send('create-new-view', `${viewName}`,index);
+
+        }
+    });
+
+    const swapButton = document.getElementById('swap');
+    swapButton.addEventListener('click', function () {
+        const code = document.getElementById('textarea').textContent;
+        ipcRenderer.send('save-code-to-file', code);
+        ws.clear();
+        ipcRenderer.send('change-view-option');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
     const searchBox = document.getElementById('searchBox');
     const searchResults = document.getElementById('searchResults');
 
     // Listen for input events in the search box
     searchBox.addEventListener('input', function () {
+
+
+
         const searchTerm = searchBox.value.toLowerCase();
         searchResults.innerHTML = '';  // Clear previous results
 
@@ -208,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const blockType = block.type;  // Get the block type (name)
 
                     // Check if the block type includes the search term
-                    if (blockType.toLowerCase().includes(searchTerm)) {
+                    if (blockType.toLowerCase().includes(searchTerm) && searchTerm!=="") {
                         foundBlocks = true;
 
                         // Display the block's category and block name
@@ -224,54 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-document.addEventListener('DOMContentLoaded', function () {
-    const createNewViewButton = document.getElementById('createNewView');
-    let buttonState = 0;
-    let viewName = "";
 
-    createNewViewButton.addEventListener('click', () => {
-        if (buttonState === 0) {
-            viewName = document.getElementById('new-view-name').value.trim();
-            document.getElementById('new-view-name').value = "";
-            document.getElementById('new-view-name').placeholder = 'Index...';
-            buttonState = 1;
-        } else {
-            const index = document.getElementById('new-view-name').value.trim();
-            const newOption = new Option(`${viewName}${index}`, getMaxValue() + 1);
-
-            document.getElementById('ViewList').add(newOption);
-            ipcRenderer.send('create-new-view', viewName, index);
-            buttonState = 0;
-        }
-    });
-
-    const swapButton = document.getElementById('swap');
-    swapButton.addEventListener('click', function () {
-        const code = document.getElementById('textarea').textContent;
-        ipcRenderer.send('save-code-to-file', code);
-        ws.clear();
-        ipcRenderer.send('change-view');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    var editor = ace.edit("codeeditor"); 
-    editor.setTheme("ace/theme/monokai"); 
-    editor.session.setMode("ace/mode/python"); 
-
-    document.getElementById('loadFileButton').addEventListener('click', function() {
-        const filePath = path.join('C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/projectsrc/projectsrc.py');
-
-        fs.readFile(filePath, 'utf-8', (err, data) => {
-            if (err) {
-                console.error('Failed to load file:', err);
-                return;
-            }
-            editor.setValue(data, -1);
-        });
-    });
-
-});
 document.addEventListener('DOMContentLoaded', async function () {
     let toolbox, blocks, load, save, forBlock;
 
@@ -335,44 +338,73 @@ document.addEventListener('DOMContentLoaded', async function () {
     viewList.onchange = function () {
         const selectedIndex = viewList.value;
 
-        WorkspaceStates[currentWS] = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(ws));
+        // Save current workspace state before switching
+        const workspaceState = Blockly.serialization.workspaces.save(ws);
+
+        WorkspaceStates[currentWS] = JSON.stringify(workspaceState);
+        // Update current workspace index
         currentWS = selectedIndex;
 
-        ws.clear();
+        // Clear the workspace before loading the new state
+
+
+        // Notify backend to change the view option
         ipcRenderer.send('change-view-option', selectedIndex);
 
+        // Check if the state exists for the selected view, then load it
         if (WorkspaceStates[selectedIndex]) {
-            Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(WorkspaceStates[selectedIndex]), ws);
+            console.log("LOADING NEW STATE")
+            const workspaceStateString = WorkspaceStates[selectedIndex];
+
+// Parse the state string back to a JSON object
+            const workspaceState = JSON.parse(workspaceStateString);
+
+// Clear the current workspace
+
+// Load the workspace state
+            Blockly.serialization.workspaces.load(workspaceState, ws);
+
+// Resize the workspace to fit the restored content
+            ws.resizeContents();
         }
 
+        // Run any additional initialization code (like code generation)
         runCode();
-        if (selectedIndex === '1') {
-            AddSubOption('subViewList', [7, 22]);
-        } else {
-            document.getElementById('subViewList').style.display = "none";
-        }
+
+        // Force a full workspace refresh
+        ws.resizeContents();
+
+        // Handle sub-options display logic (optional)
+
+
+
     };
+
 
     ipcRenderer.on('response-outputjson', (event, functionNamesJson) => {
         functionNamesJson.forEach(element => {
         let lastCluster = null;
         let currentScopeBlock = null;
+        let scopeName = null;
+        var index = null;
             if (element.scope !== 'global' && element.translate) {
                 const classBlock = ws.newBlock('python_class');
                 classBlock.setFieldValue(element.base_classes, 'CLASS_NAME');
                 classBlock.initSvg();
                 classBlock.render();
                 currentScopeBlock = classBlock
-
-
+                scopeName = element.scope;
+                index = element.row;
 
             }
 
             element.functions.forEach(func => {
                 if (!func.translate) return;
 
-
-
+                if(index==null) index = func.row;
+                if(scopeName===null){
+                    scopeName=func.functionName;
+                }
                 const functionBlock = ws.newBlock('python_function');
                 functionBlock.setFieldValue(func.functionName + func.parameters, 'CLASS_NAME');
                 functionBlock.initSvg();
@@ -401,14 +433,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     const blockInfo = getBlockInformation(call);
                     if (currentBlock ) {
                         appendBlockToWorkspace(blockInfo);
-                    }//BLOCKS MIT RETURN GEHEN NICHT AN KOPF DER FUNKTION BUG
-                    /*if(call.assigned===""){
-                        currentBlock = createConfiguredBlock(blockInfo);
-
-                        appendBlockToFunction(functionBlock, currentBlock);
-                        lastBlock = currentBlock;
-                    }*/
-                   
+                    }
+                    ws.resizeContents();
                 });
 
                 lastCluster  = functionBlock;
@@ -418,12 +444,48 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             });
 
-            currentScopeBlock=null;
+
+                let select = document.getElementById('ViewList');
+
+
+                const workspaceState = Blockly.serialization.workspaces.save(ws);
+
+                WorkspaceStates[select.length-1] = JSON.stringify(workspaceState);
+                var value = 0;
+                if(select.length!==0){
+                    console.log("Inserting at " + select.length)
+                    value=select.length-1;
+                }
+
+
+
+
+                select.add(new Option(scopeName,value));
+
+                currentWS  =value+1;
+                ws.clear();
+                ipcRenderer.send('create-new-view', scopeName,index);
+
+                scopeName=null;
+                currentScopeBlock=null;
 
         });
-    });
+        document.getElementById('CreateHandle').style.display="flex"
+        document.getElementById('swap').style.display="flex"
+});
 
-    document.getElementById('CodeToBlock').addEventListener('click', () => {
-        ipcRenderer.send('read-outputjson');
+document.getElementById('CodeToBlock').addEventListener('click', () => {
+ipcRenderer.send('read-outputjson');
+    const filePath = path.join('./projectsrc/projectskeleton2.py'); //Reads the generated file
+
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+        console.log("reading...")
+        if (err) {
+            console.error('Failed to load file:', err);
+            return;
+        }
+        editor.setValue(data, -1);
+        document.getElementById('CodeToBlock').style.display="none";
     });
+});
 });

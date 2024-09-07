@@ -14,35 +14,8 @@
 
     <link rel="stylesheet" href="style.css">
     <style>
-        #container {
-            display: flex;
-            justify-content: space-between;
-        }
 
-        #blocklyDiv {
-            height: 420px;
-            width: 50%;
-            border: 1px solid #aaa;
-        }
 
-        #codeeditor {
-            width: 50%;
-            height: 400px;
-            white-space: pre-wrap;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-left: 20px;
-        }
-
-        #textarea {
-            height: 400px;
-            width: 100%;
-            white-space: pre-wrap;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 20px;
-        }
-        
         /* To ensure the layout is responsive */
         @media (max-width: 1200px) {
             #container {
@@ -62,40 +35,44 @@
     </style>
 </head>
 <body>
-    <h1>FlaxBlocks</h1>
-    <div>
-        <input type="text" id="searchBox" placeholder="Search for a block..." style="margin-bottom: 10px; width: 50%;">
-        <div id="searchResults"></div>
+<h1>FlaxBlocks</h1>
+<div>
+    <input type="text" id="searchBox" placeholder="Search for a block..." style="margin-bottom: 10px; width: 50%;">
+    <div id="searchResults"></div>
+</div>
+<div id="container">
+    <div id="blocklyDiv"></div>
+    <div id="codeeditor" style="height: 670px;">
+
     </div>
-    <div id="container">
-        <div id="blocklyDiv"></div>
-        <div id="codeeditor"></div> <!-- Make sure this id matches in the script below -->
-    </div>
-    <div id="textarea">Code comes here :)</div>
-    <button id="saveButton">Save code</button>
-    <button id="loadFileButton">Load File</button>
-    <button class="fa fa-exchange" id="swap" aria-hidden="true">Clear Workspace</button>
-    <button id="CodeToBlock" style="display:flex">Generate blocks from src </button>
-    <div id="CreateHandle">
-        <input type="text" id="new-view-name" placeholder="Enter view name">
-        <button id="createNewView">Create New View</button>
-    </div>
-    <div id="optionWrapper">
+    <!-- Make sure this id matches in the script below -->
+
+</div>
+<button id="CodeToBlock" style="display:flex" class="minimal-save-btn">Generate blocks from src </button>
+<div id="CreateHandle">
+    <input type="text" id="new-view-name" placeholder="Enter view name">
+    <button id="createNewView" class="minimal-save-btn">Create New View</button>
+    <button class="minimal-save-btn" id="swap">Clear Workspace</button>
+
         <label for="ViewList"></label>
-        <select id="ViewList">
-            <option value="0">Model Definition</option>
-            <option value="1">Data Loader Definition</option>
-            <option value="2">Training</option>
-            <option value="3">Decoder</option>
+        <select id="ViewList" class="modern-select">
+            <option disabled value="" selected>Select view...</option>
         </select>
-        <label for="subViewList"></label>
-        <select id="subViewList" size="1"></select>
-    </div>
-    <script type="module" src="../workspaceInit.js"></script>
-    
-    <!-- Ace Editor Script -->
-    <script src="C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/renderer/ace.js"></script>
-    <script src="C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/renderer/theme-monokai.js"></script>
-    <script src="C:/Users/WELCOME/Desktop/sushmitha/Electron-Blockly_File/renderer/mode-python.js"></script>
+
+
+</div>
+
+<div id="textarea">Code comes here :)</div>
+<button id="saveButton" class="minimal-save-btn">Save code</button>
+<button id="loadFileButton" style="display:none">Load File</button>
+
+
+
+<script type="module" src="../workspaceInit.js"></script>
+
+<!-- Ace Editor Script -->
+<script src="./ace.js"></script>
+<script src="./theme-monokai.js"></script>
+<script src="./mode-python.js"></script>
 </body>
 </html>

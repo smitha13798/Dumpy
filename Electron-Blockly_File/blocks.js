@@ -877,7 +877,21 @@ const poolLayer = {
   'tooltip': 'Helper function to define pooling functions.',
   'helpUrl': ''
 };
-
+const dump = {
+  "type": "relu_layer",
+  "message0": "ReLU activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply ReLU activation",
+  "helpUrl": ""
+}
 
 const relu = {
   "type": "relu",
@@ -1448,7 +1462,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock,
   python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock,denseGeneralBlock,jitBlock,rematBlock,einsum,poolLayer,
   Sequential,MultiHeadAttention,MultiHeadDotProductAttention,SelfAttention,DotProductAttention,DotProductAttentionWeights,makecausalmask,makeattentionmask,
-  RNNCellBase,LSTMCell,OptimizedLSTMCell,ConvLSTMCell,SimpleCell,GRUCell,MGUCell,Bidirectional,comment
+  RNNCellBase,LSTMCell,OptimizedLSTMCell,ConvLSTMCell,SimpleCell,GRUCell,MGUCell,Bidirectional,comment,dump
 
 ]);
 

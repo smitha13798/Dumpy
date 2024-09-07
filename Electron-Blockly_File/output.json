@@ -10,18 +10,12 @@
                         "function": "Dense",
                         "parameters": "(feature=32, bias=True)",
                         "assigned": "x",
-                        "index": 6
+                        "index": 7
                     },
                     {
                         "function": "gelu",
                         "parameters": "(3)",
                         "assigned": "",
-                        "index": 7
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(x)",
-                        "assigned": "x",
                         "index": 8
                     },
                     {
@@ -31,55 +25,21 @@
                         "index": 9
                     },
                     {
-                        "function": "Dense",
-                        "parameters": "(feature=32, bias=True)",
-                        "assigned": "x",
-                        "index": 15
-                    },
-                    {
-                        "function": "gelu",
-                        "parameters": "(3)",
-                        "assigned": "",
-                        "index": 16
-                    },
-                    {
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 17
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(x)",
-                        "assigned": "x",
-                        "index": 18
+                        "index": 10
                     }
                 ],
                 "scope": "",
-                "row": "4",
+                "row": "5",
                 "translate": true,
                 "returns": {
                     "has_return": true,
-                    "assigned_to": "x",
                     "return_value": null
                 },
-                "start_byte": 3,
-                "end_byte": 130
-            },
-            {
-                "functionName": "test",
-                "parameters": "(a,b)",
-                "functionCalls": [],
-                "scope": "",
-                "row": "13",
-                "translate": true,
-                "returns": {
-                    "has_return": true,
-                    "assigned_to": "x",
-                    "return_value": null
-                },
-                "start_byte": 132,
-                "end_byte": 263
+                "start_byte": 37,
+                "end_byte": 163
             }
         ],
         "translate": true
@@ -95,79 +55,78 @@
                         "function": "Conv",
                         "parameters": "(features=32, kernel_size=(3, 3))(x)",
                         "assigned": "x",
-                        "index": 29
+                        "index": 22
                     },
                     {
                         "function": "Conv",
                         "parameters": "(features=32, kernel_size=(3, 3))",
                         "assigned": "x",
-                        "index": 29
+                        "index": 22
                     },
                     {
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 30
+                        "index": 23
                     },
                     {
                         "function": "avg_pool",
                         "parameters": "(x, window_shape=(2, 2), strides=(2, 2))",
                         "assigned": "x",
-                        "index": 31
+                        "index": 24
                     },
                     {
                         "function": "Conv",
                         "parameters": "(features=64, kernel_size=(3, 3))(x)",
                         "assigned": "x",
-                        "index": 32
+                        "index": 25
                     },
                     {
                         "function": "Conv",
                         "parameters": "(features=64, kernel_size=(3, 3))",
                         "assigned": "x",
-                        "index": 32
+                        "index": 25
                     },
                     {
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 33
+                        "index": 26
                     },
                     {
                         "function": "avg_pool",
                         "parameters": "(x, window_shape=(2, 2), strides=(2, 2))",
                         "assigned": "x",
-                        "index": 34
+                        "index": 27
                     },
                     {
                         "function": "reshape",
                         "parameters": "((x.shape[0], -1))",
                         "assigned": "x",
-                        "index": 35
+                        "index": 28
                     },
                     {
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 36
+                        "index": 29
                     },
                     {
                         "function": "relu",
                         "parameters": "(y)",
                         "assigned": "x",
-                        "index": 37
+                        "index": 30
                     }
                 ],
                 "scope": "CNN",
-                "row": "27",
+                "row": "20",
                 "translate": true,
                 "returns": {
                     "has_return": true,
-                    "assigned_to": "x",
                     "return_value": null
                 },
-                "start_byte": 333,
-                "end_byte": 726
+                "start_byte": 235,
+                "end_byte": 628
             },
             {
                 "functionName": "test",
@@ -177,44 +136,43 @@
                         "function": "Dense",
                         "parameters": "(feature=32, bias=True)",
                         "assigned": "x",
-                        "index": 44
+                        "index": 37
                     },
                     {
                         "function": "gelu",
                         "parameters": "(3)",
                         "assigned": "",
-                        "index": 45
+                        "index": 38
                     },
                     {
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 46
+                        "index": 39
                     },
                     {
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 47
+                        "index": 40
                     }
                 ],
                 "scope": "CNN",
-                "row": "42",
+                "row": "35",
                 "translate": true,
                 "returns": {
                     "has_return": true,
-                    "assigned_to": "x",
                     "return_value": null
                 },
-                "start_byte": 730,
-                "end_byte": 875
+                "start_byte": 632,
+                "end_byte": 777
             }
         ],
         "translate": true,
-        "row_number": 23,
+        "row_number": 16,
         "parameters": "",
         "base_classes": "(nn.Module)",
-        "start_byte": 266,
-        "end_byte": 875
+        "start_byte": 168,
+        "end_byte": 777
     }
 ]

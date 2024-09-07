@@ -1,5 +1,6 @@
 
-
+def koray():
+    x = np_solver(10)
 
 def test():
     y =6
@@ -7,17 +8,9 @@ def test():
     nn.gelu(3)
     x = nn.relu(x)
     x = nn.relu(x)
-
     return 5
 
-def test(a,b):
-    y =10
-    x = nn.Dense(feature=32, bias=True)
-    nn.gelu(3)
-    x = nn.relu(x)
-    x = nn.relu(x)
 
-    return 5
 
 
 class CNN(nn.Module):
@@ -48,4 +41,3 @@ class CNN(nn.Module):
 
       return 5
 
-x = nn.Dense(features=10)(x)

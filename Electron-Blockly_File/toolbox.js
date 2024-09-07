@@ -412,7 +412,7 @@ export const toolbox = {
         {'kind': 'block', 'type': 'Dense'},
         {'kind': 'block', 'type': 'max_pool_layer'},
         {'kind': 'block', 'type': 'relu'},
-        {'kind': 'block', 'type': 'dropout_layer'},
+        //{'kind': 'block', 'type': 'dropout_layer'},
         {'kind': 'block', 'type': 'tanh_layer'},
         {'kind': 'block', 'type': 'sigmoid_layer'},
         {'kind': 'block', 'type': 'rnn_layer'},
@@ -469,7 +469,7 @@ export const toolbox = {
               'colour': 230,
               'contents': [
                 {'kind': 'block', 'type': 'Dense'},
-                {'kind': 'block', 'type': 'dense_general'},
+                //{'kind': 'block', 'type': 'dense_general'},
                 {'kind': 'block', 'type': 'reshape'},
                 {'kind': 'block', 'type': 'Conv'},
                 {'kind': 'block', 'type': 'convTranspose'},
@@ -520,7 +520,7 @@ export const toolbox = {
               'name': 'Stochastic',
               'colour': 180,
               'contents': [
-                {'kind': 'block', 'type': 'dropout_layer'},
+                //{'kind': 'block', 'type': 'dropout_layer'},
               ],
             },
             {
