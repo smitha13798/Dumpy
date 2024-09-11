@@ -1,43 +1,80 @@
+# Copyright 2024 The Flax Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
 
-def koray():
-    x = np_solver(10)
 
-def test():
-    y =6
-    x = nn.Dense(feature=32, bias=True)
-    nn.gelu(3)
+
+
+
+from absl import logging
+from flax import linen as nn
+from flax.metrics import tensorboard
+from flax.training import train_state
+import jax
+import jax.numpy as jnp
+import ml_collections
+import numpy as np
+import optax
+import tensorflow_datasets as tfds
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def axel():
+    #
+
+
     x = nn.relu(x)
-    x = nn.relu(x)
-    return 5
+    return 1337;
 
 
-
-
-class CNN(nn.Module):
+class CNN2(nn.Module):
   """A simple CNN model."""
 
   @nn.compact
   def __call__(self, x):
-    y= 5
-    x = nn.Conv(features=32, kernel_size=(3, 3))(x)
-    x = nn.relu(x)
-    x = nn.avg_pool(x, window_shape=(2, 2), strides=(2, 2))
-    x = nn.Conv(features=64, kernel_size=(3, 3))(x)
-    x = nn.relu(x)
-    x = nn.avg_pool(x, window_shape=(2, 2), strides=(2, 2))
-    x = x.reshape((x.shape[0], -1))  # flatten
-    x = nn.relu(x)
-    x = nn.relu(y)
 
 
     return y
 
-  def test(a, b):
-      y = 10
-      x = nn.Dense(feature=32, bias=True)
-      nn.gelu(3)
-      x = nn.relu(x)
-      x = nn.relu(x)
+  def test():
+    #
+    x = nn.Dense(feature=32, bias=True)
 
-      return 5
+    nn.gelu(3)
+    x = nn.relu((x))
 
+    x = nn.relu((x))
+    return 10;
+
+
+
+
+
+
+def marvin():
+  #
+
+  x = nn.relu(x)
+  return 153;
+
+  def modelTest(self):
+    nn.gelu();
+    return self;

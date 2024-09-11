@@ -15,7 +15,7 @@ const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const path = require('path');
 // Utility function to add sub-options to a dropdown
-var editor = ace.edit("codeeditor");
+const editor = ace.edit("codeeditor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 
@@ -163,7 +163,7 @@ function getBlockInformation(e) {
     };
 }
 document.addEventListener('DOMContentLoaded', function () {
-    var editor = ace.edit("codeeditor");
+    let editor = ace.edit("codeeditor");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/python");
 
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
             buttonState = 0;
             const workspaceState = Blockly.serialization.workspaces.save(ws);
             WorkspaceStates[select.length-1] = JSON.stringify(workspaceState);
-            var value = 0;
+            let value = 0;
             if(select.length!==0){
                 value=select.length-1;
             }
@@ -386,10 +386,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         let lastCluster = null;
         let currentScopeBlock = null;
         let scopeName = null;
-        var index = null;
+        let index = null;
+
             if (element.scope !== 'global' && element.translate) {
                 const classBlock = ws.newBlock('python_class');
-                classBlock.setFieldValue(element.base_classes, 'CLASS_NAME');
+                classBlock.setFieldValue(element.scope+element.base_classes, 'CLASS_NAME');
                 classBlock.initSvg();
                 classBlock.render();
                 currentScopeBlock = classBlock
@@ -399,10 +400,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
 
             element.functions.forEach(func => {
+                const returnValue = func.returns;
                 if (!func.translate) return;
+
 
                 if(index==null) index = func.row;
                 if(scopeName===null){
+                     lastCluster = null;
+                     currentScopeBlock = null;
+                     scopeName = null;
+
                     scopeName=func.functionName;
                 }
                 const functionBlock = ws.newBlock('python_function');
@@ -430,44 +437,96 @@ document.addEventListener('DOMContentLoaded', async function () {
                 let currentBlock = null;
                 currentBlock = comment
                 func.functionCalls.forEach(call => {
+
                     const blockInfo = getBlockInformation(call);
                     if (currentBlock ) {
                         appendBlockToWorkspace(blockInfo);
                     }
+
+
                     ws.resizeContents();
                 });
+
+
+                const returnBlock = ws.newBlock('python_return');
+
+                returnBlock.initSvg();
+                returnBlock.render();
+
+                returnBlock.setFieldValue(returnValue,'RETURN_VALUE')
+                const lastBlockConnection = lastBlock.nextConnection;
+                const currentBlockConnection = returnBlock.previousConnection;
+
+
+                if (lastBlockConnection && currentBlockConnection) {
+                    lastBlockConnection.connect(currentBlockConnection);
+                } else {
+                    console.error('Connection points are not available for lastBlock.');
+                }
+
+
 
                 lastCluster  = functionBlock;
                 if(currentScopeBlock!=null){
                     lastCluster = currentScopeBlock;
-
                 }
+
+                if (currentScopeBlock === null) {
+
+                    let select = document.getElementById('ViewList');
+
+
+                    const workspaceState = Blockly.serialization.workspaces.save(ws);
+
+                    WorkspaceStates[select.length - 1] = JSON.stringify(workspaceState);
+                    let value = 0;
+                    if (select.length !== 0) {
+                        console.log("Inserting at " + select.length)
+                        value = select.length - 1;
+                    }
+
+
+                    select.add(new Option(scopeName, value + ""));
+
+                    currentWS = value + 1;
+                    ws.clear();
+                    ipcRenderer.send('create-new-view', scopeName, index);
+                    scopeName=null;
+                    currentScopeBlock=null;
+                }
+
+
+            if(!currentScopeBlock){
+                index=null;
+            }
+
             });
 
+                if(currentScopeBlock!==null) {
 
-                let select = document.getElementById('ViewList');
+
+                    let select = document.getElementById('ViewList');
 
 
-                const workspaceState = Blockly.serialization.workspaces.save(ws);
+                    const workspaceState = Blockly.serialization.workspaces.save(ws);
 
-                WorkspaceStates[select.length-1] = JSON.stringify(workspaceState);
-                var value = 0;
-                if(select.length!==0){
-                    console.log("Inserting at " + select.length)
-                    value=select.length-1;
+                    WorkspaceStates[select.length - 1] = JSON.stringify(workspaceState);
+                    let value = 0;
+                    if (select.length !== 0) {
+                        console.log("Inserting at " + select.length)
+                        value = select.length - 1;
+                    }
+
+
+                    select.add(new Option(scopeName, value + ""));
+
+                    currentWS = value + 1;
+                    ws.clear();
+                    ipcRenderer.send('create-new-view', scopeName, index);
+                    scopeName=null;
+                    currentScopeBlock=null;
                 }
 
-
-
-
-                select.add(new Option(scopeName,value));
-
-                currentWS  =value+1;
-                ws.clear();
-                ipcRenderer.send('create-new-view', scopeName,index);
-
-                scopeName=null;
-                currentScopeBlock=null;
 
         });
         document.getElementById('CreateHandle').style.display="flex"

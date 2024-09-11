@@ -99,7 +99,7 @@ ipcMain.on('change-view-option', (event, view) => {
 });
 
 ipcMain.on('create-new-view', (event, viewName, index) => {
-    const filePath = `./generatedCode/${viewName}${index}.py`;
+    const filePath = `./generatedCode/${viewName}.py`;
     filePaths.push(filePath);
     fs.writeFileSync(filePath, '', 'utf8');
     event.sender.send('new-view-created', { message: `File created: ${viewName}`, viewName: viewName });

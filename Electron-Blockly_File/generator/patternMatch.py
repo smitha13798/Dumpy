@@ -1,5 +1,6 @@
 import json
 import shutil
+import os
 from tree_sitter import Language, Parser
 import tree_sitter_python
 from BlockFunction import FunctionType
@@ -10,8 +11,8 @@ parser = Parser()
 parser.set_language(PY_LANGUAGE)
 
 # File paths
-src_file_to_copy = 'C:/Users/siebe/Desktop/Dumpy/Electron-Blockly_File/projectsrc/projectsrc.py'
-destination_file_path = 'C:/Users/siebe/Desktop/Dumpy/Electron-Blockly_File/projectsrc/projectskeleton2.py'
+src_file_to_copy = os.path.join(os.path.dirname(__file__), '../projectsrc/projectsrc.py')
+destination_file_path = os.path.join(os.path.dirname(__file__), '../projectsrc/projectskeleton2.py')
 
 # Copy the src file to generate the skeleton
 shutil.copy(src_file_to_copy, destination_file_path)
@@ -62,7 +63,7 @@ def find_functions_and_calls(root_node):
                     return_info = find_return_statements(child)
                     if return_info["has_return"]:
                         has_return_statement = True
-                        return_value = return_info["return_value"]  # Capture return_value
+                        return_value = return_info['return_value']  # Capture return_value
 
             if node.type == "class_definition":
                 current_class = scope_name
@@ -107,11 +108,8 @@ def find_functions_and_calls(root_node):
                     "functionCalls": [],
                     "scope": current_class if current_class else "",
                     "row": str(row_number),
+                    "returns": return_value,
                     "translate": True,
-                    "returns": {
-                        "has_return": has_return_statement,
-                        "return_value": return_value  # Add this line to capture the return value
-                    },
                     "start_byte": start_byte,
                     "end_byte": end_byte
                 }
@@ -188,7 +186,7 @@ def find_functions_and_calls(root_node):
         for scope in scope_data:
             if scope['scope'] == "global":
                 # Set global translate to True if there are any translatable functions
-                if any(func['translate'] for func in scope['functions']):
+                if any(func['translate'] for func in scope['functions'] if 'translate' in func):
                     scope['translate'] = True
                 else:
                     scope['translate'] = False
@@ -208,7 +206,6 @@ def find_functions_and_calls(root_node):
     traverse(root_node)
     return filter_translatable_scopes(scope_data)
 
-
 def find_return_statements(node):
     """Find return statements within a function body and capture return values."""
     has_return = False
@@ -218,9 +215,9 @@ def find_return_statements(node):
         nonlocal has_return, return_value
         if n.type == "return_statement":
             has_return = True
-            # Check if the return statement has a value (like a literal, variable, or expression)
-            return_value_node = n.child_by_field_name("value")
-            if return_value_node:
+            # The return statement usually contains an expression as its first child
+            if len(n.children) > 1:
+                return_value_node = n.children[1]  # The second child is often the return expression
                 return_value = src[return_value_node.start_byte:return_value_node.end_byte].strip()
 
         for child in n.children:
@@ -231,7 +228,6 @@ def find_return_statements(node):
         "has_return": has_return,
         "return_value": return_value  # Return the value here
     }
-
 
 def extract_function_and_parameters(full_call_text):
     """Extract function name and parameters from the full call text."""
@@ -284,7 +280,6 @@ modified_skeleton = ""
 last_index = 0
 
 # Insert #Doable comments at the head of translatable functions and classes, and remove the translatable part
-# Insert #Doable comments at the head of translatable functions and classes, and remove the translatable part
 for scope in scope_data:
     if 'translate' in scope and scope['translate']:
         if scope['scope'] != 'global':
@@ -296,10 +291,8 @@ for scope in scope_data:
             modified_skeleton += skeleton_src[last_index:start_byte]
 
             # Insert the #Doable comment at the head of the class
-
-            modified_skeleton += '#' + scope['scope'] + str(scope['row_number']) + "+" + '\n'
-            modified_skeleton += '#' + scope['scope'] + str(scope['row_number']) + "-"
-
+            modified_skeleton += f"#{scope['scope']}+\n"
+            modified_skeleton += f"#{scope['scope']}-\n"
             # Update last_index to skip the entire class definition
             last_index = end_byte
         else:
@@ -312,9 +305,8 @@ for scope in scope_data:
                 modified_skeleton += skeleton_src[last_index:start_byte]
 
                 # Insert the #Doable comment at the head of the function
-                modified_skeleton += '#' + function['functionName'] + function['row'] + "+" + '\n'
-                modified_skeleton += '#' + function['functionName'] + function['row'] + "-"
-
+                modified_skeleton += f"#{function['functionName']}+\n"
+                modified_skeleton += f"#{function['functionName']}-\n"
                 # Update last_index to skip the translatable function
                 last_index = end_byte
 
@@ -324,5 +316,4 @@ modified_skeleton += skeleton_src[last_index:]
 # Write the modified skeleton back to the file
 write_file(destination_file_path, modified_skeleton)
 
-print(f"Translatable scopes have been marked with #Doable and removed from '{destination_file_path}'.")
-
+print(f"Translatable scopes and return statements have been marked with #Doable and removed from '{destination_file_path}'.")

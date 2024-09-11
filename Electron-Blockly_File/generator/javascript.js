@@ -223,9 +223,9 @@ pythonGenerator.forBlock['nn_compact'] = function(block) {
 };
 pythonGenerator.forBlock['set_var'] = function(block) {
     var variable = block.getFieldValue('SET_VARIABLE');
-    const value = pythonGenerator.valueToCode(block, 'VALUE', Order.NONE)||"''";
-    //return `${variable} = ${value}\n`;
-    return [`${variable} = ${value}\n`,Order.ATOMIC]
+    const value = pythonGenerator.valueToCode(block, 'VALUE', Order.NONE);
+    return `${variable} = ${value}\n`;
+    //return [`${variable} = ${value}`,Order.ATOMIC]
 };
 pythonGenerator.forBlock['get_variable'] = function(block) {
     const variableName = block.getFieldValue('VARIABLE_NAME');

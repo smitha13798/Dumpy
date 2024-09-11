@@ -175,4 +175,4 @@ class CNN(nn.Module):
   def __call__(self, x):
 
     x = nn.relu(x)
-    return 5
+    return x

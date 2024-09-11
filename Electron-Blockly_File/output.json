@@ -3,6 +3,77 @@
         "scope": "global",
         "functions": [
             {
+                "functionName": "axel",
+                "parameters": "()",
+                "functionCalls": [
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 44
+                    }
+                ],
+                "scope": "",
+                "row": "40",
+                "returns": "1337",
+                "translate": true,
+                "start_byte": 448,
+                "end_byte": 503
+            },
+            {
+                "functionName": "marvin",
+                "parameters": "()",
+                "functionCalls": [
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 75
+                    }
+                ],
+                "scope": "",
+                "row": "72",
+                "returns": "self",
+                "translate": true,
+                "start_byte": 753,
+                "end_byte": 858
+            },
+            {
+                "functionName": "modelTest",
+                "parameters": "(self)",
+                "functionCalls": [
+                    {
+                        "function": "gelu",
+                        "parameters": "()",
+                        "assigned": "",
+                        "index": 79
+                    }
+                ],
+                "scope": "",
+                "row": "78",
+                "returns": "self",
+                "translate": true,
+                "start_byte": 806,
+                "end_byte": 858
+            }
+        ],
+        "translate": true
+    },
+    {
+        "scope": "CNN2",
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [],
+                "scope": "CNN2",
+                "row": "52",
+                "returns": "y",
+                "translate": true,
+                "start_byte": 574,
+                "end_byte": 611
+            },
+            {
                 "functionName": "test",
                 "parameters": "()",
                 "functionCalls": [
@@ -10,169 +81,40 @@
                         "function": "Dense",
                         "parameters": "(feature=32, bias=True)",
                         "assigned": "x",
-                        "index": 7
+                        "index": 59
                     },
                     {
                         "function": "gelu",
                         "parameters": "(3)",
                         "assigned": "",
-                        "index": 8
+                        "index": 61
                     },
                     {
                         "function": "relu",
-                        "parameters": "(x)",
+                        "parameters": "((x))",
                         "assigned": "x",
-                        "index": 9
+                        "index": 62
                     },
                     {
                         "function": "relu",
-                        "parameters": "(x)",
+                        "parameters": "((x))",
                         "assigned": "x",
-                        "index": 10
+                        "index": 64
                     }
                 ],
-                "scope": "",
-                "row": "5",
+                "scope": "CNN2",
+                "row": "57",
+                "returns": "10",
                 "translate": true,
-                "returns": {
-                    "has_return": true,
-                    "return_value": null
-                },
-                "start_byte": 37,
-                "end_byte": 163
-            }
-        ],
-        "translate": true
-    },
-    {
-        "scope": "CNN",
-        "functions": [
-            {
-                "functionName": "__call__",
-                "parameters": "(self, x)",
-                "functionCalls": [
-                    {
-                        "function": "Conv",
-                        "parameters": "(features=32, kernel_size=(3, 3))(x)",
-                        "assigned": "x",
-                        "index": 22
-                    },
-                    {
-                        "function": "Conv",
-                        "parameters": "(features=32, kernel_size=(3, 3))",
-                        "assigned": "x",
-                        "index": 22
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(x)",
-                        "assigned": "x",
-                        "index": 23
-                    },
-                    {
-                        "function": "avg_pool",
-                        "parameters": "(x, window_shape=(2, 2), strides=(2, 2))",
-                        "assigned": "x",
-                        "index": 24
-                    },
-                    {
-                        "function": "Conv",
-                        "parameters": "(features=64, kernel_size=(3, 3))(x)",
-                        "assigned": "x",
-                        "index": 25
-                    },
-                    {
-                        "function": "Conv",
-                        "parameters": "(features=64, kernel_size=(3, 3))",
-                        "assigned": "x",
-                        "index": 25
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(x)",
-                        "assigned": "x",
-                        "index": 26
-                    },
-                    {
-                        "function": "avg_pool",
-                        "parameters": "(x, window_shape=(2, 2), strides=(2, 2))",
-                        "assigned": "x",
-                        "index": 27
-                    },
-                    {
-                        "function": "reshape",
-                        "parameters": "((x.shape[0], -1))",
-                        "assigned": "x",
-                        "index": 28
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(x)",
-                        "assigned": "x",
-                        "index": 29
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(y)",
-                        "assigned": "x",
-                        "index": 30
-                    }
-                ],
-                "scope": "CNN",
-                "row": "20",
-                "translate": true,
-                "returns": {
-                    "has_return": true,
-                    "return_value": null
-                },
-                "start_byte": 235,
-                "end_byte": 628
-            },
-            {
-                "functionName": "test",
-                "parameters": "(a, b)",
-                "functionCalls": [
-                    {
-                        "function": "Dense",
-                        "parameters": "(feature=32, bias=True)",
-                        "assigned": "x",
-                        "index": 37
-                    },
-                    {
-                        "function": "gelu",
-                        "parameters": "(3)",
-                        "assigned": "",
-                        "index": 38
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(x)",
-                        "assigned": "x",
-                        "index": 39
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "(x)",
-                        "assigned": "x",
-                        "index": 40
-                    }
-                ],
-                "scope": "CNN",
-                "row": "35",
-                "translate": true,
-                "returns": {
-                    "has_return": true,
-                    "return_value": null
-                },
-                "start_byte": 632,
-                "end_byte": 777
+                "start_byte": 615,
+                "end_byte": 746
             }
         ],
         "translate": true,
-        "row_number": 16,
+        "row_number": 48,
         "parameters": "",
         "base_classes": "(nn.Module)",
-        "start_byte": 168,
-        "end_byte": 777
+        "start_byte": 506,
+        "end_byte": 746
     }
 ]
