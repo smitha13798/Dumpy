@@ -1,5 +1,100 @@
 [
     {
+        "scope": "CNN2",
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [
+                    {
+                        "function": "Variable",
+                        "parameters": "5",
+                        "assigned": "x,y",
+                        "index": 28
+                    },
+                    {
+                        "function": "Variable",
+                        "parameters": "\"5abc\"",
+                        "assigned": "x",
+                        "index": 29
+                    },
+                    {
+                        "function": "Conv",
+                        "parameters": "(features=4, kernel_size=(3,), padding='VALID')",
+                        "assigned": "layer",
+                        "index": 30
+                    }
+                ],
+                "scope": "CNN2",
+                "row": "27",
+                "returns": "y",
+                "translate": true,
+                "start_byte": 500,
+                "end_byte": 625
+            },
+            {
+                "functionName": "test",
+                "parameters": "()",
+                "functionCalls": [
+                    {
+                        "function": "Dense",
+                        "parameters": "(feature=32, bias=True)",
+                        "assigned": "y",
+                        "index": 36
+                    },
+                    {
+                        "function": "gelu",
+                        "parameters": "(3)",
+                        "assigned": "",
+                        "index": 37
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "((x))",
+                        "assigned": "x",
+                        "index": 38
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "((x))",
+                        "assigned": "x",
+                        "index": 39
+                    },
+                    {
+                        "function": "Variable",
+                        "parameters": "10",
+                        "assigned": "i",
+                        "index": 40
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 42
+                    },
+                    {
+                        "function": "Variable",
+                        "parameters": "20",
+                        "assigned": "i",
+                        "index": 43
+                    }
+                ],
+                "scope": "CNN2",
+                "row": "33",
+                "returns": "10",
+                "translate": true,
+                "start_byte": 629,
+                "end_byte": 818
+            }
+        ],
+        "translate": true,
+        "row_number": 23,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 432,
+        "end_byte": 818
+    },
+    {
         "scope": "global",
         "functions": [
             {
@@ -10,15 +105,15 @@
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 44
+                        "index": 66
                     }
                 ],
                 "scope": "",
-                "row": "40",
+                "row": "62",
                 "returns": "1337",
                 "translate": true,
-                "start_byte": 448,
-                "end_byte": 503
+                "start_byte": 836,
+                "end_byte": 891
             },
             {
                 "functionName": "marvin",
@@ -28,15 +123,15 @@
                         "function": "relu",
                         "parameters": "(x)",
                         "assigned": "x",
-                        "index": 75
+                        "index": 79
                     }
                 ],
                 "scope": "",
-                "row": "72",
-                "returns": "self",
+                "row": "76",
+                "returns": "10",
                 "translate": true,
-                "start_byte": 753,
-                "end_byte": 858
+                "start_byte": 900,
+                "end_byte": 1212
             },
             {
                 "functionName": "modelTest",
@@ -46,75 +141,17 @@
                         "function": "gelu",
                         "parameters": "()",
                         "assigned": "",
-                        "index": 79
+                        "index": 83
                     }
                 ],
                 "scope": "",
-                "row": "78",
+                "row": "82",
                 "returns": "self",
                 "translate": true,
-                "start_byte": 806,
-                "end_byte": 858
+                "start_byte": 953,
+                "end_byte": 1005
             }
         ],
         "translate": true
-    },
-    {
-        "scope": "CNN2",
-        "functions": [
-            {
-                "functionName": "__call__",
-                "parameters": "(self, x)",
-                "functionCalls": [],
-                "scope": "CNN2",
-                "row": "52",
-                "returns": "y",
-                "translate": true,
-                "start_byte": 574,
-                "end_byte": 611
-            },
-            {
-                "functionName": "test",
-                "parameters": "()",
-                "functionCalls": [
-                    {
-                        "function": "Dense",
-                        "parameters": "(feature=32, bias=True)",
-                        "assigned": "x",
-                        "index": 59
-                    },
-                    {
-                        "function": "gelu",
-                        "parameters": "(3)",
-                        "assigned": "",
-                        "index": 61
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "((x))",
-                        "assigned": "x",
-                        "index": 62
-                    },
-                    {
-                        "function": "relu",
-                        "parameters": "((x))",
-                        "assigned": "x",
-                        "index": 64
-                    }
-                ],
-                "scope": "CNN2",
-                "row": "57",
-                "returns": "10",
-                "translate": true,
-                "start_byte": 615,
-                "end_byte": 746
-            }
-        ],
-        "translate": true,
-        "row_number": 48,
-        "parameters": "",
-        "base_classes": "(nn.Module)",
-        "start_byte": 506,
-        "end_byte": 746
     }
 ]

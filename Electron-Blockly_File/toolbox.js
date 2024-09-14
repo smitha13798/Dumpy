@@ -427,37 +427,9 @@ export const toolbox = {
       'contents':[
 
 
-        {
-          'kind': 'block',
-          'type': 'celu_layer'
-        },
-        {
-          'kind': 'block',
-          'type': 'elu_layer'
-        },
-        {
-          'kind': 'block',
-          'type': 'gelu_layer'
-        },
-        {
-          'kind': 'block',
-          'type': 'glu_layer'
-        },
-        {
-          'kind': 'block',
-          'type': 'hard_sigmoid_layer'
-        },
-        {
-          'kind': 'block',
-          'type': 'hard_silu_layer'
-        },
+
         {'kind':'block','type':'comment'},
       ],},
-    {
-      'kind': 'category',
-      'name': 'flax.linen package',
-      'categorystyle': 'text_category',
-      'contents': [
         {
           'kind': 'category',
           'name': 'Layers',
@@ -520,7 +492,7 @@ export const toolbox = {
               'name': 'Stochastic',
               'colour': 180,
               'contents': [
-                //{'kind': 'block', 'type': 'dropout_layer'},
+              {'kind': 'block', 'type': 'Dropout'},
               ],
             },
             {
@@ -558,11 +530,52 @@ export const toolbox = {
         {
           'kind': 'category',
           'name': 'Activation Functions',
+          'colour':230,
           'contents': [
+            {'kind': 'block', 'type': 'PReLU'},
+            {
+              'kind': 'block',
+              'type': 'celu_layer'
+            },
+            {
+              'kind': 'block',
+              'type': 'elu_layer'
+            },
+            {
+              'kind': 'block',
+              'type': 'gelu_layer'
+            },
+            {
+              'kind': 'block',
+              'type': 'glu_layer'
+            },
+            {
+              'kind': 'block',
+              'type': 'hard_sigmoid_layer'
+            },
+            {
+              'kind': 'block',
+              'type': 'hard_silu_layer'
+            },
             {'kind': 'block', 'type': 'sigmoid_layer'},
             {'kind': 'block', 'type': 'tanh_layer'},
             {'kind': 'block', 'type': 'relu_layer'},
-            {'kind': 'block', 'type': 'gelu_layer'},
+            {'kind': 'block', 'type': 'hard_tanh'},
+            {'kind': 'block', 'type': 'leaky_relu'},
+            {'kind': 'block', 'type': 'log_sigmoid'},
+            {'kind': 'block', 'type': 'log_softmax'},
+            {'kind': 'block', 'type': 'logsumexp'},
+            {'kind': 'block', 'type': 'one_hot'},
+            {'kind': 'block', 'type': 'selu'},
+            {'kind': 'block', 'type': 'sigmoid_layer'},
+            {'kind': 'block', 'type': 'silu'},
+            {'kind': 'block', 'type': 'soft_sign'},
+            {'kind': 'block', 'type': 'softmax'},
+            {'kind': 'block', 'type': 'softplus'},
+            {'kind': 'block', 'type': 'standardize'},
+            {'kind': 'block', 'type': 'swish'},
+
+
             // Add more activation functions as needed
           ],
         },
@@ -631,8 +644,6 @@ export const toolbox = {
           ],
         },
         // Add other blocks outside the subgroups as needed
-      ],
-    },
     {
       'kind': 'category',
       'name': 'Text',
@@ -1044,6 +1055,18 @@ export const toolbox = {
     {
       'kind': 'sep',
     },
+        {
+      'kind': 'category',
+      'name': 'Text',
+      'categorystyle': 'text_category',
+      'contents': [
+        {
+          'kind': 'block',
+          'type': 'string'
+        },
+
+      ]
+    },
     {
       'kind': 'category',
       'name': 'Functions',
@@ -1054,3 +1077,4 @@ export const toolbox = {
   ],
 
 };
+

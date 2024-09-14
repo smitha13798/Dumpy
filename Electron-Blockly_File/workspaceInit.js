@@ -16,6 +16,9 @@ const fs = require('fs');
 const path = require('path');
 // Utility function to add sub-options to a dropdown
 const editor = ace.edit("codeeditor");
+const editorCurrent = ace.edit('currentEditor');
+editorCurrent.setTheme("ace/theme/monokai");
+editorCurrent.session.setMode("ace/mode/python");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 
@@ -63,19 +66,109 @@ function appendBlockToFunction(functionBlock, blockToAppend) {
 let lastBlock = null;
 
 // Function to append a block to the workspace and manage connections
+
+function connectBlocksVertical(lastBlock,block){
+    if (lastBlock) {
+        // Ensure that connections are valid before attempting to connect
+        const lastBlockConnection = lastBlock.nextConnection;
+        const currentBlockConnection = block.previousConnection;
+        console.log("CONNECTING BLOCK TO BLOCK")
+        // Debugging: Check if connections exist
+        console.log('Last Block Connection:', lastBlockConnection);
+        console.log('Current Block Connection:', currentBlockConnection);
+
+        if (lastBlockConnection && currentBlockConnection) {
+            lastBlockConnection.connect(currentBlockConnection);
+        } else {
+            console.error('Connection points are not available for lastBlock.');
+        }
+    }
+}
+function isNumericString(str) {
+    // Try to convert the string to a number
+    return !isNaN(parseFloat(str)) && isFinite(str);
+}
+function connectBlocksHorizontaly(leftBlock,rightBlock){
+    const valueInput = leftBlock.getInput('VALUE');
+    const valueInputConnection = valueInput ? valueInput.connection : null;
+    const functionOutputConnection = rightBlock.outputConnection;
+
+    // Debugging: Check if connections exist
+    console.log('Value Input Connection:', valueInputConnection);
+    console.log('Function Output Connection:', functionOutputConnection);
+
+    if (valueInputConnection && functionOutputConnection) {
+        // Connect the variable block to the function block
+        valueInputConnection.connect(functionOutputConnection);
+
+    } else {
+        console.error('One or both connections are not available for variable block.');
+    }
+}
 function appendBlockToWorkspace(blockInfo) {
+
     // Create and configure the new block
-    let block = ws.newBlock(blockInfo.name);
+    let block= null;
+    if(blockInfo.name ==="Variable"){
+        var MultiVariable = [];
+        MultiVariable = blockInfo.assigned.split(',');
+        if(MultiVariable.length>0){
+            for(const element of MultiVariable) {
+                block = ws.newBlock('set_var');
+                block.setFieldValue(element,"SET_VARIABLE")
+
+                block.initSvg();
+                block.render();
+                if(blockInfo.parameters!==""){
+                    let assignmentValue =null;
+                    if(isNumericString(blockInfo.parameters)){
+
+                        assignmentValue = ws.newBlock('math_number');
+                        assignmentValue.setFieldValue(blockInfo.parameters,'NUM')
+                        assignmentValue.render()
+                        assignmentValue.initSvg();
+                        connectBlocksHorizontaly(block,assignmentValue)
+                    }
+                    else{
+                        assignmentValue = ws.newBlock('string');
+                        assignmentValue.setFieldValue(blockInfo.parameters,'VAR')
+                        assignmentValue.render()
+                        assignmentValue.initSvg();
+                        connectBlocksHorizontaly(block,assignmentValue)
+                    }
+
+                }
+
+                connectBlocksVertical(lastBlock,block)
+
+                // Update the lastBlock reference
+                lastBlock = block;
+
+
+                // Force a workspace update
+                ws.resizeContents();
+            }
+        }
+
+
+        return;
+    }
+    else{
+        block = ws.newBlock(blockInfo.name);
+    }
+
     let variableBlock = null;
 
     // If there's an assignment, create a variable block
-    if (blockInfo.assigned) {
+    if (blockInfo.assigned && blockInfo.name!=="Variable") {
         console.log("Creating variable assignment block");
         variableBlock = ws.newBlock('set_var');
         variableBlock.setFieldValue(blockInfo.assigned, 'SET_VARIABLE');
         variableBlock.initSvg();
         variableBlock.render();
+
     }
+
     let inputValue = blockInfo.parameters.toString();
     if (inputValue === "()") inputValue = "";
 
@@ -121,21 +214,7 @@ function appendBlockToWorkspace(blockInfo) {
     }
 
     // Connect to the previous lastBlock if applicable
-    if (lastBlock) {
-        // Ensure that connections are valid before attempting to connect
-        const lastBlockConnection = lastBlock.nextConnection;
-        const currentBlockConnection = block.previousConnection;
-        console.log("CONNECTING BLOCK TO BLOCK")
-        // Debugging: Check if connections exist
-        console.log('Last Block Connection:', lastBlockConnection);
-        console.log('Current Block Connection:', currentBlockConnection);
-
-        if (lastBlockConnection && currentBlockConnection) {
-            lastBlockConnection.connect(currentBlockConnection);
-        } else {
-            console.error('Connection points are not available for lastBlock.');
-        }
-    }
+    connectBlocksVertical(lastBlock,block)
 
     // Update the lastBlock reference
     lastBlock = block;
@@ -166,7 +245,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let editor = ace.edit("codeeditor");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/python");
-
+    let editorCurrent = ace.edit("currentEditor");
+    editorCurrent.setTheme("ace/theme/monokai");
+    editorCurrent.session.setMode("ace/mode/python")
     document.getElementById('loadFileButton').addEventListener('click', function() {
         const filePath = path.join('./projectsrc/projectskeleton2.py'); //Reads the generated file
         console.log("READING FILE")
@@ -176,7 +257,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Failed to load file:', err);
                 return;
             }
-            editor.setValue(data, -1);
+            editor.setValue("test", -1);
+            editorCurrent.setValue('test'-1)
+
         });
     });
 
@@ -199,13 +282,9 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             const index = document.getElementById('new-view-name').value.trim();
 
-
-
-
-
             buttonState = 0;
             const workspaceState = Blockly.serialization.workspaces.save(ws);
-            WorkspaceStates[select.length-1] = JSON.stringify(workspaceState);
+            WorkspaceStates[select.length] = JSON.stringify(workspaceState);
             let value = 0;
             if(select.length!==0){
                 value=select.length-1;
@@ -215,7 +294,11 @@ document.addEventListener('DOMContentLoaded', function () {
             currentWS  =value;
             ws.clear();
             select.value  = currentWS;
-            ipcRenderer.send('create-new-view', `${viewName}`,index);
+            ipcRenderer.send('create-new-view-with-index', `${viewName}`,index);
+            buttonState = 0;
+            document.getElementById('new-view-name').value = "";
+            document.getElementById('new-view-name').placeholder = 'Enter view name';
+
 
         }
     });
@@ -326,12 +409,93 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!e.isUiEvent && e.type !== Blockly.Events.FINISHED_LOADING && !ws.isDragging()) {
             runCode();
             document.getElementById('textarea').textContent = pythonGenerator.pythonGenerator.workspaceToCode(ws);
+
         }
     });
 
     const saveButton = document.getElementById('saveButton');
     saveButton.onclick = () => {
-        ipcRenderer.send('save-code-to-file', pythonGenerator.pythonGenerator.workspaceToCode(ws));
+
+
+
+        // Save current workspace state before switching
+        const workspaceState = Blockly.serialization.workspaces.save(ws);
+
+        WorkspaceStates[currentWS] = JSON.stringify(workspaceState);
+        var codeArray = [];
+        for(var i=0;i<WorkspaceStates.length;i++){
+
+            // Save current workspace state before switching
+
+
+            const workspaceStateString = WorkspaceStates[i];
+
+// Parse the state string back to a JSON object
+            const offScreenWs = new Blockly.Workspace();
+
+// Parse the state string back to a JSON object
+            const workspaceState = JSON.parse(workspaceStateString);
+// Load the workspace state into the off-screen workspace
+            Blockly.serialization.workspaces.load(workspaceState, offScreenWs);
+
+// Generate the code from the off-screen workspace
+            codeArray[i] = pythonGenerator.pythonGenerator.workspaceToCode(offScreenWs);
+
+// Dispose of the off-screen workspace to free up resources
+            offScreenWs.dispose();
+
+
+
+        }
+        document.getElementById('CreateHandle').style.display="none"
+        document.getElementById('saveButton').style.display="none"
+        document.getElementById('searchBox').style.display="none";
+        document.getElementById('textarea').style.display="none";
+        document.getElementById('progress').style.display="flex";
+        document.getElementById('blocklyDiv').style.display = "none";
+        document.getElementById('codeeditor').style.display = "none";
+        ipcRenderer.send('save-block-to-file',codeArray)
+
+
+
+        setTimeout(() => {
+            document.getElementById('')
+
+            document.getElementById('currentEditor').style.display = "flex";
+            document.getElementById('codeeditor').style.display = "flex";
+            document.getElementById('progress').style.display="absolute";
+            document.getElementById('progress').style.display="none";
+
+            const filePathOriginal = path.join('./projectsrc/projectsrc.py'); //Reads the generated file
+
+            fs.readFile(filePathOriginal, 'utf-8', (err, data) => {
+                console.log("reading...")
+                if (err) {
+                    console.error('Failed to load file:', err);
+                    return;
+                }
+                editorCurrent.setValue(data, -1);
+
+
+
+            });
+            ws.clear()
+            const filePathNew = path.join('./projectsrc/projectskeleton2.py'); //Reads the generated file
+
+            fs.readFile(filePathNew, 'utf-8', (err, data) => {
+                console.log("reading...")
+                if (err) {
+                    console.error('Failed to load file:', err);
+                    return;
+                }
+                editor.setValue(data, -1);
+
+
+
+            });
+        }, 2000); // 2000 milliseconds = 2 seconds
+
+
     };
 
     const viewList = document.getElementById('ViewList');
@@ -473,6 +637,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 if (currentScopeBlock === null) {
 
+
                     let select = document.getElementById('ViewList');
 
 
@@ -481,7 +646,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     WorkspaceStates[select.length - 1] = JSON.stringify(workspaceState);
                     let value = 0;
                     if (select.length !== 0) {
-                        console.log("Inserting at " + select.length)
+                        console.log("Inserting at " + select.length-1)
                         value = select.length - 1;
                     }
 
@@ -529,7 +694,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
         });
-        document.getElementById('CreateHandle').style.display="flex"
+            document.getElementById('CreateHandle').style.display="flex"
         document.getElementById('swap').style.display="flex"
 });
 
@@ -544,6 +709,8 @@ ipcRenderer.send('read-outputjson');
             return;
         }
         editor.setValue(data, -1);
+
+
         document.getElementById('CodeToBlock').style.display="none";
     });
 });

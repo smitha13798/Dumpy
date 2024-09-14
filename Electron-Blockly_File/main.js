@@ -65,11 +65,46 @@ app.whenReady().then(() => {
 
 });
 
+function insertCommentAtLine(filePath, viewName, lineIndex) {
+    try {
+        // Read the current content of the file
+        let content = fs.readFileSync(filePath, 'utf8');
+
+        // Split the content into an array of lines
+        let lines = content.split('\n');
+
+        // Create the comment to be inserted
+        const comment = `#${viewName}+\n#${viewName}-`;
+
+        // Insert the comment at the specified line index
+        if (lineIndex >= 0 && lineIndex <= lines.length) {
+            lines.splice(lineIndex, 0, comment);  // Insert the comment at the given index
+        } else {
+            console.error("Line index out of bounds");
+            return;
+        }
+
+        // Join the lines back together and write the modified content back to the file
+        const updatedContent = lines.join('\n');
+        fs.writeFileSync(filePath, updatedContent, 'utf8');
+
+        console.log(`Comment successfully inserted at line ${lineIndex}`);
+    } catch (err) {
+        console.error('Error while modifying the file:', err);
+    }
+}
+
+
 ipcMain.on('save-code-to-file', async (event, code) => {
     fs.writeFileSync(currentPath, code);
 });
 
-
+ipcMain.on('save-block-to-file', async (event, codeArray) => {
+    for (let i = 0; i < currentPath.length; i++) {
+        console.log("Saving " + codeArray[i] + " to "  + filePaths[i])
+        fs.writeFileSync(filePaths[i], codeArray[i]);
+    }
+});
 
 ipcMain.on('read-outputjson', (event) => {
     const functionNamesContent = fs.readFileSync('./output.json', 'utf8');
@@ -104,6 +139,16 @@ ipcMain.on('create-new-view', (event, viewName, index) => {
     fs.writeFileSync(filePath, '', 'utf8');
     event.sender.send('new-view-created', { message: `File created: ${viewName}`, viewName: viewName });
 });
+
+ipcMain.on('create-new-view-with-index', (event, viewName, index) => {
+    const filePath = `./generatedCode/${viewName}.py`;
+    filePaths.push(filePath);
+    fs.writeFileSync(filePath, '', 'utf8');
+    const filePath2 = './projectsrc/projectskeleton2.py';
+    insertCommentAtLine(filePath2, viewName, index);
+    event.sender.send('new-view-created', { message: `File created: ${viewName}`, viewName: viewName });
+});
+
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

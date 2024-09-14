@@ -588,6 +588,21 @@ const hard_sigmoid_layer = {
   "tooltip": "Applies the Hard Sigmoid activation function.",
   "helpUrl": ""
 };
+const silu = {
+  "type": "silu",
+  "message0": "Silu activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the Silu activation function.",
+  "helpUrl": ""
+};
 
 const hard_silu_layer = {
   "type": "hard_silu_layer",
@@ -604,9 +619,186 @@ const hard_silu_layer = {
   "tooltip": "Applies the Hard SiLU activation function.",
   "helpUrl": ""
 };
-
-
-
+const hard_tanh = {
+  "type": "hard_tanh",
+  "message0": "Hard Tanh activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the Hard Tanh activation function.",
+  "helpUrl": ""
+};
+const leaky_relu = {
+  "type": "leaky_relu",
+  "message0": "Leaky Relu activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the Leaky Relu activation function.",
+  "helpUrl": ""
+};
+const log_sigmoid = {
+  "type": "log_sigmoid",
+  "message0": "Log Sigmoid  activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the Log Sigmoid activation function.",
+  "helpUrl": ""
+};
+const one_hot = {
+  "type": "one_hot",
+  "message0": "one hot activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the one hot activation function.",
+  "helpUrl": ""
+};
+const selu = {
+  "type": "selu",
+  "message0": "selu activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the selu activation function.",
+  "helpUrl": ""
+};
+const soft_sign = {
+  "type": "soft_sign",
+  "message0": "soft sign activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the soft sign activation function.",
+  "helpUrl": ""
+};
+const softmax = {
+  "type": "softmax",
+  "message0": "softmax activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the softmax activation function.",
+  "helpUrl": ""
+};
+const softplus = {
+  "type": "softplus",
+  "message0": "softplus activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the softplus activation function.",
+  "helpUrl": ""
+};
+const standardize = {
+  "type": "standardize",
+  "message0": "standardize activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the standardize activation function.",
+  "helpUrl": ""
+};
+const swish = {
+  "type": "swish",
+  "message0": "swish activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the swish activation function.",
+  "helpUrl": ""
+};
+const log_softmax = {
+  "type": "log_softmax",
+  "message0": "Log softmax  activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the Log softmax activation function.",
+  "helpUrl": ""
+};
+const logsumexp = {
+  "type": "logsumexp",
+  "message0": "Log sumexp  activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Applies the Log sumexp activation function.",
+  "helpUrl": ""
+};
 const embed = {
   'type': 'embed',
   'message0': 'Embed with parameters %1 input %2',
@@ -908,7 +1100,21 @@ const relu = {
   "tooltip": "Apply ReLU activation",
   "helpUrl": ""
 };
-
+const PReLU = {
+  "type": "PReLU",
+  "message0": "PReLU activation %1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  "output": null,
+  "colour": 230,
+  "tooltip": "Apply PReLU activation",
+  "helpUrl": ""
+};
 const batchNorm = {
   "type": "batch_norm_layer",
   "message0": "Batch Normalization %1",
@@ -1124,7 +1330,7 @@ const makeattentionmask = {
 const averagePool = {
   "type": "avg_pool",
   "message0": "Average Pool with pool size %1",
- "args0": [
+  "args0": [
     {
       "type": "field_input",
       "name": "VAR",
@@ -1331,7 +1537,7 @@ const denseGeneralBlock = {
   'message0': 'DenseGeneral with parameters %1 input %2',
   'args0': [
     {
-        'type': 'field_input',
+      'type': 'field_input',
       'name': 'PARAMS',
       'text': ''  // Users input all parameters here
     },
@@ -1450,6 +1656,21 @@ const convTranspose = {
   'helpUrl': ''
 };
 
+const string = {
+  "type": "string",
+  "message0": "%1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR",
+      "variable": "Variable"
+    }
+  ],
+  'output': 'Variable',
+  'colour': 130,
+  'tooltip': 'Create a normal string with desired parameter',
+  'helpUrl': ''
+}
 
 
 
@@ -1458,13 +1679,25 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   celu_layer,elu_layer,gelu_layer,glu_layer,hard_sigmoid_layer,hard_silu_layer,embed,scanBlock,vmapBlock,tabulateBlock
   ,gelu,python_function, python_class, DataWrapperG, addText, AddVectors, generateRandome,conv,convLocal,convTranspose,
   flattenLayer, denseLayer, maxPoolLayer, relu, self, batchNorm,layernorm,groupnorm,RMSNorm,InstanceNorm,SpectralNorm,WeightNorm, averagePool, dropout, tanh, sigmoid, rnn_layer,
-  dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock,
-  splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock,
-  python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock,denseGeneralBlock,jitBlock,rematBlock,einsum,poolLayer,
+  dataBatchingBlock, dataLoaderBlock, dataselectionBlock, dataPreprocessingBlock, dataShufflingBlock, transformationsBlock,softmax,softplus,standardize,
+  splitDataBlock, lossFunctionBlock, optimizerBlock, trainingStepBlock, trainingLoopBlock, evaluationBlock,logsumexp,one_hot,selu,silu,soft_sign,
+  python_class_attribute, python_return, nn_compact, setVariableBlock, getVariableBlock,denseGeneralBlock,jitBlock,rematBlock,einsum,poolLayer,swish,
   Sequential,MultiHeadAttention,MultiHeadDotProductAttention,SelfAttention,DotProductAttention,DotProductAttentionWeights,makecausalmask,makeattentionmask,
-  RNNCellBase,LSTMCell,OptimizedLSTMCell,ConvLSTMCell,SimpleCell,GRUCell,MGUCell,Bidirectional,comment,dump
+  RNNCellBase,LSTMCell,OptimizedLSTMCell,ConvLSTMCell,SimpleCell,GRUCell,MGUCell,Bidirectional,comment,dump,PReLU, hard_tanh,leaky_relu,log_sigmoid,log_softmax,string
 
 ]);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

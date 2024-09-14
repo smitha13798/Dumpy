@@ -23,7 +23,7 @@
                 align-items: center;
             }
 
-            #blocklyDiv, #codeeditor, #textarea {
+            #blocklyDiv, #codeeditor, #textarea #currentEditor{
                 width: 90%;
             }
 
@@ -42,12 +42,16 @@
 </div>
 <div id="container">
     <div id="blocklyDiv"></div>
+    <div id = "currentEditor" style="display:none;
+height: 670px;"></div>
     <div id="codeeditor" style="height: 670px;">
 
     </div>
     <!-- Make sure this id matches in the script below -->
 
 </div>
+<i class="fa-solid fa-angles-right">test</i>
+<div class="loader" id="progress" style="display:none;" ></div>
 <button id="CodeToBlock" style="display:flex" class="minimal-save-btn">Generate blocks from src </button>
 <div id="CreateHandle">
     <input type="text" id="new-view-name" placeholder="Enter view name">
@@ -58,14 +62,12 @@
         <select id="ViewList" class="modern-select">
             <option disabled value="" selected>Select view...</option>
         </select>
-
-
 </div>
+
 
 <div id="textarea">Code comes here :)</div>
 <button id="saveButton" class="minimal-save-btn">Save code</button>
 <button id="loadFileButton" style="display:none">Load File</button>
-
 
 
 <script type="module" src="../workspaceInit.js"></script>
@@ -74,5 +76,6 @@
 <script src="./ace.js"></script>
 <script src="./theme-monokai.js"></script>
 <script src="./mode-python.js"></script>
+
 </body>
 </html>

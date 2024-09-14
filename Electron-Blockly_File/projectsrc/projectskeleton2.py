@@ -13,12 +13,38 @@ from flax.metrics import tensorboard
 from flax.training import train_state
 import jax
 import jax.numpy as jnp
-import ml_collections
+import ml_collectionsw
 import numpy as np
 import optax
 import tensorflow_datasets as tfds
 
 
+
+#CNN2+
+class CNN2(nn.Module):
+  def __call__(self, x):
+      # test
+      x = 5
+      y = 5
+      x = "5abc"
+      layer = nn.Conv((features=4, kernel_size=(3,), padding='VALID'))(x)
+
+      return y
+      ,0,0,0,0def test():
+      #
+      y = nn.Dense(feature=32, bias=True)
+
+      nn.gelu(3)
+      x = nn.relu(((x)))
+
+      x = nn.relu(((x)))
+
+      i = 10
+      x = nn.relu((x))
+
+      i = 20
+      return 10
+      ,0,0,0,0,0,0#CNN2-
 
 
 
@@ -38,28 +64,15 @@ import tensorflow_datasets as tfds
 
 
 #axel+
-#axel-
-
-
-
-class CNN2(nn.Module):
-  """A simple CNN model."""
-
-  @nn.compact
-  def __call__(self, x):
-
-
-    return y
-
-  def test():
+def axel():
     #
-    x = nn.Dense(feature=32, bias=True)
-
-    nn.gelu(3)
     x = nn.relu((x))
 
-    x = nn.relu((x))
-    return 10;
+    return 1337
+    ,0#axel-
+
+
+
 
 
 
@@ -67,24 +80,30 @@ class CNN2(nn.Module):
 
 
 #marvin+
-#marvin-
-#modelTest+
-#modelTest-
-#CNN2+
-#CNN2-
-
-
-
-
-
-
-
 def marvin():
-  #
+    #
+    x = nn.relu((x))
 
-  x = nn.relu(x)
-  return 153;
+    return 10
+    ,0#marvin-
+#modelTest+
+def modelTest(self):
+    #
+    nn.gelux
+    return self
+#modelTest-
 
-  def modelTest(self):
-    nn.gelu();
-    return self;
+
+  def zwei():
+    #
+
+    y = nn.Dense(feature=32, bias=True)
+    nn.gelu(3)
+    x = nn.relu((x))
+    nn.nope()
+    x = nn.relu((x))
+    i=10;
+    while(i!=0):
+      x = nn.relu(x)
+      i=20
+    return 10;

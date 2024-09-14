@@ -1,89 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Electron Blockly Application</title>
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    style-src 'self' 'unsafe-inline';
-    img-src 'self' https://blockly-demo.appspot.com/static/media/;
-    media-src 'self' https://blockly-demo.appspot.com/static/media/;
-    script-src 'self'">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    #blocklyDiv {
-      height: 900px;
-      width: 900px;
-      border: 1px solid #aaa;
-    }
-  </style>
-  <style>
-    #textarea {
-      white-space: pre-wrap;
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-top: 20px;
-    }
+<style>
+#accordion {
+    height:500px;
+}
+.ace_editor {
+    width:600px;
+    height:300px;
+}
+</style>
 
-    #ViewList {
-      margin-left: 20px;
+<script>
+$(function() {
+    var editor1 = ace.edit("editor1");
+    editor1.getSession().setMode("ace/mode/java");
+
+
+    var editor2 = ace.edit("editor2");
+    var editor3 = ace.edit("editor3");
+    $( "#accordion" ).accordion({
+        fillSpace: true,
+        change: function() {
+            $(editor1).resize();
+            $(editor2).resize();
+            $(editor3).resize();
+        }
+        });
+
+    //work
+    editor1.getSession().on('change', function(e) {
+         $('.ace_identifier').css("background-color","black");
+    });
+
+
+});
+
+</script>
+
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/south-street/jquery-ui.css" type="text/css" media="all">
+<script src="http://ace.ajax.org/build/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<div id="accordion">
+    <h3><a href="#">Section 1</a></h3>
+    <div>
+        <div class="myeditor" id="editor1">public class InfiniteLoop {
+
+
     }
-  </style>
-</head>
-<body>
-<h1>FlaxBlocks</h1>
-<div id="blocklyDiv"></div>
-<h3 id="textarea">Code comes here :)</h3>
-<button id="saveButton">Save code</button>
-<button class="fa fa-exchange" id="swap" aria-hidden="true">Clear Workspace</button>
-<button id="CodeToBlock" style="display:flex">Generate blocks from src </button>
-<div id="CreateHandle">
-  <input type="text" id="new-view-name" placeholder="Enter view name">
-  <button id="createNewView">Create New View</button>
+}</div>
+    </div>
+    <h3><a href="#">Section 2</a></h3>
+    <div>
+        <div class="myeditor" id="editor2" style="height: 250px; width: 500px">some text 2</div>
+    </div>
+    <h3><a href="#">Section 3</a></h3>
+    <div>
+        <div class="myeditor" id="editor3" style="height: 250px; width: 500px">some text 2</div>
+    </div>
 </div>
-<div id="optionWrapper">
-  <label for="ViewList"></label>
-  <select id="ViewList">
-    <option value="---" disabled="disabled"  selected="selected">Choose scope</option>
-
-  </select>
-
-  <label for="subViewList"></label>
-  <select id="subViewList" size="1"></select>
-</div>
-<script type="module" src="../workspaceInit.js"></script>
-
-</body>
-</html>
-#ViewList{
-height:50%
-}
-
-
-#blocklyDiv {
-height: 480px;
-width: 600px;
-border: 1px solid #aaa; /* Added a border to make the Blockly area visible */
-}
-
-#textarea {
-white-space: pre-wrap;
-border: 1px solid #ccc;
-padding: 10px;
-margin-top: 20px;
-}
-
-#ViewList {
-margin-left: 20px;
-}
-
-#subViewList {
-margin-left: 10px;
-display: none;
-}
-
-
-#CreateHandle{
-display: flex;
-margin-left:40%;
-}

@@ -28,6 +28,14 @@ def write_file(file_path, content):
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(content)
 
+def is_simple_value(node):
+    """
+    Checks if the given node represents a simple value like a number or a string.
+    This ensures we're only capturing basic assignments like `x = 5` or `x = "hello"`.
+    """
+    return node.type in {"integer", "float", "string", "true", "false", "none"}
+
+
 # Use the file path defined above to read the file
 src = read_file(src_file_to_copy)
 
@@ -131,6 +139,7 @@ def find_functions_and_calls(root_node):
                     global_entry['functions'].append(function_data)
 
         # Detect and handle function calls
+
         if node.type == "call":
             called_function_node = node.child_by_field_name("function")
             if called_function_node:
@@ -175,6 +184,50 @@ def find_functions_and_calls(root_node):
                                 class_entry['translate'] = False
                             else:
                                 global_entry['translate'] = False
+        if node.type == "assignment":
+            # Extract the left-hand side (variable) and right-hand side (value) of the assignment
+            assigned_variable_node = node.child_by_field_name("left")
+            assigned_value_node = node.child_by_field_name("right")
+
+            if assigned_variable_node and assigned_value_node:
+                # Extract the assigned variable name and assigned value
+                variable_name = src[assigned_variable_node.start_byte:assigned_variable_node.end_byte].strip()
+                assigned_value = src[assigned_value_node.start_byte:assigned_value_node.end_byte].strip()
+
+                # Check if the right-hand side is a simple value (not a function call, object method, or complex expression)
+                if is_simple_value(assigned_value_node):
+                    # Capture the row number (index) where the assignment occurs
+                    row_number = node.start_point[0] + 1  # Tree-sitter uses 0-indexed lines
+
+                    # Create a variable assignment "call" with the specified structure
+                    variable_assignment_call = {
+                        'function': "Variable",  # 'function' is always set to "Variable"
+                        'parameters': assigned_value,  # 'parameters' holds the assigned value
+                        'assigned': variable_name,  # 'assigned' holds the variable name
+                        'index': row_number  # Line number where the assignment occurs
+                    }
+
+                    # Find the current function or global scope to insert the variable assignment into
+                    if current_class:
+                        class_entry = next((item for item in scope_data if item["scope"] == current_class), None)
+                        if class_entry:
+                            current_function = next(
+                                (f for f in class_entry['functions'] if f['functionName'] == current_scope),
+                                None)
+                    else:
+                        global_entry = next((item for item in scope_data if item["scope"] == "global"), None)
+                        if global_entry:
+                            current_function = next(
+                                (f for f in global_entry['functions'] if f['functionName'] == current_scope), None)
+
+                    # Append the variable assignment to the functionCalls list in the current function or global scope
+                    if current_function:
+                        current_function['functionCalls'].append(variable_assignment_call)
+
+                    # If it's in global scope
+                    elif current_class is None and current_scope is None:
+                        if global_entry:
+                            global_entry['functionCalls'].append(variable_assignment_call)
 
         # Traverse all children
         for child in node.children:

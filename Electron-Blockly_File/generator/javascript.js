@@ -223,9 +223,9 @@ pythonGenerator.forBlock['nn_compact'] = function(block) {
 };
 pythonGenerator.forBlock['set_var'] = function(block) {
     var variable = block.getFieldValue('SET_VARIABLE');
-    const value = pythonGenerator.valueToCode(block, 'VALUE', Order.NONE);
-    return `${variable} = ${value}\n`;
-    //return [`${variable} = ${value}`,Order.ATOMIC]
+    const value = pythonGenerator.valueToCode(block, 'VALUE', Order.NONE)||"''";
+    //return `${variable} = ${value}\n`;
+    return [`${variable} = ${value}\n`,Order.ATOMIC]
 };
 pythonGenerator.forBlock['get_variable'] = function(block) {
     const variableName = block.getFieldValue('VARIABLE_NAME');
@@ -237,7 +237,72 @@ pythonGenerator.forBlock['relu'] = function(block, generator) {
     const code = `nn.relu(${variableName})\n`;
     return [code, Order.ATOMIC];
 };
+pythonGenerator.forBlock['PReLU'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.PReLU(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['hard_tanh'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.hard_tanh(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['leaky_relu'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.leaky_relu(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['log_sigmoid'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.log_sigmoid(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['log_softmax'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.log_softmax(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['soft_sign'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.soft_sign(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['softmax'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.softmax(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['softplus'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.softplus(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['standardize'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.standardize(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['swish'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.swish(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
 
+pythonGenerator.forBlock['logsumexp'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.logsumexp(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['one_hot'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.one_hot(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
+pythonGenerator.forBlock['selu'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.one_hot(${variableName})\n`;
+    return [code, Order.ATOMIC];
+};
 pythonGenerator.forBlock['celu_layer'] = function(block, generator) {
     const variableName = block.getFieldValue( 'VAR') || 'x';
     const code = `nn.celu(${variableName})\n`;
@@ -488,6 +553,12 @@ pythonGenerator.forBlock['sigmoid_layer'] = function(block, generator) {
     return [code, Order.ATOMIC];
 
 };
+pythonGenerator.forBlock['silu'] = function(block, generator) {
+    const variableName = block.getFieldValue( 'VAR') || 'x';
+    const code = `nn.silu(${variableName})\n`;
+    return [code, Order.ATOMIC];
+
+};
 
 pythonGenerator.forBlock['rnn_layer'] = function(block, generator) {
     const units = block.getFieldValue('UNITS');
@@ -586,7 +657,13 @@ pythonGenerator.forBlock['Conv'] = function(block, generator) {
     return [code, Order.ATOMIC];
 
 };
+pythonGenerator.forBlock['string'] = function(block, generator) {
 
+    const text = block.getFieldValue( 'VAR');
+
+    return [text, Order.ATOMIC];
+
+};
 
 
 
