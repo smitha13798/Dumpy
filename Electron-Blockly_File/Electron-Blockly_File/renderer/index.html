@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Electron Blockly Application</title>
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' https://blockly-demo.appspot.com/static/media/ data:;
+    media-src 'self' https://blockly-demo.appspot.com/static/media/;
+    script-src 'self';
+">
+
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+
+        /* To ensure the layout is responsive */
+        @media (max-width: 1200px) {
+            #container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #blocklyDiv, #codeeditor, #textarea #currentEditor{
+                width: 90%;
+            }
+
+            #textarea {
+                margin-top: 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<h1>FlaxBlocks</h1>
+<div>
+    <input type="text" id="searchBox" placeholder="Search for a block..." style="margin-bottom: 10px; width: 50%;">
+    <div id="searchResults"></div>
+</div>
+<div id="container">
+    <div id="blocklyDiv"></div>
+    <div id = "currentEditor" style="display:none;
+height: 670px;"></div>
+    <div id="codeeditor" style="height: 670px;">
+
+    </div>
+    <!-- Make sure this id matches in the script below -->
+
+</div>
+
+<div class="loader" id="progress" style="display:none;" ></div>
+<button id="CodeToBlock" style="display:none" class="minimal-save-btn">Generate blocks from src </button>
+<div id="CreateHandle">
+    <input type="text" id="new-view-name" placeholder="Enter view name">
+
+    <button id="createNewView" class="minimal-save-btn">Create New View</button>
+    <button class="minimal-save-btn" id="swap">Clear Workspace</button>
+
+        <label for="ViewList"></label>
+        <select id="ViewList" class="modern-select">
+            <option disabled value="" selected>Select view...</option>
+        </select>
+
+</div>
+<button id="loadFileButton" class="minimal-save-btn">Load File</button>
+
+<div id="textarea">Code comes here :)</div>
+<button id="saveButton" class="minimal-save-btn" style="display: none">Show changes</button>
+
+<button id="replace" class="minimal-save-btn" style="display:none;
+position: absolute;
+left:20%;
+margin-top: 20px;
+">Submit</button>
+<button id="discard" class="minimal-save-btn" style="display:none;
+position: absolute;
+left:33%;
+margin-top:30px">Discard</button>
+
+    <!-- Hidden input that allows the user to select a file -->
+
+
+    <!-- Placeholder to display selected file path -->
+
+
+
+<script type="module" src="../workspaceInit.js"></script>
+
+<!-- Ace Editor Script -->
+<script src="./ace.js"></script>
+<script src="./theme-monokai.js"></script>
+<script src="./mode-python.js"></script>
+
+</body>
+</html>

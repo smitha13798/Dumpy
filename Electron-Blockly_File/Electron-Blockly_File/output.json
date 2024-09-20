@@ -1,0 +1,564 @@
+[
+    {
+        "scope": "CNN",
+        "attributes": [],
+        "class_declaration": [
+            {
+                "function": "Declaration",
+                "parameters": "@nn.compact",
+                "assigned": 25
+            }
+        ],
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [
+                    {
+                        "function": "Conv",
+                        "parameters": "(features=32, kernel_size=(3, 3))(x)",
+                        "assigned": "x",
+                        "index": 30
+                    },
+                    {
+                        "function": "Conv",
+                        "parameters": "(features=32, kernel_size=(3, 3))",
+                        "assigned": "x",
+                        "index": 30
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 31
+                    },
+                    {
+                        "function": "python_loop",
+                        "parameters": "arr",
+                        "assigned": "i",
+                        "index": 32,
+                        "functionCallsLoop": [
+                            {
+                                "function": "Conv",
+                                "parameters": "(features=64, kernel_size=(3, 3))(x)",
+                                "assigned": "x",
+                                "index": 33
+                            },
+                            {
+                                "function": "Conv",
+                                "parameters": "(features=64, kernel_size=(3, 3))",
+                                "assigned": "x",
+                                "index": 33
+                            },
+                            {
+                                "function": "relu",
+                                "parameters": "(x)",
+                                "assigned": "x",
+                                "index": 34
+                            },
+                            {
+                                "function": "relu",
+                                "parameters": "(x)",
+                                "assigned": "x",
+                                "index": 35
+                            }
+                        ]
+                    },
+                    {
+                        "function": "reshape",
+                        "parameters": "((x.shape[0], -1))",
+                        "assigned": "x",
+                        "index": 36
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=256)(x)",
+                        "assigned": "x",
+                        "index": 37
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=256)",
+                        "assigned": "x",
+                        "index": 37
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 38
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=64)(x)",
+                        "assigned": "x",
+                        "index": 39
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=64)",
+                        "assigned": "x",
+                        "index": 39
+                    }
+                ],
+                "scope": "CNN",
+                "row": "29",
+                "returns": "x",
+                "translate": true,
+                "start_byte": 507,
+                "end_byte": 910
+            }
+        ],
+        "translate": true,
+        "row_number": 25,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 434,
+        "end_byte": 910
+    },
+    {
+        "scope": "FunctionTypeEncoder",
+        "attributes": [
+            {
+                "function": "member",
+                "parameters": "int",
+                "assigned": "vocab_size",
+                "index": 42
+            },
+            {
+                "function": "member",
+                "parameters": "int",
+                "assigned": "embed_dim",
+                "index": 42
+            }
+        ],
+        "class_declaration": [],
+        "functions": [
+            {
+                "functionName": "setup",
+                "parameters": "(self)",
+                "functionCalls": [
+                    {
+                        "function": "Embed",
+                        "parameters": "(num_embeddings=self.vocab_size, features=self.embed_dim)",
+                        "assigned": "self.embedding",
+                        "index": 48
+                    }
+                ],
+                "scope": "FunctionTypeEncoder",
+                "row": "46",
+                "returns": null,
+                "translate": true,
+                "start_byte": 998,
+                "end_byte": 1149
+            },
+            {
+                "functionName": "__call__",
+                "parameters": "(self, function_type_ids)",
+                "functionCalls": [
+                    {
+                        "function": "cheatblock",
+                        "parameters": "return self.embedding(function_type_ids)",
+                        "assigned": "",
+                        "index": 51
+                    }
+                ],
+                "scope": "FunctionTypeEncoder",
+                "row": "50",
+                "returns": "self.embedding(function_type_ids)",
+                "translate": true,
+                "start_byte": 1159,
+                "end_byte": 1246
+            }
+        ],
+        "translate": true,
+        "row_number": 42,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 912,
+        "end_byte": 1246
+    },
+    {
+        "scope": "FunctionTypeDecoder",
+        "attributes": [
+            {
+                "function": "member",
+                "parameters": "int",
+                "assigned": "vocab_size",
+                "index": 54
+            },
+            {
+                "function": "member",
+                "parameters": "int",
+                "assigned": "embed_dim",
+                "index": 54
+            }
+        ],
+        "class_declaration": [],
+        "functions": [
+            {
+                "functionName": "setup",
+                "parameters": "(self)",
+                "functionCalls": [
+                    {
+                        "function": "Dense",
+                        "parameters": "(self.vocab_size)",
+                        "assigned": "self.dense1",
+                        "index": 60
+                    }
+                ],
+                "scope": "FunctionTypeDecoder",
+                "row": "58",
+                "returns": null,
+                "translate": true,
+                "start_byte": 1339,
+                "end_byte": 1464
+            },
+            {
+                "functionName": "__call__",
+                "parameters": "(self, embeddings)",
+                "functionCalls": [
+                    {
+                        "function": "cheatblock",
+                        "parameters": "logits = self.dense1(embeddings)",
+                        "assigned": "logits",
+                        "index": 63
+                    }
+                ],
+                "scope": "FunctionTypeDecoder",
+                "row": "62",
+                "returns": "logits",
+                "translate": true,
+                "start_byte": 1474,
+                "end_byte": 1568
+            }
+        ],
+        "translate": true,
+        "row_number": 54,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 1253,
+        "end_byte": 1568
+    },
+    {
+        "scope": "FunctionTypeModel",
+        "attributes": [
+            {
+                "function": "member",
+                "parameters": "int",
+                "assigned": "vocab_size",
+                "index": 67
+            },
+            {
+                "function": "member",
+                "parameters": "int",
+                "assigned": "embed_dim",
+                "index": 67
+            }
+        ],
+        "class_declaration": [],
+        "functions": [
+            {
+                "functionName": "setup",
+                "parameters": "(self)",
+                "functionCalls": [
+                    {
+                        "function": "Variable",
+                        "parameters": "FunctionTypeEncoder((self.vocab_size, self.embed_dim))",
+                        "assigned": "self.encoder",
+                        "index": 72
+                    },
+                    {
+                        "function": "Variable",
+                        "parameters": "FunctionTypeDecoder((self.vocab_size, self.embed_dim))",
+                        "assigned": "self.decoder",
+                        "index": 73
+                    }
+                ],
+                "scope": "FunctionTypeModel",
+                "row": "71",
+                "returns": null,
+                "translate": true,
+                "start_byte": 1651,
+                "end_byte": 1819
+            },
+            {
+                "functionName": "__call__",
+                "parameters": "(self, function_type_ids)",
+                "functionCalls": [
+                    {
+                        "function": "cheatblock",
+                        "parameters": "embeddings = self.encoder(function_type_ids)",
+                        "assigned": "embeddings",
+                        "index": 76
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "logits = self.decoder(embeddings)",
+                        "assigned": "logits",
+                        "index": 77
+                    }
+                ],
+                "scope": "FunctionTypeModel",
+                "row": "75",
+                "returns": "logits",
+                "translate": true,
+                "start_byte": 1825,
+                "end_byte": 1980
+            }
+        ],
+        "translate": true,
+        "row_number": 67,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 1571,
+        "end_byte": 1980
+    },
+    {
+        "scope": "TrainState",
+        "attributes": [
+            {
+                "function": "member",
+                "parameters": "Metrics",
+                "assigned": "metrics",
+                "index": 84
+            }
+        ],
+        "class_declaration": [],
+        "functions": [],
+        "translate": true,
+        "row_number": 84,
+        "parameters": "",
+        "base_classes": "(train_state.TrainState)",
+        "start_byte": 1986,
+        "end_byte": 2048
+    },
+    {
+        "scope": "MLP",
+        "attributes": [
+            {
+                "function": "member",
+                "parameters": "int",
+                "assigned": "out_dims",
+                "index": 90
+            }
+        ],
+        "class_declaration": [
+            {
+                "function": "Declaration",
+                "parameters": "@nn.compact",
+                "assigned": 90
+            }
+        ],
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [
+                    {
+                        "function": "reshape",
+                        "parameters": "((x.shape[0], -1))",
+                        "assigned": "x",
+                        "index": 95
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(128)(y)",
+                        "assigned": "x",
+                        "index": 96
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(128)",
+                        "assigned": "x",
+                        "index": 96
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 97
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(self.out_dims)(y)",
+                        "assigned": "x",
+                        "index": 98
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(self.out_dims)",
+                        "assigned": "x",
+                        "index": 98
+                    }
+                ],
+                "scope": "MLP",
+                "row": "94",
+                "returns": "x",
+                "translate": true,
+                "start_byte": 2160,
+                "end_byte": 2389
+            }
+        ],
+        "translate": true,
+        "row_number": 90,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 2053,
+        "end_byte": 2389
+    },
+    {
+        "scope": "global",
+        "functions": [
+            {
+                "functionName": "test_rnn",
+                "parameters": "()",
+                "functionCalls": [
+                    {
+                        "function": "Variable",
+                        "parameters": "SimpleRNN((input_size=28*28, hidden_size=128, num_layers=3, output_size=10))",
+                        "assigned": "model",
+                        "index": 105
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "x = jax.random.normal(jax.random.PRNGKey(0), (64, 784, 1))",
+                        "assigned": "x",
+                        "index": 106
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "(jax.random.PRNGKey(0), (64, 784, 1))",
+                        "assigned": "x",
+                        "index": 106
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "vals = jax.random.normal(jax.random.PRNGKey(1), (64, 784, 783))",
+                        "assigned": "vals",
+                        "index": 107
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "(jax.random.PRNGKey(1), (64, 784, 783))",
+                        "assigned": "vals",
+                        "index": 107
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "x = jnp.concatenate([x, vals], axis=-1)",
+                        "assigned": "x",
+                        "index": 108
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "variables = model.init(jax.random.PRNGKey(0), x)",
+                        "assigned": "variables",
+                        "index": 109
+                    },
+                    {
+                        "function": "cheatblock",
+                        "parameters": "(jax.random.PRNGKey(0), x)",
+                        "assigned": "variables",
+                        "index": 109
+                    },
+                    {
+                        "function": "apply",
+                        "parameters": "(variables, x)",
+                        "assigned": "out",
+                        "index": 110
+                    },
+                    {
+                        "function": "Variable",
+                        "parameters": "out.shape",
+                        "assigned": "xshape",
+                        "index": 111
+                    },
+                    {
+                        "function": "Variable",
+                        "parameters": "test_rnn(())",
+                        "assigned": "testx, xdims",
+                        "index": 115
+                    }
+                ],
+                "scope": "global",
+                "row": "104",
+                "returns": "x, xshape",
+                "translate": true,
+                "start_byte": 2398,
+                "end_byte": 2808
+            }
+        ],
+        "translate": false
+    },
+    {
+        "scope": "ExplicitMLP",
+        "attributes": [
+            {
+                "function": "member",
+                "parameters": "Sequence[int]",
+                "assigned": "features",
+                "index": 118
+            }
+        ],
+        "class_declaration": [],
+        "functions": [
+            {
+                "functionName": "setup",
+                "parameters": "(self)",
+                "functionCalls": [
+                    {
+                        "function": "Dense",
+                        "parameters": "(feat)",
+                        "assigned": "self.layers",
+                        "index": 123
+                    }
+                ],
+                "scope": "ExplicitMLP",
+                "row": "121",
+                "returns": null,
+                "translate": true,
+                "start_byte": 2936,
+                "end_byte": 3170
+            },
+            {
+                "functionName": "__call__",
+                "parameters": "(self, inputs)",
+                "functionCalls": [
+                    {
+                        "function": "python_loop",
+                        "parameters": "enumerate(self.layers)",
+                        "assigned": "i, lyr",
+                        "index": 129,
+                        "functionCallsLoop": [
+                            {
+                                "function": "Variable",
+                                "parameters": "lyr((x))",
+                                "assigned": "x",
+                                "index": 130
+                            },
+                            {
+                                "function": "relu",
+                                "parameters": "(x)",
+                                "assigned": "x",
+                                "index": 132
+                            }
+                        ]
+                    }
+                ],
+                "scope": "ExplicitMLP",
+                "row": "127",
+                "returns": "x",
+                "translate": true,
+                "start_byte": 3174,
+                "end_byte": 3347
+            }
+        ],
+        "translate": true,
+        "row_number": 118,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 2877,
+        "end_byte": 3347
+    }
+]

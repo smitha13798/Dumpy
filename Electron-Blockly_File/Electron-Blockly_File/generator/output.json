@@ -1,0 +1,302 @@
+[
+    {
+        "scope": "CNN",
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self, x)",
+                "functionCalls": [
+                    {
+                        "function": "Conv",
+                        "parameters": "(features=32, kernel_size=(3, 3))(x)",
+                        "assigned": "x",
+                        "index": 30
+                    },
+                    {
+                        "function": "Conv",
+                        "parameters": "(features=32, kernel_size=(3, 3))",
+                        "assigned": "x",
+                        "index": 30
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 31
+                    },
+                    {
+                        "function": "avg_pool",
+                        "parameters": "(x, window_shape=(2, 2), strides=(2, 2))",
+                        "assigned": "x",
+                        "index": 32
+                    },
+                    {
+                        "function": "Conv",
+                        "parameters": "(features=64, kernel_size=(3, 3))(x)",
+                        "assigned": "x",
+                        "index": 33
+                    },
+                    {
+                        "function": "Conv",
+                        "parameters": "(features=64, kernel_size=(3, 3))",
+                        "assigned": "x",
+                        "index": 33
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 34
+                    },
+                    {
+                        "function": "avg_pool",
+                        "parameters": "(x, window_shape=(2, 2), strides=(2, 2))",
+                        "assigned": "x",
+                        "index": 35
+                    },
+                    {
+                        "function": "reshape",
+                        "parameters": "((x.shape[0], -1))",
+                        "assigned": "x",
+                        "index": 36
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=256)(x)",
+                        "assigned": "x",
+                        "index": 37
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=256)",
+                        "assigned": "x",
+                        "index": 37
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 38
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=10)(x)",
+                        "assigned": "x",
+                        "index": 39
+                    },
+                    {
+                        "function": "Dense",
+                        "parameters": "(features=10)",
+                        "assigned": "x",
+                        "index": 39
+                    }
+                ],
+                "scope": "CNN",
+                "row": "29",
+                "returns": "x",
+                "translate": true,
+                "start_byte": 501,
+                "end_byte": 931
+            }
+        ],
+        "translate": true,
+        "row_number": 25,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 434,
+        "end_byte": 931
+    },
+    {
+        "scope": "global",
+        "functions": [
+            {
+                "functionName": "Deniz",
+                "parameters": "(test)",
+                "functionCalls": [
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 54
+                    },
+                    {
+                        "function": "python_loop",
+                        "parameters": "arr",
+                        "assigned": "element",
+                        "index": 56,
+                        "functionCallsLoop": [
+                            {
+                                "function": "relu",
+                                "parameters": "(x)",
+                                "assigned": "x",
+                                "index": 58
+                            },
+                            {
+                                "function": "relu",
+                                "parameters": "(x)",
+                                "assigned": "x",
+                                "index": 60
+                            }
+                        ]
+                    },
+                    {
+                        "function": "relu",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 62
+                    }
+                ],
+                "scope": "global",
+                "row": "52",
+                "returns": "5",
+                "translate": true,
+                "start_byte": 943,
+                "end_byte": 1100
+            },
+            {
+                "functionName": "koray",
+                "parameters": "(test)",
+                "functionCalls": [
+                    {
+                        "function": "relu",
+                        "parameters": "((x))",
+                        "assigned": "x",
+                        "index": 83
+                    },
+                    {
+                        "function": "gelu",
+                        "parameters": "(3)",
+                        "assigned": "",
+                        "index": 85
+                    },
+                    {
+                        "function": "gelu",
+                        "parameters": "(4)",
+                        "assigned": "",
+                        "index": 86
+                    },
+                    {
+                        "function": "python_loop",
+                        "parameters": "arr",
+                        "assigned": "element",
+                        "index": 87,
+                        "functionCallsLoop": [
+                            {
+                                "function": "relu",
+                                "parameters": "(x)",
+                                "assigned": "x",
+                                "index": 89
+                            },
+                            {
+                                "function": "relu",
+                                "parameters": "(x)",
+                                "assigned": "x",
+                                "index": 91
+                            }
+                        ]
+                    }
+                ],
+                "scope": "global",
+                "row": "81",
+                "returns": "15",
+                "translate": true,
+                "start_byte": 1202,
+                "end_byte": 1372
+            },
+            {
+                "functionName": "changedDEMO",
+                "parameters": "(a)",
+                "functionCalls": [
+                    {
+                        "function": "python_loop",
+                        "parameters": "arr2",
+                        "assigned": "element",
+                        "index": 97,
+                        "functionCallsLoop": [
+                            {
+                                "function": "gelu",
+                                "parameters": "(3)",
+                                "assigned": "",
+                                "index": 99
+                            },
+                            {
+                                "function": "gelu",
+                                "parameters": "(4)",
+                                "assigned": "",
+                                "index": 100
+                            }
+                        ]
+                    }
+                ],
+                "scope": "global",
+                "row": "95",
+                "returns": "15",
+                "translate": true,
+                "start_byte": 1374,
+                "end_byte": 1486
+            },
+            {
+                "functionName": "koray2",
+                "parameters": "(test)",
+                "functionCalls": [
+                    {
+                        "function": "python_loop",
+                        "parameters": "arr2",
+                        "assigned": "element",
+                        "index": 129,
+                        "functionCallsLoop": [
+                            {
+                                "function": "gelu",
+                                "parameters": "(3)",
+                                "assigned": "",
+                                "index": 131
+                            },
+                            {
+                                "function": "gelu",
+                                "parameters": "(4)",
+                                "assigned": "",
+                                "index": 132
+                            }
+                        ]
+                    }
+                ],
+                "scope": "global",
+                "row": "127",
+                "returns": "15",
+                "translate": true,
+                "start_byte": 1530,
+                "end_byte": 1640
+            }
+        ],
+        "translate": false
+    },
+    {
+        "scope": "StartTest",
+        "functions": [
+            {
+                "functionName": "__call__",
+                "parameters": "(self,x)",
+                "functionCalls": [
+                    {
+                        "function": "PReLU",
+                        "parameters": "(x)",
+                        "assigned": "x",
+                        "index": 71
+                    }
+                ],
+                "scope": "StartTest",
+                "row": "70",
+                "returns": "x",
+                "translate": false,
+                "start_byte": 1135,
+                "end_byte": 1194
+            }
+        ],
+        "translate": false,
+        "row_number": 69,
+        "parameters": "",
+        "base_classes": "(nn.Module)",
+        "start_byte": 1105,
+        "end_byte": 1194
+    }
+]
