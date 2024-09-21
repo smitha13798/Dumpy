@@ -15,25 +15,6 @@ from torch.utils.data import DataLoader
 
 #Encoder+
 #Encoder+
-class Encoder(nn.Module):
-  #
-  latent_dim : int
-  @nn.compact
-  def __call__(self, x):
-      # TODO CHANGED
-      x = nn.Conv(features=32, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(x)
-
-      x = nn.relu(x)
-
-      x = nn.Conv(features=64, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(x)
-
-      x = nn.relu(x)
-
-      x = x.reshape(x.shape[0], -1)
-
-      x = nn.Dense(features=self.latent_dim)(x)
-
-      return x
 #Encoder-
 
 #Encoder-
@@ -43,25 +24,6 @@ class Encoder(nn.Module):
 
 #Decoder+
 #Decoder+
-class Decoder(nn.Module):
-  #
-  latent_dim : int
-  @nn.compact
-  def __call__(self, z):
-      #
-      z = nn.Dense(features=7*7*64)(z)
-
-      z = z.reshape(z.shape[0], 7, 7, 64)
-
-      z = nn.ConvTranspose(features=32, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(z)
-
-      z = nn.relu(z)
-
-      z = nn.ConvTranspose(features=1, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(z)
-
-      z = nn.sigmoid(z)
-
-      return z
 #Decoder-
 
 #Decoder-
@@ -112,9 +74,6 @@ def loss_fn(params, apply_fn, batch):
 @jax.jit
 #eval_step+
 #eval_step+
-def eval_step(state, batch):
-    #
-    return state.apply_fn({"params": state.params}, batch)
 #eval_step-
 
 #eval_step-
