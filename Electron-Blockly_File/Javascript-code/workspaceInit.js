@@ -1,32 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: workspaceInit.js</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Source: workspaceInit.js</h1>
-
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>
 //workspaceInit.js
 /**
  * @file This is a utility file for creating and connecting blocks
@@ -80,13 +52,13 @@ function appendBlockToClass(classBlock, blockToAppend) {
     const methodsInput = classBlock.getInput('METHODS');
 
     // Check if the 'METHODS' input and its connection exist
-    if (methodsInput &amp;&amp; methodsInput.connection) {
+    if (methodsInput && methodsInput.connection) {
         // Get the current connected block (the last method in the class)
         let lastMethodBlock = methodsInput.connection.targetBlock();
 
         if (lastMethodBlock) {
             // Traverse to the last connected method in the chain
-            while (lastMethodBlock.nextConnection &amp;&amp; lastMethodBlock.nextConnection.isConnected()) {
+            while (lastMethodBlock.nextConnection && lastMethodBlock.nextConnection.isConnected()) {
                 lastMethodBlock = lastMethodBlock.nextConnection.targetBlock();
             }
 
@@ -111,7 +83,7 @@ function appendBlockToClass(classBlock, blockToAppend) {
 function appendBlockToFunction(functionBlock, blockToAppend) {
     const methodsInput = functionBlock.getInput('METHODS');
 
-    if (methodsInput?.connection &amp;&amp; blockToAppend.previousConnection) {
+    if (methodsInput?.connection && blockToAppend.previousConnection) {
         methodsInput.connection.connect(blockToAppend.previousConnection);
     } else {
         console.error("No valid 'METHODS' input or connection found in the function block.");
@@ -138,7 +110,7 @@ function connectBlocksVertical(lastBlock,block){
         // Debugging: Check if connections exist
 
 
-        if (lastBlockConnection &amp;&amp; currentBlockConnection) {
+        if (lastBlockConnection && currentBlockConnection) {
             lastBlockConnection.connect(currentBlockConnection);
         } else {
             console.error('Connection points are not available for lastBlock.');
@@ -153,7 +125,7 @@ function connectBlocksVertical(lastBlock,block){
  */
 function isNumericString(str) {
     // Try to convert the string to a number
-    return !isNaN(parseFloat(str)) &amp;&amp; isFinite(str);
+    return !isNaN(parseFloat(str)) && isFinite(str);
 }
 /**
  * Connects two normal blocks horizontally together
@@ -166,7 +138,7 @@ function connectBlocksHorizontally(leftBlock,rightBlock){
     // Debugging: Check if connections exist
 
 
-    if (valueInputConnection &amp;&amp; functionOutputConnection) {
+    if (valueInputConnection && functionOutputConnection) {
         // Connect the variable block to the function block
         valueInputConnection.connect(functionOutputConnection);
 
@@ -249,7 +221,7 @@ function appendBlockToWorkspace(blockInfo) {
 
                 block.initSvg();
                 block.render();
-                if(blockInfo.parameters!=="" &amp;&amp; blockInfo.name!=="cheatblock"){
+                if(blockInfo.parameters!=="" && blockInfo.name!=="cheatblock"){
                     let assignmentValue =null;
                     if(isNumericString(blockInfo.parameters)){
 
@@ -327,24 +299,18 @@ function appendBlockToWorkspace(blockInfo) {
             if (Inputs.length > 1) { //HAS SPECIAL INPUT AT THE END
                 if (blockInfo.name === "reshape") {
                     var ans = inputValue.match(/\(\(\s*([a-zA-Z])/)
-                    /*if(ans){
-                        ans = ans.toString()
-                        var res = ans.replace(/^\(\(/, '');
-                        res = res[0]
 
-                        block.setFieldValue(res, "VAR")
-                        block.setFieldValue(res, "VAR2")
-                    }*/
                     const input = inputValue;
                     const regex = /(.+)\.shape\[\d+\],\s*(.+)\)/g;
                     const matches = regex.exec(input);
 
                     if (matches) {
                         let beforeShape = matches[1]; // Value before `.shape[0]`
+
                         let afterComma = matches[2];   // Value after the comma
                         beforeShape = beforeShape.replace(/^\(\(|\)\)$/g, '')
-                        block.setFieldValue(beforeShape, "VAR")
-                        block.setFieldValue(beforeShape, "VAR2")
+                        block.setFieldValue(beforeShape.substring(1,beforeShape.length), "VAR")
+                        block.setFieldValue(beforeShape.substring(1,beforeShape.length), "VAR2")
                         block.setFieldValue(afterComma.replace(/\)$/, ''), "VAR3")
                     }
 
@@ -397,7 +363,7 @@ function appendBlockToWorkspace(blockInfo) {
 
 
 
-        if (blockInfo.assigned &amp;&amp; blockInfo.name !== "Variable" &amp;&amp; blockInfo.name != "python_loop" &amp;&amp; blockInfo.name!="cheatblock") {
+        if (blockInfo.assigned && blockInfo.name !== "Variable" && blockInfo.name != "python_loop" && blockInfo.name!="cheatblock") {
 
             variableBlock = ws.newBlock('set_var');
             variableBlock.setFieldValue(blockInfo.assigned, 'SET_VARIABLE');
@@ -424,7 +390,7 @@ function appendBlockToWorkspace(blockInfo) {
         // Debugging: Check if connections exist
 
 
-        if (valueInputConnection &amp;&amp; functionOutputConnection) {
+        if (valueInputConnection && functionOutputConnection) {
             // Connect the variable block to the function block
             valueInputConnection.connect(functionOutputConnection);
             block = variableBlock;
@@ -547,19 +513,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     const blockType = block.type;  // Get the block type (name)
 
                     // Check if the block type includes the search term
-                    if (blockType.toLowerCase().includes(searchTerm) &amp;&amp; searchTerm!=="") {
+                    if (blockType.toLowerCase().includes(searchTerm) && searchTerm!=="") {
                         foundBlocks = true;
 
                         // Display the block's category and block name
-                        searchResults.innerHTML += `&lt;p>Block: &lt;strong>${blockType}&lt;/strong> is in Category: &lt;strong>${categoryName}&lt;/strong>&lt;/p>`;
+                        searchResults.innerHTML += `<p>Block: <strong>${blockType}</strong> is in Category: <strong>${categoryName}</strong></p>`;
                     }
                 }
             });
         });
 
         // If no blocks were found, display a message
-        if (!foundBlocks &amp;&amp; searchTerm.length > 0) {
-            searchResults.innerHTML = `&lt;p>No blocks found matching "${searchTerm}"&lt;/p>`;
+        if (!foundBlocks && searchTerm.length > 0) {
+            searchResults.innerHTML = `<p>No blocks found matching "${searchTerm}"</p>`;
         }
     });
 });
@@ -612,7 +578,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     runCode();
 
     ws.addChangeListener(e => {
-        if (!e.isUiEvent &amp;&amp; e.type !== Blockly.Events.FINISHED_LOADING &amp;&amp; !ws.isDragging()) {
+        if (!e.isUiEvent && e.type !== Blockly.Events.FINISHED_LOADING && !ws.isDragging()) {
             runCode();
             document.getElementById('textarea').textContent = pythonGenerator.pythonGenerator.workspaceToCode(ws);
 
@@ -665,7 +631,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         WorkspaceStates[currentWS] = JSON.stringify(workspaceState);
         var codeArray = [];
-        for(var i=0;i&lt;WorkspaceStates.length;i++){
+        for(var i=0;i<WorkspaceStates.length;i++){
 
             // Save current workspace state before switching
 
@@ -816,7 +782,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         let scopeName = null;
         let index = null;
         let classScopeName = null;
-            if (element.scope !== 'global' &amp;&amp; element.translate) {
+            if (element.scope !== 'global' && element.translate) {
                 classScopeName = element.scope;
                 const classBlock = ws.newBlock('python_class');
                 classBlock.setFieldValue(element.scope+element.base_classes, 'CLASS_NAME');
@@ -886,7 +852,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const returnValue = func.returns;
 
 
-                if (element.scope !== "global" &amp;&amp; element.translate === false){
+                if (element.scope !== "global" && element.translate === false){
                     console.log(func.functionName + " can be " + func.translate + " in scope " + func.scope)
                     return;
                 }
@@ -907,11 +873,11 @@ document.addEventListener('DOMContentLoaded', async function () {
                 functionBlock.setFieldValue(func.functionName + func.parameters, 'CLASS_NAME');
                 functionBlock.initSvg();
                 functionBlock.render();
-                if(lastCluster!==functionBlock &amp;&amp; lastCluster!==null){
+                if(lastCluster!==functionBlock && lastCluster!==null){
                     const lastBlockConnection = lastCluster.nextConnection;
                     const currentBlockConnection = functionBlock.previousConnection;
 
-                    if (lastBlockConnection &amp;&amp; currentBlockConnection &amp;&amp; lastCluster) {
+                    if (lastBlockConnection && currentBlockConnection && lastCluster) {
                         lastBlockConnection.connect(currentBlockConnection);
                     }
 
@@ -982,7 +948,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     const currentBlockConnection = returnBlock.previousConnection;
 
 
-                    if (lastBlockConnection &amp;&amp; currentBlockConnection) {
+                    if (lastBlockConnection && currentBlockConnection) {
                         lastBlockConnection.connect(currentBlockConnection);
                     } else {
                         console.error('Connection points are not available for lastBlock.');
@@ -1085,26 +1051,3 @@ openDoc.onclick = function(){
 
 
 });
-</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#appendBlockToClass">appendBlockToClass</a></li><li><a href="global.html#appendBlockToFunction">appendBlockToFunction</a></li><li><a href="global.html#appendBlockToWorkspace">appendBlockToWorkspace</a></li><li><a href="global.html#connectBlocksHorizontally">connectBlocksHorizontally</a></li><li><a href="global.html#connectBlocksVertical">connectBlocksVertical</a></li><li><a href="global.html#createWindow">createWindow</a></li><li><a href="global.html#deleteDirContent">deleteDirContent</a></li><li><a href="global.html#extractXFromExpression">extractXFromExpression</a></li><li><a href="global.html#getBlockInformation">getBlockInformation</a></li><li><a href="global.html#insertCommentAtLine">insertCommentAtLine</a></li><li><a href="global.html#isNumericString">isNumericString</a></li><li><a href="global.html#load">load</a></li><li><a href="global.html#removeFirstAndLastParentheses">removeFirstAndLastParentheses</a></li><li><a href="global.html#save">save</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a>
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
-</body>
-</html>

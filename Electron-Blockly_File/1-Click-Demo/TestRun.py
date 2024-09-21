@@ -138,7 +138,7 @@ def train_autoencoder(latent_dim=64, num_epochs=1, learning_rate=1e-3):
 
         print(f'Epoch {epoch+1}/{num_epochs} completed.')
 
-    return state
+    return statex
 
 # Train the model
 state = train_autoencoder()

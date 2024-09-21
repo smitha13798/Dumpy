@@ -15,21 +15,23 @@
 
 <body>
 
+
 <div id="main">
-    <img src="img.png" alt="logo" style="width: 60px;
-height: 60px;
-margin-left: 10px;
-margin-top: 5px">
-    <img src="jigswat.png" alt="logo" height="40" style="margin-left: 20px">
-
-    
-
+    <div style="height: 60px;
+display:flex" >
+        <img src="img.png">
+        <img src="jigswat.png">
+    </div>
 
 
     
 
 
 
+    
+
+
+    <h3> </h3>
 
 
 
@@ -645,32 +647,270 @@ SPDX-License-Identifier: Apache-2.0</li></ul></dd>
     <div class="container-overview">
     
         
-            <div class="description">This object defines a Blockly toolbox with different categories and blocks.
-To create blocks for the toolbox:
-
-- Each category is an object with properties:
-  - 'kind': Specifies it's a 'category'.
-  - 'name': The display name of the category.
-  - 'categorystyle': Defines the style of the category, which is pre-configured in Blockly (e.g., 'logic_category').
-  - 'contents': An array that lists the blocks within that category.
-
-- Each block is defined by:
-  - 'kind': Specifies it's a 'block'.
-  - 'type': The type of block to include. The block type must correspond to the block definition created in Blockly.
-
-Example:
- - To add a new block, add an object inside the 'contents' array of a category:
-   {
-     'kind': 'block',
-     'type': 'my_custom_block'  // This must match the defined block type in your Blockly code.
-   }
-
-- Categories can also be nested within other categories by adding a new 'category' object inside 'contents'.
-
-This configuration is essential for setting up the visual toolbox in Blockly, allowing users to drag and drop blocks for coding.</div>
+            <div class="description">As shown, each content array can have it own content array again, its advised to only handle kind and type here
+Inputs can be defined in blocks.js</div>
         
 
         
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>kind</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The kind of the toolbox, set to "categoryToolbox".</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The contents of the toolbox, containing different categories of blocks.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Each category in the toolbox.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[].kind</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The kind of the category, set to "category".</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[].name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The name of the category, displayed in the toolbox.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[].categorystyle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The CSS class applied to the category for styling.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[].contents</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The blocks contained in this category.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[].contents[</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Each block within the category.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[].contents[].kind</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The kind of the block, set to "block".</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contents[].contents[].type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The type identifier for the block (e.g., controls_if, logic_compare).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
 
 
 <dl class="details">

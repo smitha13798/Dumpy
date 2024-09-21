@@ -1,172 +1,177 @@
-# Copyright 2024 The Flax Authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-#test4+
-#test4-
-#test4+
-def test():
-    #
-    x = nn.Dense(feature=32, bias=True)
-
-    nn.gelu(3)
-    x = nn.relu((x))
-
-    x = nn.relu((x))
-
-#CNN16+
-#CNN16-
-    ,0,0,0#test4-
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-#CNN16+
-#CNN16-
-"""MNIST example.
-
-Library file which executes the training and evaluation loop for MNIST.
-The data is loaded using tensorflow_datasets.
-"""
-
-# See issue #620.
-# pytype: disable=wrong-keyword-args
-
-from absl import logging
-from flax import linen as nn
-from flax.metrics import tensorboard
-from flax.training import train_state
 import jax
 import jax.numpy as jnp
-import ml_collections
-import numpy as np
+from flax import linen as nn
 import optax
-import tensorflow_datasets as tfds
+from flax.training import train_state
+from jax import random
+import numpy as np
+import matplotlib.pyplot as plt
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
 
-#modelDefinition+
-data_loader = DataLoader(dataset, batch_size=32, shuffle=True)
-#modelDefinition-
 
-#decoderDefinition+
-#decoderDefinition-
+
+
+
+#Encoder+
+#Encoder+
+class Encoder(nn.Module):
+  #
+  latent_dim : int
+  @nn.compact
+  def __call__(self, x):
+      # TODO CHANGED
+      x = nn.Conv(features=32, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(x)
+
+      x = nn.relu(x)
+
+      x = nn.Conv(features=64, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(x)
+
+      x = nn.relu(x)
+
+      x = x.reshape(x.shape[0], -1)
+
+      x = nn.Dense(features=self.latent_dim)(x)
+
+      return x
+#Encoder-
+
+#Encoder-
+
+
+
+
+#Decoder+
+#Decoder+
+class Decoder(nn.Module):
+  #
+  latent_dim : int
+  @nn.compact
+  def __call__(self, z):
+      #
+      z = nn.Dense(features=7*7*64)(z)
+
+      z = z.reshape(z.shape[0], 7, 7, 64)
+
+      z = nn.ConvTranspose(features=32, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(z)
+
+      z = nn.relu(z)
+
+      z = nn.ConvTranspose(features=1, kernel_size=(3, 3), strides=(2, 2), padding="SAME")(z)
+
+      z = nn.sigmoid(z)
+
+      return z
+#Decoder-
+
+#Decoder-
+
+
+
+
+class Autoencoder(nn.Module):
+    latent_dim: int  # The size of the latent vector
+
+    def setup(self):
+        self.encoder = Encoder(latent_dim=self.latent_dim)
+        self.decoder = Decoder(latent_dim=self.latent_dim)
+
+    def __call__(self, x):
+        # Pass the input through the encoder and then the decoder
+        latent = self.encoder(x)  # Encode to latent vector
+        reconstruction = self.decoder(latent)  # Decode back to the original shape
+        return reconstruction
+
+# Utility functions for model training and testin
+
+# Define training state utility
+def create_train_state(rng, learning_rate, latent_dim, input_shape):
+    model = Autoencoder(latent_dim=latent_dim)
+    params = model.init(rng, jnp.ones(input_shape))["params"]
+    tx = optax.adam(learning_rate)
+    return train_state.TrainState.create(apply_fn=model.apply, params=params, tx=tx)
+
+def compute_loss(pred, target):
+    x = jax.nn.initializers.kaiming_normal(5)
+    loss = jnp.mean((pred - target) ** 2)
+    jnp.mean((pred - target) ** 2)
+    return loss
+
+@jax.jit
+def train_step(state, batch):
+    # Compute gradients using the loss function.
+    grads, _ = jax.grad(loss_fn, has_aux=True)(state.params, state.apply_fn, batch)
+    return state.apply_gradients(grads=grads)
+
+def loss_fn(params, apply_fn, batch):
+    pred = apply_fn({"params": params}, batch)
+    loss = compute_loss(pred, batch)
+    return loss, pred
 
 
 @jax.jit
-def apply_model(state, images, labels):
-  """Computes gradients, loss and accuracy for a single batch."""
+#eval_step+
+#eval_step+
+def eval_step(state, batch):
+    #
+    return state.apply_fn({"params": state.params}, batch)
+#eval_step-
 
-  def loss_fn(params):
-    logits = state.apply_fn({'params': params}, images)
-    one_hot = jax.nn.one_hot(labels, 10)
-    loss = jnp.mean(optax.softmax_cross_entropy(logits=logits, labels=one_hot))
-    return loss, logits
-
-  grad_fn = jax.value_and_grad(loss_fn, has_aux=True)
-  (loss, logits), grads = grad_fn(state.params)
-  accuracy = jnp.mean(jnp.argmax(logits, -1) == labels)
-  return grads, loss, accuracy
+#eval_step-
 
 
-@jax.jit
-def update_model(state, grads):
-  return state.apply_gradients(grads=grads)
+def load_data():
+    transform = transforms.Compose([transforms.ToTensor()])
+    train_dataset = datasets.MNIST(root='./data', train=True, transform=transform, download=True)
+    test_dataset = datasets.MNIST(root='./data', train=False, transform=transform, download=True)
+
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
+    return train_loader, test_loader
+
+train_loader, test_loader = load_data()
 
 
-def train_epoch(state, train_ds, batch_size, rng):
-  """Train for a single epoch."""
-  train_ds_size = len(train_ds['image'])
-  steps_per_epoch = train_ds_size // batch_size
+def train_autoencoder(latent_dim=64, num_epochs=1, learning_rate=1e-3):
+    rng = random.PRNGKey(0)
+    state = create_train_state(rng, learning_rate, latent_dim, (1, 28, 28, 1))  # Input shape for MNIST
 
-  perms = jax.random.permutation(rng, len(train_ds['image']))
-  perms = perms[: steps_per_epoch * batch_size]  # skip incomplete batch
-  perms = perms.reshape((steps_per_epoch, batch_size))
+    for epoch in range(num_epochs):
+        for batch in train_loader:
+            images, _ = batch
+            images = jnp.array(images.numpy())
+            images = images.reshape(-1, 28, 28, 1)
 
-  epoch_loss = []
-  epoch_accuracy = []
+            # Training step
+            state = train_step(state, images)
 
-  for perm in perms:
-    batch_images = train_ds['image'][perm, ...]
-    batch_labels = train_ds['label'][perm, ...]
-    grads, loss, accuracy = apply_model(state, batch_images, batch_labels)
-    state = update_model(state, grads)
-    epoch_loss.append(loss)
-    epoch_accuracy.append(accuracy)
-  train_loss = np.mean(epoch_loss)
-  train_accuracy = np.mean(epoch_accuracy)
-  return state, train_loss, train_accuracy
+        print(f'Epoch {epoch+1}/{num_epochs} completed.')
 
+    return state
 
-def get_datasets():
-  """Load MNIST train and test datasets into memory."""
-  ds_builder = tfds.builder('mnist')
-  ds_builder.download_and_prepare()
-  train_ds = tfds.as_numpy(ds_builder.as_dataset(split='train', batch_size=-1))
-  test_ds = tfds.as_numpy(ds_builder.as_dataset(split='test', batch_size=-1))
-  train_ds['image'] = jnp.float32(train_ds['image']) / 255.0
-  test_ds['image'] = jnp.float32(test_ds['image']) / 255.0
-  return train_ds, test_ds
+# Train the model
+state = train_autoencoder()
 
+# Evaluation and visualization
+def show_images(original, reconstructed):
+    fig, axes = plt.subplots(1, 2)
+    axes[0].imshow(original.squeeze(), cmap='gray')
+    axes[0].set_title('Original')
+    axes[1].imshow(reconstructed.squeeze(), cmap='gray')
+    axes[1].set_title('Reconstructed')
+    plt.show()
 
-def create_train_state(rng, config):
-  """Creates initial `TrainState`."""
-  cnn = CNN()
-  params = cnn.init(rng, jnp.ones([1, 28, 28, 1]))['params']
-  tx = optax.sgd(config.learning_rate, config.momentum)
-  return train_state.TrainState.create(apply_fn=cnn.apply, params=params, tx=tx)
+def evaluate_autoencoder(state):
+    for batch in test_loader:
+        images, _ = batch
+        images = jnp.array(images.numpy())
+        images = images.reshape(-1, 28, 28, 1)
 
+        # Evaluate the model on test data
+        reconstructed_images = eval_step(state, images)
 
-def train_and_evaluate(
-    config: ml_collections.ConfigDict, workdir: str
-) -> train_state.TrainState:
-  """Execute model training and evaluation loop.
+        # Show the first image and its reconstruction
+        show_images(images[0], reconstructed_images[0])
+        break
 
-  Args:
-    config: Hyperparameter configuration for training and evaluation.
-    workdir: Directory where the tensorboard summaries are written to.
-
-  Returns:
-    The train state (which includes the `.params`).
-  """
-  train_ds, test_ds = get_datasets()
-  rng = jax.random.key(0)
-
-  summary_writer = tensorboard.SummaryWriter(workdir)
-  summary_writer.hparams(dict(config))
-
-  rng, init_rng = jax.random.split(rng)
-  state = create_train_state(init_rng, config)
-
-  for epoch in range(1, config.num_epochs + 1):
-    rng, input_rng = jax.random.split(rng)
-    state, train_loss, train_accuracy = train_epoch(
-        state, train_ds, config.batch_size, input_rng
-    )
-    _, test_loss, test_accuracy = apply_model(
-        state, test_ds['image'], test_ds['label']
-    )
-
-    logging.info(
-        'epoch:% 3d, train_loss: %.4f, train_accuracy: %.2f, test_loss: %.4f,'
-        ' test_accuracy: %.2f'
-        % (
-            epoch,
-            train_loss,
-            train_accuracy * 100,
-            test_loss,
-            test_accuracy * 100,
-        )
-    )
-
-    summary_writer.scalar('train_loss', train_loss, epoch)
-    summary_writer.scalar('train_accuracy', train_accuracy, epoch)
-    summary_writer.scalar('test_loss', test_loss, epoch)
-    summary_writer.scalar('test_accuracy', test_accuracy, epoch)
-
-  summary_writer.flush()
-  return state
+evaluate_autoencoder(state)
