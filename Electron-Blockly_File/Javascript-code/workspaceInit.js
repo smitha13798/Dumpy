@@ -37,8 +37,11 @@ editorCurrent.session.setMode("ace/mode/python");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 
-
-
+module.exports = {
+    test: function() {
+        return 5;
+    }
+}
 
 /**
  * Appends a block (blockToAppend) to the 'METHODS' input of a class block.
@@ -127,6 +130,8 @@ function isNumericString(str) {
     // Try to convert the string to a number
     return !isNaN(parseFloat(str)) && isFinite(str);
 }
+
+
 /**
  * Connects two normal blocks horizontally together
  */
@@ -233,9 +238,11 @@ function appendBlockToWorkspace(blockInfo) {
                     }
                     else{
                         assignmentValue = ws.newBlock('string');
+
                         assignmentValue.setFieldValue(blockInfo.parameters,'VAR')
                         assignmentValue.render()
                         assignmentValue.initSvg();
+
                         connectBlocksHorizontally(block,assignmentValue)
                     }
 
@@ -254,6 +261,16 @@ function appendBlockToWorkspace(blockInfo) {
 
 
         return;
+    }
+
+    if(blockInfo.name==="cheatblock"){
+        const block = ws.newBlock('cheatblock');
+        block.setFieldValue(blockInfo.parameters,"VAR");
+        block.render()
+        block.initSvg()
+        connectBlocksVertical(lastBlock,block)
+        lastBlock = block
+        return
     }
 
     else{
@@ -337,11 +354,12 @@ function appendBlockToWorkspace(blockInfo) {
                         block.setFieldValue(result.updatedExpression, Inputs[0])
                     } else {
                         block.setFieldValue(inputValue, Inputs[0])
-                        if (blockInfo.name !== "cheatblock") {
+                        if (blockInfo.name !== "cheatblock" ) {
 
                             str = removeFirstAndLastParentheses(str)
                             block.setFieldValue(str, Inputs[0])
                         }
+
 
                     }
 

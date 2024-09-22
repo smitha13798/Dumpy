@@ -13,7 +13,6 @@ from torch.utils.data import DataLoader
 
 
 
-#Encoder+
 class Encoder(nn.Module):
   #
   latent_dim : int
@@ -33,12 +32,12 @@ class Encoder(nn.Module):
       x = nn.Dense(features=self.latent_dim)(x)
 
       return x
-#Encoder-
 
 
 
 
-#Decoder+
+
+
 class Decoder(nn.Module):
   #
   latent_dim : int
@@ -58,7 +57,6 @@ class Decoder(nn.Module):
       z = nn.sigmoid(z)
 
       return z
-#Decoder-
 
 
 
@@ -104,11 +102,11 @@ def loss_fn(params, apply_fn, batch):
 
 
 @jax.jit
-#eval_step+
+
 def eval_step(state, batch):
     #
     return state.apply_fn({"params": state.params}, batch)
-#eval_step-
+
 
 
 def load_data():

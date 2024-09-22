@@ -129,11 +129,11 @@ src_bytes = src.encode("utf-8")
 tree = parser.parse(src_bytes)
 
 refiller = 0
-"""if len(sys.argv) > 1:
+if len(sys.argv) > 1:
     refiller = int(sys.argv[1])
     print(f"Received parameter: {refiller}")
 else:
-    print("No parameter received")"""
+    print("No parameter received")
 # Function to find functions, their calls, and assignments
 # Function to find functions, their calls, and assignments
 def find_functions_and_calls(root_node):
@@ -335,7 +335,7 @@ def find_functions_and_calls(root_node):
                         row_number = node.start_point[0] + 1
                         variable_assignment_call = {
                             'function': "Variable",
-                            'parameters': className + '(' + parameters + ')',
+                            'parameters': className  + parameters,
                             'assigned': variable_name,
                             'index': row_number
                         }
@@ -592,7 +592,6 @@ for scope in scope_data:
         if scope['scope'] != 'global' and scope['translate']:
             # Check if any function in the class is not translatable
             class_translatable = all(function['translate'] for function in scope['functions'])
-            print("CLASS IS TRANSLATEABLE AND IS GOING TO BE DELETED")
 
             if class_translatable:
                 # If the class is translatable, remove the entire class definition
@@ -607,11 +606,11 @@ for scope in scope_data:
                 modified_skeleton += f"#{scope['scope']}-\n"
                 # Update last_index to skip the entire class definition
                 last_index = end_byte
-        elif scope['scope'] == 'global' :
+        elif scope['scope'] == 'global':
 
 
             # If the scope is global, handle functions within the global scope
-            for function in scope['functions'] :
+            for function in scope['functions']:
                 if function['translate']:
                     start_byte = function['start_byte']  # Start byte of the function definition
                     end_byte = function['end_byte']  # End byte of the function definition

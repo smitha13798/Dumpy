@@ -7,10 +7,8 @@
   "scripts": {
     "start": "python Python-code/generator/patternMatch.py && electron .",
     "dev": "electron .",
-    "watch": "python Python-code/generator/Demo.py generatedCode",
     "blockify": "python Python-code/generator/patternMatch.py",
-    "test": "python Python-code/generator/patternMatch.py",
-    "docs": "start ./docs/index.html && pdoc ./Python-code/generator/patternMatch.py ./Python-code/generator/Demo.py ./Python-code/generator/BlockFunction.py"
+    "docs": "start ./docs/index.html && pdoc ./Python-code/generator/patternMatch.py Python-code/generator/Watchdog.py ./Python-code/generator/BlockFunction.py"
   },
   "author": "",
   "license": "ISC",
@@ -27,7 +25,9 @@
     "wkhtmltopdf": "^0.4.0"
   },
   "devDependencies": {
+    "chai": "^5.1.1",
     "electron": "^30.0.8",
+    "mocha": "^10.7.3",
     "tree-sitter-cli": "^0.22.6"
   }
 }

@@ -13,6 +13,7 @@ from torch.utils.data import DataLoader
 
 
 
+
 #Encoder+
 class Encoder(nn.Module):
   #
@@ -34,6 +35,9 @@ class Encoder(nn.Module):
 
       return x
 #Encoder-
+
+
+
 
 
 
@@ -63,51 +67,69 @@ class Decoder(nn.Module):
 
 
 
+
+
+#Autoencoder+
 class Autoencoder(nn.Module):
-    latent_dim: int  # The size of the latent vector
+  # test
+  latent_dim : int
+  def setup(self):
+      #
+      self.encoder = Encoder(latent_dim=self.latent_dim)
+      self.decoder = Decoder(latent_dim=self.latent_dim)
+  def __call__(self, x):
+      #
+      latent = self.encoder(x)
+      reconstruction = self.decoder(latent)
+      return reconstruction
+#Autoencoder-
 
-    def setup(self):
-        self.encoder = Encoder(latent_dim=self.latent_dim)
-        self.decoder = Decoder(latent_dim=self.latent_dim)
 
-    def __call__(self, x):
-        # Pass the input through the encoder and then the decoder
-        latent = self.encoder(x)  # Encode to latent vector
-        reconstruction = self.decoder(latent)  # Decode back to the original shape
-        return reconstruction
 
-# Utility functions for model training and testin
-
-# Define training state utility
 def create_train_state(rng, learning_rate, latent_dim, input_shape):
     model = Autoencoder(latent_dim=latent_dim)
     params = model.init(rng, jnp.ones(input_shape))["params"]
     tx = optax.adam(learning_rate)
     return train_state.TrainState.create(apply_fn=model.apply, params=params, tx=tx)
 
+#compute_loss+
 def compute_loss(pred, target):
+    #
     x = jax.nn.initializers.kaiming_normal(5)
+
     loss = jnp.mean((pred - target) ** 2)
     jnp.mean((pred - target) ** 2)
     return loss
+#compute_loss-
+
 
 @jax.jit
+#train_step+
 def train_step(state, batch):
-    # Compute gradients using the loss function.
+    #
     grads, _ = jax.grad(loss_fn, has_aux=True)(state.params, state.apply_fn, batch)
     return state.apply_gradients(grads=grads)
+#train_step-
 
+
+#loss_fn+
 def loss_fn(params, apply_fn, batch):
+    #
     pred = apply_fn({"params": params}, batch)
     loss = compute_loss(pred, batch)
     return loss, pred
+#loss_fn-
+
 
 
 @jax.jit
 #eval_step+
+#eval_step+
 def eval_step(state, batch):
     #
     return state.apply_fn({"params": state.params}, batch)
+#eval_step-
+
 #eval_step-
 
 
